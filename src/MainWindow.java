@@ -1,8 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
+
+
 public class MainWindow {
     private final JFrame window;
+    private static final int BUTTONFONTSIZE = 16;
 
     public MainWindow() {
 
@@ -17,46 +20,53 @@ public class MainWindow {
         // Tworzenie przycisków menuEnter
         JButton playButton = new JButton("Graj");
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton.setForeground(Color.WHITE);
-        playButton.setBackground(Color.GREEN);
+        playButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        playButton.setBackground(new Color(0x2dce98));
+        playButton.setForeground(Color.white);
+        playButton.setUI(new StyledButtonUI());
         playButton.setPreferredSize(new Dimension(300, 50));
 
         JButton creditsButton = new JButton("Autorzy");
         creditsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        creditsButton.setForeground(Color.WHITE);
-        creditsButton.setBackground(Color.GREEN);
+        creditsButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        creditsButton.setBackground(new Color(0x2dce98));
+        creditsButton.setForeground(Color.white);
+        creditsButton.setUI(new StyledButtonUI());
         creditsButton.setPreferredSize(new Dimension(300, 50));
 
         JButton leaveButton = new JButton("Wyjdź");
         leaveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveButton.setForeground(Color.WHITE);
-        leaveButton.setBackground(Color.GREEN);
+        leaveButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        leaveButton.setBackground(new Color(0x2dce98));
+        leaveButton.setForeground(Color.white);
+        leaveButton.setUI(new StyledButtonUI());
         leaveButton.setPreferredSize(new Dimension(300, 50));
 
 
         // Tworzenie przycisków menuPlay
         JButton hostButton = new JButton("Host");
         hostButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hostButton.setBackground(Color.GREEN);
-        hostButton.setForeground(Color.WHITE);
+        hostButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        hostButton.setBackground(new Color(0x2dce98));
+        hostButton.setForeground(Color.white);
+        hostButton.setUI(new StyledButtonUI());
         hostButton.setPreferredSize(new Dimension(300, 50));
 
         JButton joinButton = new JButton("Join");
         joinButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        joinButton.setForeground(Color.WHITE);
-        joinButton.setBackground(Color.GREEN);
+        joinButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        joinButton.setBackground(new Color(0x2dce98));
+        joinButton.setForeground(Color.white);
+        joinButton.setUI(new StyledButtonUI());
         joinButton.setPreferredSize(new Dimension(300, 50));
 
-        JButton localgameButton = new JButton("Gra Lokalna");
-        localgameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        localgameButton.setForeground(Color.WHITE);
-        localgameButton.setBackground(Color.GREEN);
-        localgameButton.setPreferredSize(new Dimension(300, 50));
 
         JButton backButton = new JButton("Wróć");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setForeground(Color.WHITE);
-        backButton.setBackground(Color.GREEN);
+        backButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        backButton.setBackground(new Color(0x2dce98));
+        backButton.setForeground(Color.white);
+        backButton.setUI(new StyledButtonUI());
         backButton.setPreferredSize(new Dimension(300, 50));
 
 
@@ -83,10 +93,9 @@ public class MainWindow {
         menuPlay.add(Box.createVerticalStrut(10));
         menuPlay.add(joinButton);
         menuPlay.add(Box.createVerticalStrut(10));
-        menuPlay.add(localgameButton);
-        menuPlay.add(Box.createVerticalStrut(10));
         menuPlay.add(backButton);
         menuPlay.add(Box.createVerticalGlue());
+        
 
 
         // Tworzenie panelu Container
