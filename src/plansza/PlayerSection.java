@@ -30,6 +30,7 @@ public class PlayerSection {
         generatePlayerTurnPanel(playerTurnPanel);
         generateMouseHoverInfoPanel(mouseHoverInfoPanel);
 
+
         generatePlayerSection();
     }
 
