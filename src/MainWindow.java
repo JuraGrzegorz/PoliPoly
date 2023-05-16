@@ -2,7 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class MainWindow {
@@ -11,6 +16,7 @@ public class MainWindow {
 
     Server server;
     Client client;
+    boolean gameStarted;
 
     private JButton standardButtonGenerate (String name){
         JButton tmp = new JButton(name);
@@ -24,7 +30,7 @@ public class MainWindow {
     }
 
     public MainWindow(){
-
+        gameStarted=false;
 
         // Dodanie JLabel z logo
         ImageIcon logo = new ImageIcon("assets/Polipoly.png");
@@ -129,6 +135,7 @@ public class MainWindow {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
+
         JButton ip_info = new JButton("ip : "+localhost.getHostAddress());
         ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
         ip_info.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
@@ -157,12 +164,16 @@ public class MainWindow {
         joinGameButton.setUI(new StyledButtonUI());
         joinGameButton.setPreferredSize(new Dimension(300, 50));
 
-        JTextField textField =new JTextField();
-        textField.setSize(10,10);
-        /*textField.setPreferredSize(new Dimension(50, 30));*/
 
-        JButton error =standardButtonGenerate("Server nie istnieje!!");
-        error.setVisible(false);
+
+        JTextField ipAddressGetTextField =new JTextField("192.168.18.14");
+        ipAddressGetTextField.setMaximumSize(new Dimension(200, 1));
+
+        JTextField nickNameTextField =new JTextField("Player");
+        nickNameTextField.setMaximumSize(new Dimension(200, 1));
+
+        JButton statusButton =standardButtonGenerate("Server nie istnieje!!");
+        statusButton.setVisible(false);
 
 
         JPanel menuJoinGame = new JPanel();
@@ -171,10 +182,12 @@ public class MainWindow {
         menuJoinGame.add(Box.createVerticalGlue());
         menuJoinGame.add(joinGameButton);
         menuHostGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(textField);
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(error);
-        menuHostGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(nickNameTextField);
+        menuJoinGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(ipAddressGetTextField);
+        menuJoinGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(statusButton);
+        menuJoinGame.add(Box.createVerticalStrut(10));
         // Tworzenie panelu Container
         JPanel container;
         container = new JPanel() {
@@ -214,28 +227,51 @@ public class MainWindow {
             System.out.print("START HOSTING\n");
             menuPlay.setVisible(false);
             menuHostGame.setVisible(true);
-            try {
-                this.server=new Server();
-                this.server.openSocket(8080);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
+
+
             Thread ThreadWaitingForPlayers = new Thread(() -> {
-                int readyChannels = 0;
-                while (true) {
-                    try {
-                        readyChannels = this.server.selector.select();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    if(readyChannels>0){
+
+
+                this.server=new Server();
+                try {
+                    this.server.openSocket(8080);
+                    this.server.serverSocketChannel.setSoTimeout(2000);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                while (true){
+                    //dodac synchronizacje
+                    int countOfPlayers=0;
+                    if(gameStarted){
                         break;
                     }
-                }
-                System.out.print("koniec");
+                    Socket tmp_clientSock = null;
+                    try {
+                        tmp_clientSock = this.server.serverSocketChannel.accept();
+                        this.server.SetCommunicationParameters(tmp_clientSock);
+                        countOfPlayers++;
 
+                        menuHostGame.add(standardButtonGenerate(this.server.intoServer.readLine()));
+                        menuHostGame.setVisible(false);
+                        menuHostGame.setVisible(true);
+                        //dalsza komunikacja
+
+                        if(countOfPlayers==4){
+                            break;
+                        }
+
+                    } catch (IOException e) {}
+
+                }
             });
             ThreadWaitingForPlayers.start();
+
+        });
+
+        startGameButton.addActionListener(back -> {
+            gameStarted=true;
         });
 
         joinButton.addActionListener(back -> {
@@ -248,13 +284,19 @@ public class MainWindow {
 
             try {
                 this.client=new Client();
-                this.client.ClientConnect(textField.getText(),8080);
-                error.setText("waiting for start game!");
-                error.setVisible(true);
+                this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
+                this.client.SetCommunicationParameters(this.client.clientSocket);
+                this.client.fromClient.println(nickNameTextField.getText());
+
+                statusButton.setText("waiting for start game!");
+                System.out.print("Connected!");
+                ipAddressGetTextField.setVisible(false);
+                joinGameButton.setVisible(false);
+                statusButton.setVisible(true);
+
             } catch (IOException e) {
-                error.setVisible(true);
+                statusButton.setVisible(true);
             }
-            System.out.print("Connected!");
 
         });
 

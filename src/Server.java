@@ -1,32 +1,33 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 
 public class Server {
-    public ServerSocketChannel serverSocketChannel;
-    public Selector selector;
+    public ServerSocket serverSocketChannel;
+
+    PrintWriter fromServer;
+    BufferedReader  intoServer;
+
+    /*List<Socket> listOfSockets;*/
 
     void openSocket(int port) throws IOException {
-        this.serverSocketChannel = ServerSocketChannel.open();
-        this.serverSocketChannel.bind(new InetSocketAddress(port));
-        this.serverSocketChannel.configureBlocking(false);
-        this.selector = Selector.open();
-        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-
-        System.out.println("Serwer nasłuchuje na porcie 12345...");
+        this.serverSocketChannel= new ServerSocket(port);
+        System.out.println("Serwer nasłuchuje na porcie " + port);
     }
-    void acceptClient() throws IOException {
-        while(true){
-
-            int readyChannels = selector.select();
-            System.out.print(readyChannels + "\n");
+    void SetCommunicationParameters(Socket clientSocket) throws IOException {
+        if(clientSocket==null){
+            return;
         }
-
-        /*SocketChannel clientSocketChannel = serverSocketChannel.accept();
-        System.out.println("Połączenie z klientem nawiązane.");*/
+        this.fromServer = new PrintWriter(clientSocket.getOutputStream(), true);
+        this.intoServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 }
