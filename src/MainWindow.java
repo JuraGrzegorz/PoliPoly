@@ -1,13 +1,29 @@
 import javax.swing.*;
 import java.awt.*;
-
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 
 public class MainWindow {
     private final JFrame window;
     private static final int BUTTONFONTSIZE = 16;
 
-    public MainWindow() {
+    Server server;
+    Client client;
+
+    private JButton standardButtonGenerate (String name){
+        JButton tmp = new JButton(name);
+        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tmp.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        tmp.setBackground(new Color(0x2dce98));
+        tmp.setForeground(Color.white);
+        tmp.setUI(new StyledButtonUI());
+        tmp.setPreferredSize(new Dimension(300, 50));
+        return tmp;
+    }
+
+    public MainWindow(){
 
 
         // Dodanie JLabel z logo
@@ -95,9 +111,70 @@ public class MainWindow {
         menuPlay.add(Box.createVerticalStrut(10));
         menuPlay.add(backButton);
         menuPlay.add(Box.createVerticalGlue());
-        
 
 
+
+        JButton startGameButton = new JButton("Star Game!");
+        startGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        startGameButton.setBackground(new Color(0x2dce98));
+        startGameButton.setForeground(Color.white);
+        startGameButton.setUI(new StyledButtonUI());
+        startGameButton.setPreferredSize(new Dimension(300, 50));
+
+
+        InetAddress localhost = null;
+        try {
+            localhost = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        JButton ip_info = new JButton("ip : "+localhost.getHostAddress());
+        ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ip_info.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        ip_info.setBackground(new Color(0x2dce98));
+        ip_info.setForeground(Color.white);
+        ip_info.setUI(new StyledButtonUI());
+        ip_info.setPreferredSize(new Dimension(300, 50));
+
+
+        JPanel menuHostGame = new JPanel();
+        menuHostGame.setOpaque(false);
+
+        menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
+        menuHostGame.add(Box.createVerticalGlue());
+        menuHostGame.add(startGameButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
+        menuHostGame.add(ip_info);
+        menuHostGame.add(Box.createVerticalStrut(10));
+
+
+        JButton joinGameButton = new JButton("Join Game!");
+        joinGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        joinGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        joinGameButton.setBackground(new Color(0x2dce98));
+        joinGameButton.setForeground(Color.white);
+        joinGameButton.setUI(new StyledButtonUI());
+        joinGameButton.setPreferredSize(new Dimension(300, 50));
+
+        JTextField textField =new JTextField();
+        textField.setSize(10,10);
+        /*textField.setPreferredSize(new Dimension(50, 30));*/
+
+        JButton error =standardButtonGenerate("Server nie istnieje!!");
+        error.setVisible(false);
+
+
+        JPanel menuJoinGame = new JPanel();
+        menuJoinGame.setOpaque(false);
+        menuJoinGame.setLayout(new BoxLayout(menuJoinGame, BoxLayout.Y_AXIS));
+        menuJoinGame.add(Box.createVerticalGlue());
+        menuJoinGame.add(joinGameButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(textField);
+        menuHostGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(error);
+        menuHostGame.add(Box.createVerticalStrut(10));
         // Tworzenie panelu Container
         JPanel container;
         container = new JPanel() {
@@ -112,7 +189,11 @@ public class MainWindow {
         logoLabel.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         container.add(logoLabel);
         container.add(menuEnter);
+        container.add(menuHostGame,BorderLayout.NORTH);
+        container.add(menuJoinGame);
         menuPlay.setVisible(false);
+        menuHostGame.setVisible(false);
+        menuJoinGame.setVisible(false);
         container.add(menuPlay);
 
 
@@ -129,10 +210,61 @@ public class MainWindow {
             menuEnter.setVisible(true);
         });
 
+        hostButton.addActionListener(back -> {
+            System.out.print("START HOSTING\n");
+            menuPlay.setVisible(false);
+            menuHostGame.setVisible(true);
+            try {
+                this.server=new Server();
+                this.server.openSocket(8080);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Thread ThreadWaitingForPlayers = new Thread(() -> {
+                int readyChannels = 0;
+                while (true) {
+                    try {
+                        readyChannels = this.server.selector.select();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if(readyChannels>0){
+                        break;
+                    }
+                }
+                System.out.print("koniec");
+
+            });
+            ThreadWaitingForPlayers.start();
+        });
+
+        joinButton.addActionListener(back -> {
+
+            menuPlay.setVisible(false);
+            menuJoinGame.setVisible(true);
+        });
+
+        joinGameButton.addActionListener(back -> {
+
+            try {
+                this.client=new Client();
+                this.client.ClientConnect(textField.getText(),8080);
+                error.setText("waiting for start game!");
+                error.setVisible(true);
+            } catch (IOException e) {
+                error.setVisible(true);
+            }
+            System.out.print("Connected!");
+
+        });
+
+
+        startGameButton.addActionListener(back -> {
+
+
+        });
+
         leaveButton.addActionListener(leaveGame -> System.exit(0));
-
-
-
 
 
         window = new JFrame();
@@ -147,7 +279,6 @@ public class MainWindow {
 
     public void show() {
         window.setVisible(true);
-
 
     }
 
