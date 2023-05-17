@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -31,6 +33,8 @@ public class MainWindow {
 
     public MainWindow(){
         gameStarted=false;
+        this.server=new Server();
+
 
         // Dodanie JLabel z logo
         ImageIcon logo = new ImageIcon("assets/Polipoly.png");
@@ -145,14 +149,18 @@ public class MainWindow {
         ip_info.setPreferredSize(new Dimension(300, 50));
 
 
+        JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
+        nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
+
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
-
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
         menuHostGame.add(Box.createVerticalGlue());
         menuHostGame.add(startGameButton);
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(ip_info);
+        menuHostGame.add(Box.createVerticalStrut(10));
+        menuHostGame.add(nickNameTextFieldHostMenu);
         menuHostGame.add(Box.createVerticalStrut(10));
 
 
@@ -188,6 +196,7 @@ public class MainWindow {
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(statusButton);
         menuJoinGame.add(Box.createVerticalStrut(10));
+
         // Tworzenie panelu Container
         JPanel container;
         container = new JPanel() {
@@ -232,11 +241,9 @@ public class MainWindow {
 
             Thread ThreadWaitingForPlayers = new Thread(() -> {
 
-
-                this.server=new Server();
                 try {
                     this.server.openSocket(8080);
-                    this.server.serverSocketChannel.setSoTimeout(2000);
+                    this.server.serverSocketChannel.setSoTimeout(1000);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -244,8 +251,10 @@ public class MainWindow {
                 while (true){
                     //dodac synchronizacje
                     int countOfPlayers=0;
-                    if(gameStarted){
-                        break;
+                    synchronized (this) {
+                        if(gameStarted){
+                            break;
+                        }
                     }
                     Socket tmp_clientSock = null;
                     try {
@@ -253,7 +262,10 @@ public class MainWindow {
                         this.server.SetCommunicationParameters(tmp_clientSock);
                         countOfPlayers++;
 
-                        menuHostGame.add(standardButtonGenerate(this.server.intoServer.readLine()));
+                        menuHostGame.add(standardButtonGenerate(
+                                this.server.listOfSockets.get(this.server.listOfSockets.size()-1).intoServer.readLine()));
+
+
                         menuHostGame.setVisible(false);
                         menuHostGame.setVisible(true);
                         //dalsza komunikacja
@@ -263,15 +275,26 @@ public class MainWindow {
                         }
 
                     } catch (IOException e) {}
-
                 }
             });
             ThreadWaitingForPlayers.start();
-
+            while (true){
+                try {
+                    this.client=new Client();
+                    this.client.ClientConnect("localhost",8080);
+                    this.client.SetCommunicationParameters(this.client.clientSocket);
+                    this.client.fromClient.println("HostOfGames");
+                    break;
+                } catch (IOException e) {}
+            }
         });
 
         startGameButton.addActionListener(back -> {
-            gameStarted=true;
+            synchronized (this) {
+                gameStarted=true;
+            }
+            Collections.shuffle(server.listOfSockets);
+
         });
 
         joinButton.addActionListener(back -> {
@@ -290,7 +313,9 @@ public class MainWindow {
 
                 statusButton.setText("waiting for start game!");
                 System.out.print("Connected!");
+
                 ipAddressGetTextField.setVisible(false);
+                nickNameTextField.setVisible(false);
                 joinGameButton.setVisible(false);
                 statusButton.setVisible(true);
 
@@ -315,7 +340,6 @@ public class MainWindow {
         window.setSize(800, 500);
         window.setLocationRelativeTo(null);
         window.add(container);
-
 
     }
 
