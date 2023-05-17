@@ -6,10 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 
 public class MainWindow {
@@ -19,6 +17,7 @@ public class MainWindow {
     Server server;
     Client client;
     boolean gameStarted;
+    boolean stopHostingGame;
 
     private JButton standardButtonGenerate (String name){
         JButton tmp = new JButton(name);
@@ -33,7 +32,7 @@ public class MainWindow {
 
     public MainWindow(){
         gameStarted=false;
-        this.server=new Server();
+        stopHostingGame=false;
 
 
         // Dodanie JLabel z logo
@@ -148,9 +147,22 @@ public class MainWindow {
         ip_info.setUI(new StyledButtonUI());
         ip_info.setPreferredSize(new Dimension(300, 50));
 
+        JButton backFromHostLobbyButton = new JButton("Back!");
+        backFromHostLobbyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backFromHostLobbyButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        backFromHostLobbyButton.setBackground(new Color(0x2dce98));
+        backFromHostLobbyButton.setForeground(Color.white);
+        backFromHostLobbyButton.setUI(new StyledButtonUI());
+        backFromHostLobbyButton.setPreferredSize(new Dimension(300, 50));
+
+
 
         JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
         nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
+
+
+        JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
+
 
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
@@ -162,6 +174,11 @@ public class MainWindow {
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(nickNameTextFieldHostMenu);
         menuHostGame.add(Box.createVerticalStrut(10));
+        menuHostGame.add(changeNickNameHostButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
+        menuHostGame.add(backFromHostLobbyButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
+
 
 
         JButton joinGameButton = new JButton("Join Game!");
@@ -177,12 +194,15 @@ public class MainWindow {
         JTextField ipAddressGetTextField =new JTextField("192.168.18.14");
         ipAddressGetTextField.setMaximumSize(new Dimension(200, 1));
 
-        JTextField nickNameTextField =new JTextField("Player");
-        nickNameTextField.setMaximumSize(new Dimension(200, 1));
+        JTextField nickNameTextFieldJoinMenu =new JTextField("Player");
+        nickNameTextFieldJoinMenu.setMaximumSize(new Dimension(200, 1));
 
         JButton statusButton =standardButtonGenerate("Server nie istnieje!!");
         statusButton.setVisible(false);
 
+
+        JButton backFromJoinLobbyButton =standardButtonGenerate("Back!");
+        statusButton.setVisible(false);
 
         JPanel menuJoinGame = new JPanel();
         menuJoinGame.setOpaque(false);
@@ -190,11 +210,13 @@ public class MainWindow {
         menuJoinGame.add(Box.createVerticalGlue());
         menuJoinGame.add(joinGameButton);
         menuHostGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(nickNameTextField);
+        menuJoinGame.add(nickNameTextFieldJoinMenu);
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(ipAddressGetTextField);
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(statusButton);
+        menuJoinGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(backFromJoinLobbyButton);
         menuJoinGame.add(Box.createVerticalStrut(10));
 
         // Tworzenie panelu Container
@@ -232,11 +254,18 @@ public class MainWindow {
             menuEnter.setVisible(true);
         });
 
+
+        List<JButton> tmp_button=new ArrayList<>();
         hostButton.addActionListener(back -> {
+
+            this.server=new Server();
+
             System.out.print("START HOSTING\n");
             menuPlay.setVisible(false);
             menuHostGame.setVisible(true);
-
+            synchronized (this) {
+                stopHostingGame=false;
+            }
 
 
             Thread ThreadWaitingForPlayers = new Thread(() -> {
@@ -249,10 +278,11 @@ public class MainWindow {
                 }
 
                 while (true){
-                    //dodac synchronizacje
+
                     int countOfPlayers=0;
                     synchronized (this) {
-                        if(gameStarted){
+                        if(gameStarted || stopHostingGame){
+                            System.out.print("STOP HOSTING\n");
                             break;
                         }
                     }
@@ -260,11 +290,12 @@ public class MainWindow {
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         this.server.SetCommunicationParameters(tmp_clientSock);
-                        countOfPlayers++;
 
-                        menuHostGame.add(standardButtonGenerate(
+
+                        tmp_button.add(standardButtonGenerate(
                                 this.server.listOfSockets.get(this.server.listOfSockets.size()-1).intoServer.readLine()));
-
+                        menuHostGame.add(tmp_button.get(tmp_button.size()-1));
+                        countOfPlayers++;
 
                         menuHostGame.setVisible(false);
                         menuHostGame.setVisible(true);
@@ -276,6 +307,7 @@ public class MainWindow {
 
                     } catch (IOException e) {}
                 }
+
             });
             ThreadWaitingForPlayers.start();
             while (true){
@@ -298,7 +330,6 @@ public class MainWindow {
         });
 
         joinButton.addActionListener(back -> {
-
             menuPlay.setVisible(false);
             menuJoinGame.setVisible(true);
         });
@@ -309,13 +340,13 @@ public class MainWindow {
                 this.client=new Client();
                 this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
-                this.client.fromClient.println(nickNameTextField.getText());
+                this.client.fromClient.println(nickNameTextFieldJoinMenu.getText());
 
                 statusButton.setText("waiting for start game!");
                 System.out.print("Connected!");
 
                 ipAddressGetTextField.setVisible(false);
-                nickNameTextField.setVisible(false);
+                nickNameTextFieldJoinMenu.setVisible(false);
                 joinGameButton.setVisible(false);
                 statusButton.setVisible(true);
 
@@ -325,11 +356,50 @@ public class MainWindow {
 
         });
 
+        backFromHostLobbyButton.addActionListener(back -> {
+            System.out.print(this.server.listOfSockets.size());
+
+            for(int i=0;i<tmp_button.size();i++){
+                menuHostGame.remove(tmp_button.get(i));
+            }
+            synchronized (this) {
+                stopHostingGame=true;
+            }
+
+            try {
+                this.server.serverSocketChannel.close();
+                Thread.sleep(1000);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            menuPlay.setVisible(true);
+            menuHostGame.setVisible(false);
+        });
 
         startGameButton.addActionListener(back -> {
 
 
         });
+
+        backFromJoinLobbyButton.addActionListener(back -> {
+            ipAddressGetTextField.setVisible(true);
+            nickNameTextFieldJoinMenu.setVisible(true);
+            joinGameButton.setVisible(true);
+            statusButton.setVisible(false);
+            menuPlay.setVisible(true);
+            menuJoinGame.setVisible(false);
+
+        });
+
+
+        changeNickNameHostButton.addActionListener(back -> {
+            tmp_button.get(0).setText(nickNameTextFieldHostMenu.getText());
+            menuHostGame.setVisible(false);
+            menuHostGame.setVisible(true);
+        });
+
+
+
 
         leaveButton.addActionListener(leaveGame -> System.exit(0));
 
