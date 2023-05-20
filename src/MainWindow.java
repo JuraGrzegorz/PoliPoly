@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
 import java.util.*;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
 public class MainWindow {
     private final JFrame window;
     private static final int BUTTONFONTSIZE = 16;
-
+    private static final int MAXAMOUNTOFPLAYERS = 4;
     Server server;
     Client client;
     boolean gameStarted;
@@ -34,6 +32,13 @@ public class MainWindow {
         gameStarted=false;
         stopHostingGame=false;
 
+        //localhost
+        InetAddress localhost;
+        try {
+            localhost = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
 
         // Dodanie JLabel z logo
         ImageIcon logo = new ImageIcon("assets/Polipoly.png");
@@ -41,59 +46,25 @@ public class MainWindow {
 
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         // Tworzenie przycisków menuEnter
-        JButton playButton = new JButton("Graj");
-        playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        playButton.setBackground(new Color(0x2dce98));
-        playButton.setForeground(Color.white);
-        playButton.setUI(new StyledButtonUI());
-        playButton.setPreferredSize(new Dimension(300, 50));
+        JButton playButton = standardButtonGenerate("Graj");
+        JButton creditsButton = standardButtonGenerate("Autorzy");
+        JButton leaveButton = standardButtonGenerate("Wyjdź");
+        JButton hostButton = standardButtonGenerate("Host");
+        JButton joinButton = standardButtonGenerate("Join");
+        JButton backButton = standardButtonGenerate("Wróć");
 
-        JButton creditsButton = new JButton("Autorzy");
-        creditsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        creditsButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        creditsButton.setBackground(new Color(0x2dce98));
-        creditsButton.setForeground(Color.white);
-        creditsButton.setUI(new StyledButtonUI());
-        creditsButton.setPreferredSize(new Dimension(300, 50));
+        //hostMenu
+        JButton startGameButton = standardButtonGenerate("Start Game!");
+        JButton ip_info = standardButtonGenerate("ip : "+localhost.getHostAddress());
+        JButton backFromHostLobbyButton = standardButtonGenerate("Wróć");
+        JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
 
-        JButton leaveButton = new JButton("Wyjdź");
-        leaveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        leaveButton.setBackground(new Color(0x2dce98));
-        leaveButton.setForeground(Color.white);
-        leaveButton.setUI(new StyledButtonUI());
-        leaveButton.setPreferredSize(new Dimension(300, 50));
-
-
-        // Tworzenie przycisków menuPlay
-        JButton hostButton = new JButton("Host");
-        hostButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hostButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        hostButton.setBackground(new Color(0x2dce98));
-        hostButton.setForeground(Color.white);
-        hostButton.setUI(new StyledButtonUI());
-        hostButton.setPreferredSize(new Dimension(300, 50));
-
-        JButton joinButton = new JButton("Join");
-        joinButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        joinButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        joinButton.setBackground(new Color(0x2dce98));
-        joinButton.setForeground(Color.white);
-        joinButton.setUI(new StyledButtonUI());
-        joinButton.setPreferredSize(new Dimension(300, 50));
-
-
-        JButton backButton = new JButton("Wróć");
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        backButton.setBackground(new Color(0x2dce98));
-        backButton.setForeground(Color.white);
-        backButton.setUI(new StyledButtonUI());
-        backButton.setPreferredSize(new Dimension(300, 50));
-
+        //joinMenu
+        JButton joinGameButton = standardButtonGenerate("Join Game");
+        JButton statusButton =standardButtonGenerate("Server nie istnieje!!");
+        statusButton.setVisible(false);
+        JButton backFromJoinLobbyButton =standardButtonGenerate("Wróć");
 
         //Panel Główny
         JPanel menuEnter = new JPanel();
@@ -121,54 +92,23 @@ public class MainWindow {
         menuPlay.add(backButton);
         menuPlay.add(Box.createVerticalGlue());
 
-
-
-        JButton startGameButton = new JButton("Star Game!");
-        startGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        startGameButton.setBackground(new Color(0x2dce98));
-        startGameButton.setForeground(Color.white);
-        startGameButton.setUI(new StyledButtonUI());
-        startGameButton.setPreferredSize(new Dimension(300, 50));
-
-
-        InetAddress localhost = null;
-        try {
-            localhost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-
-        JButton ip_info = new JButton("ip : "+localhost.getHostAddress());
-        ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ip_info.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        ip_info.setBackground(new Color(0x2dce98));
-        ip_info.setForeground(Color.white);
-        ip_info.setUI(new StyledButtonUI());
-        ip_info.setPreferredSize(new Dimension(300, 50));
-
-        JButton backFromHostLobbyButton = new JButton("Back!");
-        backFromHostLobbyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backFromHostLobbyButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        backFromHostLobbyButton.setBackground(new Color(0x2dce98));
-        backFromHostLobbyButton.setForeground(Color.white);
-        backFromHostLobbyButton.setUI(new StyledButtonUI());
-        backFromHostLobbyButton.setPreferredSize(new Dimension(300, 50));
-
-
-
+        //Panel Po wciśnięciu host
         JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
         nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
-
-
-        JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
-
 
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
         menuHostGame.add(Box.createVerticalGlue());
         menuHostGame.add(startGameButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
+
+        JPanel menuPlayersInLobby = new JPanel();
+        menuPlayersInLobby.setBackground(new Color(0, 0, 0, 128));
+        menuPlayersInLobby.add(Box.createVerticalGlue());
+        menuHostGame.add(menuPlayersInLobby);
+
+
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(ip_info);
         menuHostGame.add(Box.createVerticalStrut(10));
@@ -179,30 +119,12 @@ public class MainWindow {
         menuHostGame.add(backFromHostLobbyButton);
         menuHostGame.add(Box.createVerticalStrut(10));
 
-
-
-        JButton joinGameButton = new JButton("Join Game!");
-        joinGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        joinGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        joinGameButton.setBackground(new Color(0x2dce98));
-        joinGameButton.setForeground(Color.white);
-        joinGameButton.setUI(new StyledButtonUI());
-        joinGameButton.setPreferredSize(new Dimension(300, 50));
-
-
-
+        //Panel Po wciśnięciu join
         JTextField ipAddressGetTextField =new JTextField("192.168.18.14");
         ipAddressGetTextField.setMaximumSize(new Dimension(200, 1));
 
         JTextField nickNameTextFieldJoinMenu =new JTextField("Player");
         nickNameTextFieldJoinMenu.setMaximumSize(new Dimension(200, 1));
-
-        JButton statusButton =standardButtonGenerate("Server nie istnieje!!");
-        statusButton.setVisible(false);
-
-
-        JButton backFromJoinLobbyButton =standardButtonGenerate("Back!");
-        statusButton.setVisible(false);
 
         JPanel menuJoinGame = new JPanel();
         menuJoinGame.setOpaque(false);
@@ -240,9 +162,6 @@ public class MainWindow {
         menuJoinGame.setVisible(false);
         container.add(menuPlay);
 
-
-
-
         //akcje przycisków
         playButton.addActionListener(back -> {
             menuEnter.setVisible(false);
@@ -253,7 +172,6 @@ public class MainWindow {
             menuPlay.setVisible(false);
             menuEnter.setVisible(true);
         });
-
 
         List<JButton> tmp_button=new ArrayList<>();
         hostButton.addActionListener(back -> {
@@ -286,26 +204,29 @@ public class MainWindow {
                             break;
                         }
                     }
-                    Socket tmp_clientSock = null;
+                    Socket tmp_clientSock;
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         this.server.SetCommunicationParameters(tmp_clientSock);
 
 
-                        tmp_button.add(standardButtonGenerate(
-                                this.server.listOfSockets.get(this.server.listOfSockets.size()-1).intoServer.readLine()));
-                        menuHostGame.add(tmp_button.get(tmp_button.size()-1));
                         countOfPlayers++;
+                        tmp_button.add(standardButtonGenerate(
+                                this.server.listOfSockets.get(this.server.listOfSockets.size()-1).intoServer.readLine() + " " + countOfPlayers + "/4"));
+
+                        menuPlayersInLobby.add(Box.createVerticalStrut(10));
+                        menuPlayersInLobby.add(tmp_button.get(tmp_button.size()-1));
+
 
                         menuHostGame.setVisible(false);
                         menuHostGame.setVisible(true);
                         //dalsza komunikacja
 
-                        if(countOfPlayers==4){
+                        if(countOfPlayers == MAXAMOUNTOFPLAYERS){
                             break;
                         }
 
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
 
             });
@@ -317,7 +238,7 @@ public class MainWindow {
                     this.client.SetCommunicationParameters(this.client.clientSocket);
                     this.client.fromClient.println("HostOfGames");
                     break;
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
             }
         });
 
@@ -335,7 +256,6 @@ public class MainWindow {
         });
 
         joinGameButton.addActionListener(back -> {
-
             try {
                 this.client=new Client();
                 this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
@@ -398,11 +318,7 @@ public class MainWindow {
             menuHostGame.setVisible(true);
         });
 
-
-
-
         leaveButton.addActionListener(leaveGame -> System.exit(0));
-
 
         window = new JFrame();
         window.setTitle("PoliPoly");
@@ -412,7 +328,6 @@ public class MainWindow {
         window.add(container);
 
     }
-
     public void show() {
         window.setVisible(true);
 
