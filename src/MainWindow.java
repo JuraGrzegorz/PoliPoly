@@ -34,68 +34,18 @@ public class MainWindow {
         gameStarted=false;
         stopHostingGame=false;
 
-
-        // Dodanie JLabel z logo
         ImageIcon logo = new ImageIcon("assets/Polipoly.png");
         JLabel logoLabel = new JLabel(logo);
 
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JButton playButton=standardButtonGenerate("Graj");
+        JButton creditsButton = standardButtonGenerate("Autorzy");
+        JButton leaveButton = standardButtonGenerate("Wyjdź");
+        JButton hostButton = standardButtonGenerate("Host");
+        JButton joinButton = standardButtonGenerate("Join");
+        JButton backButton = standardButtonGenerate("Wróć");
 
-        // Tworzenie przycisków menuEnter
-        JButton playButton = new JButton("Graj");
-        playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        playButton.setBackground(new Color(0x2dce98));
-        playButton.setForeground(Color.white);
-        playButton.setUI(new StyledButtonUI());
-        playButton.setPreferredSize(new Dimension(300, 50));
-
-        JButton creditsButton = new JButton("Autorzy");
-        creditsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        creditsButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        creditsButton.setBackground(new Color(0x2dce98));
-        creditsButton.setForeground(Color.white);
-        creditsButton.setUI(new StyledButtonUI());
-        creditsButton.setPreferredSize(new Dimension(300, 50));
-
-        JButton leaveButton = new JButton("Wyjdź");
-        leaveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        leaveButton.setBackground(new Color(0x2dce98));
-        leaveButton.setForeground(Color.white);
-        leaveButton.setUI(new StyledButtonUI());
-        leaveButton.setPreferredSize(new Dimension(300, 50));
-
-
-        // Tworzenie przycisków menuPlay
-        JButton hostButton = new JButton("Host");
-        hostButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hostButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        hostButton.setBackground(new Color(0x2dce98));
-        hostButton.setForeground(Color.white);
-        hostButton.setUI(new StyledButtonUI());
-        hostButton.setPreferredSize(new Dimension(300, 50));
-
-        JButton joinButton = new JButton("Join");
-        joinButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        joinButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        joinButton.setBackground(new Color(0x2dce98));
-        joinButton.setForeground(Color.white);
-        joinButton.setUI(new StyledButtonUI());
-        joinButton.setPreferredSize(new Dimension(300, 50));
-
-
-        JButton backButton = new JButton("Wróć");
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        backButton.setBackground(new Color(0x2dce98));
-        backButton.setForeground(Color.white);
-        backButton.setUI(new StyledButtonUI());
-        backButton.setPreferredSize(new Dimension(300, 50));
-
-
-        //Panel Główny
         JPanel menuEnter = new JPanel();
         menuEnter.setOpaque(false);
 
@@ -108,7 +58,6 @@ public class MainWindow {
         menuEnter.add(leaveButton);
         menuEnter.add(Box.createVerticalGlue());
 
-        //Panel Po wciśnięciu graj
         JPanel menuPlay = new JPanel();
         menuPlay.setOpaque(false);
 
@@ -121,16 +70,7 @@ public class MainWindow {
         menuPlay.add(backButton);
         menuPlay.add(Box.createVerticalGlue());
 
-
-
-        JButton startGameButton = new JButton("Star Game!");
-        startGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        startGameButton.setBackground(new Color(0x2dce98));
-        startGameButton.setForeground(Color.white);
-        startGameButton.setUI(new StyledButtonUI());
-        startGameButton.setPreferredSize(new Dimension(300, 50));
-
+        JButton startGameButton = standardButtonGenerate("Start Game");
 
         InetAddress localhost = null;
         try {
@@ -139,31 +79,16 @@ public class MainWindow {
             throw new RuntimeException(e);
         }
 
-        JButton ip_info = new JButton("ip : "+localhost.getHostAddress());
-        ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ip_info.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        ip_info.setBackground(new Color(0x2dce98));
-        ip_info.setForeground(Color.white);
-        ip_info.setUI(new StyledButtonUI());
-        ip_info.setPreferredSize(new Dimension(300, 50));
 
-        JButton backFromHostLobbyButton = new JButton("Back!");
-        backFromHostLobbyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backFromHostLobbyButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        backFromHostLobbyButton.setBackground(new Color(0x2dce98));
-        backFromHostLobbyButton.setForeground(Color.white);
-        backFromHostLobbyButton.setUI(new StyledButtonUI());
-        backFromHostLobbyButton.setPreferredSize(new Dimension(300, 50));
-
-
+        JButton ip_info = standardButtonGenerate("ip : "+localhost.getHostAddress());
+        JButton backFromHostLobbyButton = standardButtonGenerate("Back");
 
         JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
         nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
 
-
         JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
 
-
+        
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
@@ -181,13 +106,7 @@ public class MainWindow {
 
 
 
-        JButton joinGameButton = new JButton("Join Game!");
-        joinGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        joinGameButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        joinGameButton.setBackground(new Color(0x2dce98));
-        joinGameButton.setForeground(Color.white);
-        joinGameButton.setUI(new StyledButtonUI());
-        joinGameButton.setPreferredSize(new Dimension(300, 50));
+        JButton joinGameButton = standardButtonGenerate("Join Game");
 
 
 
