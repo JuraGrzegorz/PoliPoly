@@ -88,7 +88,7 @@ public class MainWindow {
 
         JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
 
-        
+
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
