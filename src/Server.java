@@ -1,42 +1,38 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 class Communication{
-    PrintWriter fromServer;
-    BufferedReader  intoServer;
-
-    String playerNickName;
-
-    public Communication(PrintWriter fromServer,BufferedReader intoServer) {
-        this.fromServer=fromServer;
-        this.intoServer=intoServer;
+    Semaphore syncServerMainThread;
+    Semaphore syncServerWriteToClient;
+    String message;
+    String nickName;
+    public Communication() {
+        syncServerMainThread =new Semaphore(0);
+        syncServerWriteToClient=new Semaphore(0);
+        message="";
     }
-    public void SetNickName(String playerNickName){
-        this.playerNickName=playerNickName;
-    }
+
 }
 public class Server {
     public ServerSocket serverSocketChannel;
+    int state;
+    Semaphore syncJoiningPlayers;
+    List<Communication> listOfCommunication;
+    List<String>listPlayerNicknames;
 
-    List<Communication> listOfSockets;
     Server(){
-        listOfSockets=new ArrayList<>();
+        listOfCommunication =new ArrayList<>();
+        listPlayerNicknames=new ArrayList<>();
+        syncJoiningPlayers=new Semaphore(0);
     }
     void openSocket(int port) throws IOException {
         this.serverSocketChannel= new ServerSocket(port);
-        System.out.println("Serwer nasłuchuje na porcie " + port);
     }
-    void SetCommunicationParameters(Socket clientSocket) throws IOException {
-        if(clientSocket==null){
-            return;
-        }
-        listOfSockets.add(new Communication(new PrintWriter(clientSocket.getOutputStream(), true)
-                ,new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))));
+    void addSemaphore(){
+        Communication tmp=new Communication();
+        listOfCommunication.add(tmp);
     }
 }
