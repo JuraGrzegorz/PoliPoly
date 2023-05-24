@@ -8,10 +8,12 @@ public class ClientReadFromServer extends Thread{
     private BufferedReader intoClient;
     List<JButton> listButtons;
     JPanel menuJoinGame;
-    public ClientReadFromServer(BufferedReader intoClient,List<JButton> listButtons,JPanel menuJoinGame) {
+    JButton statusButton;
+    public ClientReadFromServer(BufferedReader intoClient,List<JButton> listButtons,JPanel menuJoinGame,JButton statusButton) {
         this.intoClient=intoClient;
         this.listButtons=listButtons;
         this.menuJoinGame=menuJoinGame;
+        this.statusButton=statusButton;
     }
 
     public void run() {
@@ -27,15 +29,33 @@ public class ClientReadFromServer extends Thread{
                         listButtons.add(standardButtonGenerate(UsersNicks));
                         menuJoinGame.add(listButtons.get(listButtons.size()-1));
                     }
-
                     menuJoinGame.setVisible(false);
                     menuJoinGame.setVisible(true);
                 }
 
                 if(message.startsWith("ConfirmQuit")){
-                    System.out.print("KONIEC CLIENT");
                     return;
                 }
+                if(message.startsWith("PlayerDisconnect:")){
+                    String[] tmp=message.split(":");
+
+                    for(int i=0;i<listButtons.size();i++){
+                        System.out.print(listButtons.get(i).getText()+ " "+tmp[1]+"\n");
+                        if(listButtons.get(i).getText().equals(tmp[1])){
+                            menuJoinGame.remove(listButtons.get(i));
+                            listButtons.remove(i);
+                            break;
+                        }
+                    }
+                    menuJoinGame.setVisible(false);
+                    menuJoinGame.setVisible(true);
+                }
+                if(message.equals("nickNameTaken")){
+                    statusButton.setText("Nick został zajety !!");
+                    menuJoinGame.setVisible(false);
+                    menuJoinGame.setVisible(true);
+                }
+                /*System.out.print(message);*/
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

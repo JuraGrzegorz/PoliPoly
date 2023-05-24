@@ -21,7 +21,7 @@ public class ServerMainThread extends Thread{
                     server.syncJoiningPlayers.acquire();
 
                     for(Communication val : server.listOfCommunication){
-                        System.out.print(val.message+"\n");
+
                         if(val.message.startsWith("setNickname:")){
                             String nickName = val.message.substring(12);
                             if(server.listPlayerNicknames.contains(nickName)){
@@ -50,7 +50,11 @@ public class ServerMainThread extends Thread{
                             val.syncServerWriteToClient.release();
                         }
                         if(val.message.startsWith("Quit")){
-
+                            for(int i=0;i<server.listPlayerNicknames.size();i++){
+                                if(server.listPlayerNicknames.get(i)==val.nickName){
+                                    server.listPlayerNicknames.remove(i);
+                                }
+                            }
                             for(int i=0;i<listButtons.size();i++){
                                 if(listButtons.get(i).getText()==val.nickName){
                                     menuHostGame.remove(listButtons.get(i));
@@ -64,6 +68,11 @@ public class ServerMainThread extends Thread{
                                     server.listOfCommunication.get(i).syncServerWriteToClient.release();
                                     server.listOfCommunication.remove(i);
                                 }
+                            }
+                            System.out.print(server.listOfCommunication.size());
+                            for(Communication SendDisPlayer:server.listOfCommunication){
+                                SendDisPlayer.message="PlayerDisconnect:"+val.nickName;
+                                SendDisPlayer.syncServerWriteToClient.release();
                             }
                             menuHostGame.setVisible(false);
                             menuHostGame.setVisible(true);

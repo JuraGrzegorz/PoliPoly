@@ -16,6 +16,7 @@ public class ServerWriteTOClient extends Thread{
             try {
                 communication.syncServerWriteToClient.acquire();
                 fromServer.println(communication.message);
+                communication.message="";
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
