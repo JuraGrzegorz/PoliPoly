@@ -19,11 +19,11 @@ public class ServerMainThread extends Thread{
             if(server.state==0){
                 try {
                     server.syncJoiningPlayers.acquire();
-
+                    int index=0;
                     for(Communication val : server.listOfCommunication){
 
                         if(val.message.startsWith("setNickname:")){
-                            String nickName = val.message.substring(12);
+                            String nickName = val.message.substring(("setNickname:").length());
                             if(server.listPlayerNicknames.contains(nickName)){
                                 val.message="nickNameTaken";
                             }else{
@@ -79,6 +79,26 @@ public class ServerMainThread extends Thread{
                             break;
                         }
 
+                        if(val.message.startsWith("changeNickname:")){
+                            String nickName = val.message.substring(("changeNickname:").length());
+                            if(server.listPlayerNicknames.contains(nickName)){
+                                val.message="nickNameTaken";
+                            }else{
+                                val.message="ConfirmChangeNickname:"+val.nickName+':';
+                                val.nickName=nickName;
+                                val.message+=nickName;
+                                server.listPlayerNicknames.set(index,nickName);
+                                listButtons.get(index).setText(nickName);
+                                for(int i=0;i<server.listOfCommunication.size();i++){
+                                    server.listOfCommunication.get(i).message=val.message;
+                                    server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                                }
+                                menuHostGame.setVisible(false);
+                                menuHostGame.setVisible(true);
+
+                            }
+                        }
+                        index++;
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

@@ -87,11 +87,15 @@ public class MainWindow {
 
         JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
 
+        JButton hostStatusButton =standardButtonGenerate("status!");
+        hostStatusButton.setVisible(false);
 
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
         menuHostGame.add(Box.createVerticalGlue());
+        menuHostGame.add(hostStatusButton);
+        menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(startGameButton);
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(ip_info);
@@ -121,6 +125,8 @@ public class MainWindow {
 
         JButton backFromJoinLobbyButton =standardButtonGenerate("Back!");
         statusButton.setVisible(false);
+        JButton changeNickNameJoinButton =standardButtonGenerate("Zmień!");
+        changeNickNameJoinButton.setVisible(false);
 
         JPanel menuJoinGame = new JPanel();
         menuJoinGame.setOpaque(false);
@@ -129,6 +135,8 @@ public class MainWindow {
         menuJoinGame.add(joinGameButton);
         menuHostGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(nickNameTextFieldJoinMenu);
+        menuJoinGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(changeNickNameJoinButton);
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(ipAddressGetTextField);
         menuJoinGame.add(Box.createVerticalStrut(10));
@@ -221,6 +229,21 @@ public class MainWindow {
             });
             ThreadWaitingForPlayers.start();
 
+            while (true){
+                try {
+                    this.client=new Client();
+                    this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
+                    this.client.SetCommunicationParameters(this.client.clientSocket);
+
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuHostGame,hostStatusButton,true,nickNameTextFieldHostMenu);
+                    clientReadFromServer.start();
+
+                    this.client.fromClient.println("setNickname:"+nickNameTextFieldHostMenu.getText());
+
+                    break;
+                } catch (IOException e) {}
+            }
+
         });
 
         startGameButton.addActionListener(back -> {
@@ -242,17 +265,15 @@ public class MainWindow {
                 this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton);
+                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
                 clientReadFromServer.start();
 
                 this.client.fromClient.println("setNickname:"+nickNameTextFieldJoinMenu.getText());
 
-                statusButton.setText("waiting for start game!");
-
                 ipAddressGetTextField.setVisible(false);
                 /*nickNameTextFieldJoinMenu.setVisible(false);*/
                 joinGameButton.setVisible(false);
-                statusButton.setVisible(true);
+                changeNickNameJoinButton.setVisible(true);
 
             } catch (IOException e) {
                 statusButton.setVisible(true);
@@ -280,6 +301,9 @@ public class MainWindow {
             menuHostGame.setVisible(false);*/
         });
 
+        changeNickNameJoinButton.addActionListener(back -> {
+            this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText());
+        });
 
         backFromJoinLobbyButton.addActionListener(back -> {
             this.client.fromClient.println("Quit");
@@ -298,9 +322,7 @@ public class MainWindow {
 
 
         changeNickNameHostButton.addActionListener(back -> {
-            /*listButtons.get(0).setText(nickNameTextFieldHostMenu.getText());
-            menuHostGame.setVisible(false);
-            menuHostGame.setVisible(true);*/
+            this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText());
         });
 
 
