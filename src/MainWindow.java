@@ -309,7 +309,7 @@ public class MainWindow {
             try{
                 this.client.fromClient.println("Quit");
             }catch (NullPointerException error){}
-            
+
             /*System.out.print("quit\n");*/
             for(int i=0;i<listButtons.size();i++){
                 menuJoinGame.remove(listButtons.get(i));
