@@ -306,7 +306,10 @@ public class MainWindow {
         });
 
         backFromJoinLobbyButton.addActionListener(back -> {
-            this.client.fromClient.println("Quit");
+            try{
+                this.client.fromClient.println("Quit");
+            }catch (NullPointerException error){}
+            
             /*System.out.print("quit\n");*/
             for(int i=0;i<listButtons.size();i++){
                 menuJoinGame.remove(listButtons.get(i));
@@ -317,6 +320,7 @@ public class MainWindow {
             statusButton.setVisible(false);
             menuPlay.setVisible(true);
             menuJoinGame.setVisible(false);
+            changeNickNameJoinButton.setVisible(false);
 
         });
 
