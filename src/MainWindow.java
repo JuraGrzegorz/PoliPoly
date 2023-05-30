@@ -262,7 +262,7 @@ public class MainWindow {
 
             try {
                 this.client=new Client();
-                this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
+                this.client.ClientConnect("localhost",8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
                 ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
