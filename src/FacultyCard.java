@@ -1,20 +1,20 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class FacultyCard {
 
-    private String frameTitle;
+//    private String frameTitle;
     private JFrame gameFrame;
     private JPanel uponPanel;
     private JPanel namePanel;
     private JPanel[] pawnPanel;
     private JPanel[] housePanel;
 
-    public FacultyCard(){}
-
-    public FacultyCard(String frameTitle){
-        this.frameTitle = frameTitle;
+    public FacultyCard(){
         gameFrame = new JFrame();
         uponPanel = new JPanel(new GridBagLayout());
         namePanel = new JPanel(new GridBagLayout());
@@ -34,6 +34,11 @@ public class FacultyCard {
 
         makeGameFrame();
     }
+
+//    public FacultyCard(String frameTitle){
+//        this.frameTitle = frameTitle;
+//
+//    }
 
     private void makeGameFrame(){
         gameFrame.setLayout(null);
@@ -94,40 +99,48 @@ public class FacultyCard {
         namePanel.setBackground(Color.WHITE);
         namePanel.add(nameLabel,constraints);
     }
-    private void makePawnPanel(){
-        Rectangle pawnRectangle0 = new Rectangle(90,190,80,80);
-        pawnPanel[0].setBounds(pawnRectangle0);
-        pawnPanel[0].setBackground(Color.WHITE);
-        JLabel pawnLabel0 = new JLabel("PIO1");
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        pawnPanel[0].setBorder(border);
-        pawnPanel[0].add(pawnLabel0);
+    private void makePawnPanel() {
+        for (int i = 0; i < 4; i++) {
+            pawnPanel[i].setBounds(90 + i % 2 * 120, 190 + i / 2 * 120, 80, 80);
+            pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
-        Rectangle pawnRectangle1 = new Rectangle(210,190,80,80);
-        pawnPanel[1].setBounds(pawnRectangle1);
-        pawnPanel[1].setBackground(Color.WHITE);
-        JLabel pawnLabel1 = new JLabel("PIO2");
-        pawnPanel[1].setBorder(border);
-        pawnPanel[1].add(pawnLabel1);
+            try {
+                File pawnImageFile = new File("C:\\Users\\HP\\Desktop\\4.png");
+                Image pawnImage = ImageIO.read(pawnImageFile);
 
-        Rectangle pawnRectangle2 = new Rectangle(90,310,80,80);
-        pawnPanel[2].setBounds(pawnRectangle2);
-        pawnPanel[2].setBackground(Color.WHITE);
-        JLabel pawnLabel2 = new JLabel("PIO3");
-        pawnPanel[2].setBorder(border);
-        pawnPanel[2].add(pawnLabel2);
+                // Scale the pawn image to a larger size
+                int scaledWidth = 60;
+                int scaledHeight = 60;
+                Image scaledPawnImage = pawnImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
-        Rectangle pawnRectangle3 = new Rectangle(210,310,80,80);
-        pawnPanel[3].setBounds(pawnRectangle3);
-        pawnPanel[3].setBackground(Color.WHITE);
-        JLabel pawnLabel3 = new JLabel("PIO4");
-        pawnPanel[3].setBorder(border);
-        pawnPanel[3].add(pawnLabel3);
+                // Create a custom JPanel to display the pawn graphic
+                JPanel pawnImagePanel = new JPanel() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        // Draw the scaled pawn image with transparency
+                        g.drawImage(scaledPawnImage, 10, 10, null);
+                    }
+                };
+                pawnImagePanel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
+                pawnImagePanel.setOpaque(false); // Make pawnImagePanel transparent
+
+                // Add the pawnImagePanel to the pawnPanel
+                pawnPanel[i].add(pawnImagePanel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            JLabel pawnLabel = new JLabel();
+//            Border border = BorderFactory.createLineBorder(Color.BLACK);
+//            pawnPanel[i].setBorder(border);
+            pawnPanel[i].add(pawnLabel);
+        }
     }
     private void makeHousePanel(){
         Rectangle houseRectangle0 = new Rectangle(10,450,100,100);
         housePanel[0].setBounds(houseRectangle0);
-        housePanel[0].setBackground(Color.WHITE);
+        housePanel[0].setBackground(Color.lightGray);
         JLabel houseLabel0 = new JLabel("D1");
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         housePanel[0].setBorder(border);
@@ -135,14 +148,14 @@ public class FacultyCard {
 
         Rectangle houseRectangle1 = new Rectangle(140,450,100,100);
         housePanel[1].setBounds(houseRectangle1);
-        housePanel[1].setBackground(Color.WHITE);
+        housePanel[1].setBackground(Color.lightGray);
         JLabel houseLabel1 = new JLabel("D2");
         housePanel[1].setBorder(border);
         housePanel[1].add(houseLabel1);
 
         Rectangle houseRectangle2 = new Rectangle(270,450,100,100);
         housePanel[2].setBounds(houseRectangle2);
-        housePanel[2].setBackground(Color.WHITE);
+        housePanel[2].setBackground(Color.lightGray);
         JLabel houseLabel2 = new JLabel("D3");
         housePanel[2].setBorder(border);
         housePanel[2].add(houseLabel2);
