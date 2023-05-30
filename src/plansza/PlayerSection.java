@@ -1,7 +1,11 @@
 package plansza;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PlayerSection {
     private int gameFrameX;
@@ -15,7 +19,7 @@ public class PlayerSection {
 
     public PlayerSection(){}
 
-    public PlayerSection(int x, int y, String title){
+    public PlayerSection(int x, int y, String title) throws IOException {
         this.gameFrameX = x;
         this.gameFrameY = y;
         this.gameFrameTitle = title;
@@ -47,39 +51,39 @@ public class PlayerSection {
         gameFrame.setResizable(false);
     }
 
-    public void generateCardsPanel(JPanel cardsPanel){
-        Rectangle cardsPanelRectangle = new Rectangle(25, 340, 935, 600);
+    public void generateCardsPanel(JPanel cardsPanel) throws IOException {
+        Rectangle cardsPanelRectangle = new Rectangle(25, 340, 725, 630);
         cardsPanel.setBounds(cardsPanelRectangle);
-        JLabel cardsPanelLabel = new JLabel("Posiadane karty:");
-        cardsPanelLabel.setFont(new Font("Times New Roman", Font.BOLD, 25));
-        cardsPanel.add(cardsPanelLabel);
-        cardsPanel.setBackground(Color.green);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\karciochy.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        cardsPanel.add(picLabel);
+//        cardsPanel.setBackground(Color.CYAN);
     }
 
-    public void generateCashPanel(JPanel cashPanel) {
-        Rectangle cashPanelRectangle = new Rectangle(660, 210, 300, 110);
+    public void generateCashPanel(JPanel cashPanel) throws IOException {
+        Rectangle cashPanelRectangle = new Rectangle(450, 25, 300, 50);
         cashPanel.setBounds(cashPanelRectangle);
-        JLabel cashPanelLabel = new JLabel("Fundusze:");
-        cashPanelLabel.setFont(new Font("Times New Roman", Font.BOLD, 25));
-        cashPanel.add(cashPanelLabel);
-        cashPanel.setBackground(Color.YELLOW);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\manymanymany.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        cashPanel.add(picLabel);
+//        cashPanel.setBackground(Color.CYAN);
     }
 
-    private void generatePlayerTurnPanel(JPanel playerTurnPanel) {
-        Rectangle playerTurnPanelRectangle = new Rectangle(25, 25, 610, 50);
+    private void generatePlayerTurnPanel(JPanel playerTurnPanel) throws IOException {
+        Rectangle playerTurnPanelRectangle = new Rectangle(25, 25, 400, 50);
         playerTurnPanel.setBounds(playerTurnPanelRectangle);
-        JLabel playerTurnPanelLabel = new JLabel("Tura gracza:");
-        playerTurnPanelLabel.setFont(new Font("Times New Roman", Font.BOLD, 25));
-        playerTurnPanel.add(playerTurnPanelLabel);
-        playerTurnPanel.setBackground(Color.CYAN);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\turagracz.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        playerTurnPanel.add(picLabel);
+//        playerTurnPanel.setBackground(Color.CYAN);
     }
 
-    private void generateMouseHoverInfoPanel(JPanel mouseHoverInfoPanel) {
-        Rectangle mouseHoverInfoPanelRectangle = new Rectangle(25, 100, 610, 220);
+    private void generateMouseHoverInfoPanel(JPanel mouseHoverInfoPanel) throws IOException {
+        Rectangle mouseHoverInfoPanelRectangle = new Rectangle(25, 100, 725, 220);
         mouseHoverInfoPanel.setBounds(mouseHoverInfoPanelRectangle);
-        JLabel mouseHoverInfoPanelLabel = new JLabel("<html>*tu sie wyswitli info jak najedziesz<br/>na cos na planszy np. karte - wlasciciel itd.*</html>");
-        mouseHoverInfoPanelLabel.setFont(new Font("Times New Roman", Font.BOLD, 25));
-        mouseHoverInfoPanel.add(mouseHoverInfoPanelLabel);
-        mouseHoverInfoPanel.setBackground(Color.GRAY);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\info.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        mouseHoverInfoPanel.add(picLabel);
+//        mouseHoverInfoPanel.setBackground(Color.CYAN);
     }
 }
