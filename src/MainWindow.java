@@ -263,15 +263,10 @@ public class MainWindow {
                 this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
+                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu,ipAddressGetTextField,joinGameButton,changeNickNameJoinButton);
                 clientReadFromServer.start();
 
                 this.client.fromClient.println("setNickname:"+nickNameTextFieldJoinMenu.getText());
-
-                ipAddressGetTextField.setVisible(false);
-                /*nickNameTextFieldJoinMenu.setVisible(false);*/
-                joinGameButton.setVisible(false);
-                changeNickNameJoinButton.setVisible(true);
 
             } catch (IOException e) {
                 statusButton.setVisible(true);
@@ -280,7 +275,7 @@ public class MainWindow {
         });
 
         backFromHostLobbyButton.addActionListener(back -> {
-            /*System.out.print(this.server.listOfSockets.size());
+            /*
 
             for(int i=0;i<tmp_button.size();i++){
                 menuHostGame.remove(tmp_button.get(i));

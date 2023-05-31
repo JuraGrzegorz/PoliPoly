@@ -13,6 +13,20 @@ public class ClientReadFromServer extends Thread{
     Boolean isLocalUser;
 
     JTextField nickNameFiled;
+    JTextField ipAddressGetTextField;
+    JButton joinGameButton;
+    JButton changeNickNameJoinButton;
+    public ClientReadFromServer(BufferedReader intoClient,List<JButton> listButtons,JPanel menuJoinGame,JButton statusButton, Boolean isLocalUser,JTextField nickNameFiled, JTextField ipAddressGetTextField,JButton joinGameButton,JButton changeNickNameJoinButton) {
+        this.intoClient=intoClient;
+        this.listButtons=listButtons;
+        this.menuJoinGame=menuJoinGame;
+        this.statusButton=statusButton;
+        this.isLocalUser=isLocalUser;
+        this.nickNameFiled=nickNameFiled;
+        this.ipAddressGetTextField=ipAddressGetTextField;
+        this.joinGameButton=joinGameButton;
+        this.changeNickNameJoinButton=changeNickNameJoinButton;
+    }
     public ClientReadFromServer(BufferedReader intoClient,List<JButton> listButtons,JPanel menuJoinGame,JButton statusButton, Boolean isLocalUser,JTextField nickNameFiled) {
         this.intoClient=intoClient;
         this.listButtons=listButtons;
@@ -35,6 +49,12 @@ public class ClientReadFromServer extends Thread{
                         listButtons.add(standardButtonGenerate(UsersNicks));
                         menuJoinGame.add(listButtons.get(listButtons.size()-1));
                     }
+                    if(!isLocalUser){
+                        statusButton.setVisible(false);
+                        changeNickNameJoinButton.setVisible(true);
+                        joinGameButton.setVisible(false);
+                        ipAddressGetTextField.setVisible(false);
+                    }
 
                     menuJoinGame.setVisible(false);
                     menuJoinGame.setVisible(true);
@@ -44,7 +64,7 @@ public class ClientReadFromServer extends Thread{
                     String[] tmp=message.split(":");
 
                     for(int i=0;i<listButtons.size();i++){
-                        System.out.print(listButtons.get(i).getText()+ " "+tmp[1]+"\n");
+
                         if(listButtons.get(i).getText().equals(tmp[1])){
                             menuJoinGame.remove(listButtons.get(i));
                             listButtons.remove(i);
@@ -70,17 +90,17 @@ public class ClientReadFromServer extends Thread{
                     menuJoinGame.setVisible(true);
                 }
 
+                if(message.equals("nickNameTakenChanging")){
+                    statusButton.setText("Nick został zajety !!");
+                    statusButton.setVisible(true);
+                    menuJoinGame.setVisible(false);
+                    menuJoinGame.setVisible(true);
+                }
                 if(message.equals("nickNameTaken")){
                     statusButton.setText("Nick został zajety !!");
-                    if(listButtons.size()==0){
-                        statusButton.setVisible(true);
-
-                    }else{
-                        statusButton.setVisible(true);
-                        menuJoinGame.setVisible(false);
-                        menuJoinGame.setVisible(true);
-                    }
-
+                    statusButton.setVisible(true);
+                    menuJoinGame.setVisible(false);
+                    menuJoinGame.setVisible(true);
                 }
 
                 if(message.startsWith("ConfirmQuit")){
