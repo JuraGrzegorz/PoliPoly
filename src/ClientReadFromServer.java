@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ClientReadFromServer extends Thread{
-    private BufferedReader intoClient;
+    private final BufferedReader intoClient;
     List<JButton> listButtons;
     JPanel menuJoinGame;
     JButton statusButton;
@@ -65,9 +65,9 @@ public class ClientReadFromServer extends Thread{
                     if(message.startsWith("ConfirmChangeNickname:")){
                         message = message.substring(("ConfirmChangeNickname:").length());
                         String[] tmp=message.split(":");
-                        for(int i=0;i<listButtons.size();i++){
-                            if(listButtons.get(i).getText().equals(tmp[0])){
-                                listButtons.get(i).setText(tmp[1]);
+                        for (JButton listButton : listButtons) {
+                            if (listButton.getText().equals(tmp[0])) {
+                                listButton.setText(tmp[1]);
                                 break;
                             }
                         }

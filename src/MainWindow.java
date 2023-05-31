@@ -1,6 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -71,7 +71,7 @@ public class MainWindow {
 
         JButton startGameButton = standardButtonGenerate("Start Game");
 
-        InetAddress localhost = null;
+        InetAddress localhost;
         try {
             localhost = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
@@ -79,33 +79,92 @@ public class MainWindow {
         }
 
 
-        JButton ip_info = standardButtonGenerate("ip : "+localhost.getHostAddress());
+
+        JLabel ip_info = new JLabel();
+        ip_info.setText("ip : "+localhost.getHostAddress());
+        ip_info.setFont(new Font("Calibri", Font.BOLD, 20));
+        ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+
+
         JButton backFromHostLobbyButton = standardButtonGenerate("Back");
 
         JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
         nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
 
-        JButton changeNickNameHostButton =standardButtonGenerate("Zmień!");
 
-        JButton hostStatusButton =standardButtonGenerate("status!");
+        JButton changeNickNameHostButton = new JButton("Zmień");
+        changeNickNameHostButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        changeNickNameHostButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        changeNickNameHostButton.setBackground(new Color(0x2dce98));
+        changeNickNameHostButton.setForeground(Color.white);
+        changeNickNameHostButton.setUI(new StyledSmallerButtonUI());
+        changeNickNameHostButton.setPreferredSize(new Dimension(5, 3));
+
+
+
+        JButton hostStatusButton = new JButton("status");
+        hostStatusButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        hostStatusButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        hostStatusButton.setBackground(new Color(0x2dce98));
+        hostStatusButton.setForeground(Color.white);
+        hostStatusButton.setUI(new StyledSmallerButtonUI());
+        hostStatusButton.setPreferredSize(new Dimension(5, 3));
+
+
+
+
         hostStatusButton.setVisible(false);
 
         JPanel menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
         menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
-        menuHostGame.add(Box.createVerticalGlue());
-        menuHostGame.add(hostStatusButton);
+
+        JPanel hostNickPanel = new JPanel();
+        hostNickPanel.setOpaque(false);
+        hostNickPanel.setLayout(new BoxLayout(hostNickPanel, BoxLayout.X_AXIS));
+        hostNickPanel.add(nickNameTextFieldHostMenu);
+        nickNameTextFieldHostMenu.setPreferredSize(new Dimension(150, 30));
+        menuHostGame.add(Box.createHorizontalStrut(2));
+        changeNickNameHostButton.setBorder(new EmptyBorder(3, 5, 3, 5));
+        hostNickPanel.add(changeNickNameHostButton);
+        menuHostGame.add(Box.createHorizontalStrut(2));
+        hostNickPanel.add(hostStatusButton);
+
+
+
+
+        menuHostGame.add(Box.createHorizontalGlue());
+        menuHostGame.add(Box.createVerticalStrut(5));
+        menuHostGame.add(ip_info);
+        menuHostGame.add(Box.createVerticalStrut(30));
+
+        menuHostGame.add(hostNickPanel);
+
+
+
+
+
+        menuHostGame.add(Box.createVerticalStrut(10));
+
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(startGameButton);
+
+
+        menuHostGame.add(Box.createVerticalGlue());
         menuHostGame.add(Box.createVerticalStrut(10));
-        menuHostGame.add(ip_info);
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuHostGame.add(nickNameTextFieldHostMenu);
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuHostGame.add(changeNickNameHostButton);
+
+        menuHostGame.add(Box.createHorizontalGlue());
+
+
+
+        menuHostGame.add(Box.createVerticalGlue());
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(backFromHostLobbyButton);
         menuHostGame.add(Box.createVerticalStrut(10));
+
+
 
 
 
@@ -125,7 +184,11 @@ public class MainWindow {
 
         JButton backFromJoinLobbyButton =standardButtonGenerate("Back!");
         statusButton.setVisible(false);
+
         JButton changeNickNameJoinButton =standardButtonGenerate("Zmień!");
+
+
+
         changeNickNameJoinButton.setVisible(false);
 
         JPanel menuJoinGame = new JPanel();
@@ -212,7 +275,7 @@ public class MainWindow {
                             break;
                         }
                     }
-                    Socket tmp_clientSock = null;
+                    Socket tmp_clientSock;
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         server.addSemaphore();
@@ -223,7 +286,7 @@ public class MainWindow {
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
                         serverWriteThread.start();
 
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
 
             });
@@ -241,7 +304,7 @@ public class MainWindow {
                     this.client.fromClient.println("setNickname:"+nickNameTextFieldHostMenu.getText());
 
                     break;
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
             }
 
         });
@@ -250,7 +313,7 @@ public class MainWindow {
             synchronized (this) {
                 gameStarted=true;
             }
-           /* Collections.shuffle(server.listOfSockets);*/
+            /* Collections.shuffle(server.listOfSockets);*/
         });
 
         joinButton.addActionListener(back -> {
@@ -301,18 +364,16 @@ public class MainWindow {
             menuHostGame.setVisible(false);*/
         });
 
-        changeNickNameJoinButton.addActionListener(back -> {
-            this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText());
-        });
+        changeNickNameJoinButton.addActionListener(back -> this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText()));
 
         backFromJoinLobbyButton.addActionListener(back -> {
             try{
                 this.client.fromClient.println("Quit");
-            }catch (NullPointerException error){}
+            }catch (NullPointerException ignored){}
 
             /*System.out.print("quit\n");*/
-            for(int i=0;i<listButtons.size();i++){
-                menuJoinGame.remove(listButtons.get(i));
+            for (JButton listButton : listButtons) {
+                menuJoinGame.remove(listButton);
             }
             ipAddressGetTextField.setVisible(true);
             nickNameTextFieldJoinMenu.setVisible(true);
@@ -325,9 +386,7 @@ public class MainWindow {
         });
 
 
-        changeNickNameHostButton.addActionListener(back -> {
-            this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText());
-        });
+        changeNickNameHostButton.addActionListener(back -> this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText()));
 
 
 
@@ -338,7 +397,8 @@ public class MainWindow {
         window = new JFrame();
         window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(800, 500);
+        window.setSize(800, 600);
+        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.add(container);
 
