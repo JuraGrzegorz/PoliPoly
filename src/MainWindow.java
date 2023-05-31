@@ -202,13 +202,12 @@ public class MainWindow {
                     throw new RuntimeException(e);
                 }
 
-                ServerMainThread serverMainThread=new ServerMainThread(server,listButtons,menuHostGame);
+                ServerMainThread serverMainThread=new ServerMainThread(server);
                 serverMainThread.start();
                 while (true){
 
                     synchronized (this) {
                         if(gameStarted || stopHostingGame){
-                            System.out.print("STOP HOSTING\n");
                             break;
                         }
                     }
@@ -216,7 +215,6 @@ public class MainWindow {
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         server.addSemaphore();
-                        /*System.out.print(this.server.listOfCommunication.size());*/
                         Communication tmp_Comm=this.server.listOfCommunication.get(this.server.listOfCommunication.size()-1);
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
@@ -265,15 +263,10 @@ public class MainWindow {
                 this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
+                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu,ipAddressGetTextField,joinGameButton,changeNickNameJoinButton);
                 clientReadFromServer.start();
 
                 this.client.fromClient.println("setNickname:"+nickNameTextFieldJoinMenu.getText());
-
-                ipAddressGetTextField.setVisible(false);
-                /*nickNameTextFieldJoinMenu.setVisible(false);*/
-                joinGameButton.setVisible(false);
-                changeNickNameJoinButton.setVisible(true);
 
             } catch (IOException e) {
                 statusButton.setVisible(true);
@@ -282,7 +275,7 @@ public class MainWindow {
         });
 
         backFromHostLobbyButton.addActionListener(back -> {
-            /*System.out.print(this.server.listOfSockets.size());
+            /*
 
             for(int i=0;i<tmp_button.size();i++){
                 menuHostGame.remove(tmp_button.get(i));
@@ -310,7 +303,7 @@ public class MainWindow {
                 this.client.fromClient.println("Quit");
             }catch (NullPointerException error){}
 
-            /*System.out.print("quit\n");*/
+
             for(int i=0;i<listButtons.size();i++){
                 menuJoinGame.remove(listButtons.get(i));
             }

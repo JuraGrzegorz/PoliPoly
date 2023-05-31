@@ -5,13 +5,9 @@ import java.util.List;
 
 public class ServerMainThread extends Thread{
     private Server server;
-    List<JButton> listButtons;
-    JPanel menuHostGame;
 
-    ServerMainThread(Server server,List<JButton> listButtons,JPanel menuHostGame){
+    ServerMainThread(Server server){
         this.server=server;
-        this.listButtons=listButtons;
-        this.menuHostGame=menuHostGame;
     }
     public void run() {
 
@@ -19,86 +15,23 @@ public class ServerMainThread extends Thread{
             if(server.state==0){
                 try {
                     server.syncJoiningPlayers.acquire();
-                    int index=0;
+
                     for(Communication val : server.listOfCommunication){
 
                         if(val.message.startsWith("setNickname:")){
-                            String nickName = val.message.substring(("setNickname:").length());
-                            if(server.listPlayerNicknames.contains(nickName)){
-                                val.message="nickNameTaken";
-                            }else{
-                                val.nickName=nickName;
-                                server.listPlayerNicknames.add(nickName);
-                                listButtons.add(standardButtonGenerate(nickName));
-
-
-                                val.message="JoiningLobby:";
-                                for(String str:server.listPlayerNicknames){
-                                       val.message+=str+",";
-                                }
-
-
-                                menuHostGame.add(listButtons.get(listButtons.size()-1));
-                                menuHostGame.setVisible(false);
-                                menuHostGame.setVisible(true);
-
-                                for(int i=0;i<server.listOfCommunication.size()-1;i++){
-                                    server.listOfCommunication.get(i).message="JoiningLobby:"+nickName+",";
-                                    server.listOfCommunication.get(i).syncServerWriteToClient.release();
-                                }
-                            }
-                            val.syncServerWriteToClient.release();
+                            setNickNameCommand(val);
+                            break;
                         }
+
                         if(val.message.startsWith("Quit")){
-                            for(int i=0;i<server.listPlayerNicknames.size();i++){
-                                if(server.listPlayerNicknames.get(i)==val.nickName){
-                                    server.listPlayerNicknames.remove(i);
-                                }
-                            }
-                            for(int i=0;i<listButtons.size();i++){
-                                if(listButtons.get(i).getText()==val.nickName){
-                                    menuHostGame.remove(listButtons.get(i));
-                                    listButtons.remove(i);
-                                }
-                            }
-                            for(int i=0;i<server.listOfCommunication.size();i++){
-                                if(server.listOfCommunication.get(i).nickName==val.nickName){
-                                    //wylaczenie watkow !!
-                                    server.listOfCommunication.get(i).message="ConfirmQuit";
-                                    server.listOfCommunication.get(i).syncServerWriteToClient.release();
-                                    server.listOfCommunication.remove(i);
-                                }
-                            }
-                            System.out.print(server.listOfCommunication.size());
-                            for(Communication SendDisPlayer:server.listOfCommunication){
-                                SendDisPlayer.message="PlayerDisconnect:"+val.nickName;
-                                SendDisPlayer.syncServerWriteToClient.release();
-                            }
-                            menuHostGame.setVisible(false);
-                            menuHostGame.setVisible(true);
+                            quitCommand(val);
                             break;
                         }
 
                         if(val.message.startsWith("changeNickname:")){
-                            String nickName = val.message.substring(("changeNickname:").length());
-                            if(server.listPlayerNicknames.contains(nickName)){
-                                val.message="nickNameTaken";
-                            }else{
-                                val.message="ConfirmChangeNickname:"+val.nickName+':';
-                                val.nickName=nickName;
-                                val.message+=nickName;
-                                server.listPlayerNicknames.set(index,nickName);
-                                listButtons.get(index).setText(nickName);
-                                for(int i=0;i<server.listOfCommunication.size();i++){
-                                    server.listOfCommunication.get(i).message=val.message;
-                                    server.listOfCommunication.get(i).syncServerWriteToClient.release();
-                                }
-                                menuHostGame.setVisible(false);
-                                menuHostGame.setVisible(true);
-
-                            }
+                            changeNicknameCommand(val);
+                            break;
                         }
-                        index++;
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -107,15 +40,66 @@ public class ServerMainThread extends Thread{
             }
         }
     }
-    //tymczasowo
-    public JButton standardButtonGenerate (String name){
-        JButton tmp = new JButton(name);
-        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tmp.setFont(new Font("Calibri", Font.PLAIN, 16));
-        tmp.setBackground(new Color(0x2dce98));
-        tmp.setForeground(Color.white);
-        tmp.setUI(new StyledButtonUI());
-        tmp.setPreferredSize(new Dimension(300, 50));
-        return tmp;
+    void setNickNameCommand(Communication val){
+        String nickName = val.message.substring(("setNickname:").length());
+
+        int x;
+        for(x=0;x<server.listOfCommunication.size()-1;x++){
+            if(server.listOfCommunication.get(x).nickName.equals(nickName)){
+                break;
+            }
+        }
+        if(x==server.listOfCommunication.size()-1){
+            val.nickName=nickName;
+
+
+            val.message="JoiningLobby:";
+            for(int i=0;i<server.listOfCommunication.size();i++){
+                val.message+=server.listOfCommunication.get(i).nickName+",";
+            }
+
+            for(int i=0;i<server.listOfCommunication.size()-1;i++){
+                server.listOfCommunication.get(i).message="JoiningLobby:"+nickName+",";
+                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+            }
+        }else{
+            val.message="nickNameTaken";
+            server.listOfCommunication.remove(server.listOfCommunication.size()-1);
+        }
+
+        val.syncServerWriteToClient.release();
+    }
+    void quitCommand(Communication val){
+        for(int i=0;i<server.listOfCommunication.size();i++){
+            if(server.listOfCommunication.get(i).nickName==val.nickName){
+                //wylaczenie watkow !!
+                server.listOfCommunication.get(i).message="ConfirmQuit";
+                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                server.listOfCommunication.remove(i);
+            }else{
+                server.listOfCommunication.get(i).message="PlayerDisconnect:"+val.nickName;
+                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+            }
+        }
+    }
+    void changeNicknameCommand(Communication val){
+        String nickName = val.message.substring(("changeNickname:").length());
+        int x=0;
+        for(x=0;x<server.listOfCommunication.size();x++){
+            if(server.listOfCommunication.get(x).nickName.equals(nickName)){
+                break;
+            }
+        }
+        if(x==server.listOfCommunication.size()){
+            val.message="ConfirmChangeNickname:"+val.nickName+':';
+            val.nickName=nickName;
+            val.message+=nickName;
+            for(int i=0;i<server.listOfCommunication.size();i++){
+                server.listOfCommunication.get(i).message=val.message;
+                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+            }
+        }else{
+            val.message="nickNameTakenChanging";
+        }
     }
 }
