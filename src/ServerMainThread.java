@@ -73,9 +73,13 @@ public class ServerMainThread extends Thread{
         for(int i=0;i<server.listOfCommunication.size();i++){
             if(server.listOfCommunication.get(i).nickName==val.nickName){
                 //wylaczenie watkow !!
+
                 server.listOfCommunication.get(i).message="ConfirmQuit";
                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                 server.listOfCommunication.remove(i);
+                if(i==0){
+                    System.out.print("HOSTOFF\n");
+                }
             }else{
                 server.listOfCommunication.get(i).message="PlayerDisconnect:"+val.nickName;
                 server.listOfCommunication.get(i).syncServerWriteToClient.release();

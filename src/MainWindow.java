@@ -275,23 +275,10 @@ public class MainWindow {
         });
 
         backFromHostLobbyButton.addActionListener(back -> {
-            /*
+            try{
+                this.client.fromClient.println("Quit");
+            }catch (NullPointerException error){}
 
-            for(int i=0;i<tmp_button.size();i++){
-                menuHostGame.remove(tmp_button.get(i));
-            }
-            synchronized (this) {
-                stopHostingGame=true;
-            }
-
-            try {
-                this.server.serverSocketChannel.close();
-                Thread.sleep(1000);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            menuPlay.setVisible(true);
-            menuHostGame.setVisible(false);*/
         });
 
         changeNickNameJoinButton.addActionListener(back -> {
@@ -302,18 +289,6 @@ public class MainWindow {
             try{
                 this.client.fromClient.println("Quit");
             }catch (NullPointerException error){}
-
-
-            for(int i=0;i<listButtons.size();i++){
-                menuJoinGame.remove(listButtons.get(i));
-            }
-            ipAddressGetTextField.setVisible(true);
-            nickNameTextFieldJoinMenu.setVisible(true);
-            joinGameButton.setVisible(true);
-            statusButton.setVisible(false);
-            menuPlay.setVisible(true);
-            menuJoinGame.setVisible(false);
-            changeNickNameJoinButton.setVisible(false);
 
         });
 

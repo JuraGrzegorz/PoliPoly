@@ -104,6 +104,17 @@ public class ClientReadFromServer extends Thread{
                 }
 
                 if(message.startsWith("ConfirmQuit")){
+                    /*for(int i=0;i<listButtons.size();i++){
+                        menuJoinGame.remove(listButtons.get(i));
+                    }
+                    ipAddressGetTextField.setVisible(true);
+                    nickNameTextFieldJoinMenu.setVisible(true);
+                    joinGameButton.setVisible(true);
+                    statusButton.setVisible(false);
+                    menuPlay.setVisible(true);
+                    menuJoinGame.setVisible(false);
+                    changeNickNameJoinButton.setVisible(false);*/
+                    System.out.print("Koniec");
                     return;
                 }
 
