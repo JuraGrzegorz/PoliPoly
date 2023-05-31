@@ -202,13 +202,12 @@ public class MainWindow {
                     throw new RuntimeException(e);
                 }
 
-                ServerMainThread serverMainThread=new ServerMainThread(server,listButtons,menuHostGame);
+                ServerMainThread serverMainThread=new ServerMainThread(server);
                 serverMainThread.start();
                 while (true){
 
                     synchronized (this) {
                         if(gameStarted || stopHostingGame){
-                            System.out.print("STOP HOSTING\n");
                             break;
                         }
                     }
@@ -216,7 +215,6 @@ public class MainWindow {
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         server.addSemaphore();
-                        /*System.out.print(this.server.listOfCommunication.size());*/
                         Communication tmp_Comm=this.server.listOfCommunication.get(this.server.listOfCommunication.size()-1);
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
@@ -310,7 +308,7 @@ public class MainWindow {
                 this.client.fromClient.println("Quit");
             }catch (NullPointerException error){}
 
-            /*System.out.print("quit\n");*/
+
             for(int i=0;i<listButtons.size();i++){
                 menuJoinGame.remove(listButtons.get(i));
             }

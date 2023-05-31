@@ -21,11 +21,8 @@ public class Server {
     int state;
     Semaphore syncJoiningPlayers;
     List<Communication> listOfCommunication;
-    List<String>listPlayerNicknames;
-
     Server(){
         listOfCommunication =new ArrayList<>();
-        listPlayerNicknames=new ArrayList<>();
         syncJoiningPlayers=new Semaphore(0);
     }
     void openSocket(int port) throws IOException {
