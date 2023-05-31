@@ -80,9 +80,15 @@ public class ClientReadFromServer extends Thread{
 
                 if(message.equals("nickNameTaken")){
                     statusButton.setText("Nick został zajety !!");
-                    statusButton.setVisible(true);
-                    menuJoinGame.setVisible(false);
-                    menuJoinGame.setVisible(true);
+                    if(listButtons.size()==0){
+                        statusButton.setVisible(true);
+
+                    }else{
+                        statusButton.setVisible(true);
+                        menuJoinGame.setVisible(false);
+                        menuJoinGame.setVisible(true);
+                    }
+
                 }
 
                 if(message.startsWith("ConfirmQuit")){

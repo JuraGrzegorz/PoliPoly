@@ -133,7 +133,7 @@ public class MainWindow {
         menuJoinGame.setLayout(new BoxLayout(menuJoinGame, BoxLayout.Y_AXIS));
         menuJoinGame.add(Box.createVerticalGlue());
         menuJoinGame.add(joinGameButton);
-        menuHostGame.add(Box.createVerticalStrut(10));
+        menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(nickNameTextFieldJoinMenu);
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(changeNickNameJoinButton);
@@ -262,7 +262,7 @@ public class MainWindow {
 
             try {
                 this.client=new Client();
-                this.client.ClientConnect("localhost",8080);
+                this.client.ClientConnect(ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
                 ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
