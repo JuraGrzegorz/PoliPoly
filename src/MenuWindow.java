@@ -12,7 +12,7 @@ public class MenuWindow {
     JButton creditsButton;
     JButton leaveButton;
     JButton enterHostMenuButton;
-    JButton enterJoinMenuButon;
+    JButton enterJoinMenuButton;
     JButton backToMainMenuButton;
     JButton backFromJoinMenuButton;
 
@@ -76,7 +76,7 @@ public class MenuWindow {
 
         // Tworzenie przycisków menuPlay
         enterHostMenuButton = standardButtonGenerate("Stwórz");
-        enterJoinMenuButon = standardButtonGenerate("Dołącz");
+        enterJoinMenuButton = standardButtonGenerate("Dołącz");
         backToMainMenuButton = standardButtonGenerate("Wróć");
         backFromJoinMenuButton = standardButtonGenerate("Wróć");
         backFromHostMenuButton = standardButtonGenerate("Wróć");
@@ -102,7 +102,7 @@ public class MenuWindow {
         menuPlay.add(Box.createVerticalGlue());
         menuPlay.add(enterHostMenuButton);
         menuPlay.add(Box.createVerticalStrut(10));
-        menuPlay.add(enterJoinMenuButon);
+        menuPlay.add(enterJoinMenuButton);
         menuPlay.add(Box.createVerticalStrut(10));
         menuPlay.add(backToMainMenuButton);
         menuPlay.add(Box.createVerticalGlue());
@@ -205,7 +205,7 @@ public class MenuWindow {
 
 
         // Tworzenie panelu Container
-        JPanel container;
+        /*JPanel container;
         container = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -223,15 +223,15 @@ public class MenuWindow {
         menuPlay.setVisible(false);
         menuHostGame.setVisible(false);
         menuJoinGame.setVisible(false);
-        container.add(menuPlay);
+        container.add(menuPlay);*/
 
 
-        playButton.addActionListener(back -> {
+        /*playButton.addActionListener(back -> {
             mainMenu.setVisible(false);
             menuPlay.setVisible(true);
         });
 
-        enterJoinMenuButon.addActionListener(back -> {
+        enterJoinMenuButton.addActionListener(back -> {
             menuPlay.setVisible(false);
             menuJoinGame.setVisible(true);
         });
@@ -257,14 +257,14 @@ public class MenuWindow {
         });
 
         leaveButton.addActionListener(leaveGame -> System.exit(0));
+*/
 
-
-        window.setTitle("PoliPoly");
+        /*window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         window.setSize(800, 600);
         window.setResizable(false);
         window.setLocationRelativeTo(null);
-        window.add(container);
+        window.add(container);*/
 
     }
 }
