@@ -1,6 +1,6 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -18,198 +18,14 @@ public class MainWindow {
     boolean gameStarted;
     boolean stopHostingGame;
 
-    public JButton standardButtonGenerate (String name){
-        JButton tmp = new JButton(name);
-        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tmp.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        tmp.setBackground(new Color(0x2dce98));
-        tmp.setForeground(Color.white);
-        tmp.setUI(new StyledButtonUI());
-        tmp.setPreferredSize(new Dimension(300, 50));
-        return tmp;
-    }
 
     public MainWindow(){
         gameStarted=false;
         stopHostingGame=false;
+        MenuWindow menuWindow=new MenuWindow();
 
-        ImageIcon logo = new ImageIcon("assets/Polipoly.png");
-        JLabel logoLabel = new JLabel(logo);
-
-        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JButton playButton=standardButtonGenerate("Graj");
-        JButton creditsButton = standardButtonGenerate("Autorzy");
-        JButton leaveButton = standardButtonGenerate("Wyjdź");
-        JButton hostButton = standardButtonGenerate("Host");
-        JButton joinButton = standardButtonGenerate("Join");
-        JButton backButton = standardButtonGenerate("Wróć");
-
-        JPanel menuEnter = new JPanel();
-        menuEnter.setOpaque(false);
-
-        menuEnter.setLayout(new BoxLayout(menuEnter, BoxLayout.Y_AXIS));
-        menuEnter.add(Box.createVerticalGlue());
-        menuEnter.add(playButton);
-        menuEnter.add(Box.createVerticalStrut(10));
-        menuEnter.add(creditsButton);
-        menuEnter.add(Box.createVerticalStrut(10));
-        menuEnter.add(leaveButton);
-        menuEnter.add(Box.createVerticalGlue());
-
-        JPanel menuPlay = new JPanel();
-        menuPlay.setOpaque(false);
-
-        menuPlay.setLayout(new BoxLayout(menuPlay, BoxLayout.Y_AXIS));
-        menuPlay.add(Box.createVerticalGlue());
-        menuPlay.add(hostButton);
-        menuPlay.add(Box.createVerticalStrut(10));
-        menuPlay.add(joinButton);
-        menuPlay.add(Box.createVerticalStrut(10));
-        menuPlay.add(backButton);
-        menuPlay.add(Box.createVerticalGlue());
-
-        JButton startGameButton = standardButtonGenerate("Start Game");
-
-        InetAddress localhost;
-        try {
-            localhost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-        JLabel ip_info = new JLabel();
-        ip_info.setText("ip : "+localhost.getHostAddress());
-        ip_info.setFont(new Font("Calibri", Font.BOLD, 20));
-        ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
-
-
-        JButton backFromHostLobbyButton = standardButtonGenerate("Back");
-
-        JTextField nickNameTextFieldHostMenu =new JTextField("HostOfGames");
-        nickNameTextFieldHostMenu.setMaximumSize(new Dimension(200, 1));
-
-
-        JButton changeNickNameHostButton = new JButton("Zmień");
-        changeNickNameHostButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        changeNickNameHostButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        changeNickNameHostButton.setBackground(new Color(0x2dce98));
-        changeNickNameHostButton.setForeground(Color.white);
-        changeNickNameHostButton.setUI(new StyledSmallerButtonUI());
-        changeNickNameHostButton.setPreferredSize(new Dimension(5, 3));
-
-
-
-        JButton hostStatusButton = new JButton("status");
-        hostStatusButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hostStatusButton.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
-        hostStatusButton.setBackground(new Color(0x2dce98));
-        hostStatusButton.setForeground(Color.white);
-        hostStatusButton.setUI(new StyledSmallerButtonUI());
-        hostStatusButton.setPreferredSize(new Dimension(5, 3));
-
-
-
-
-        hostStatusButton.setVisible(false);
-
-        JPanel menuHostGame = new JPanel();
-        menuHostGame.setOpaque(false);
-        menuHostGame.setLayout(new BoxLayout(menuHostGame, BoxLayout.Y_AXIS));
-
-        JPanel hostNickPanel = new JPanel();
-        hostNickPanel.setOpaque(false);
-        hostNickPanel.setLayout(new BoxLayout(hostNickPanel, BoxLayout.X_AXIS));
-        hostNickPanel.add(nickNameTextFieldHostMenu);
-        nickNameTextFieldHostMenu.setPreferredSize(new Dimension(150, 30));
-        menuHostGame.add(Box.createHorizontalStrut(2));
-        changeNickNameHostButton.setBorder(new EmptyBorder(3, 5, 3, 5));
-        hostNickPanel.add(changeNickNameHostButton);
-        menuHostGame.add(Box.createHorizontalStrut(2));
-        hostNickPanel.add(hostStatusButton);
-
-
-
-
-        menuHostGame.add(Box.createHorizontalGlue());
-        menuHostGame.add(Box.createVerticalStrut(5));
-        menuHostGame.add(ip_info);
-        menuHostGame.add(Box.createVerticalStrut(30));
-
-        menuHostGame.add(hostNickPanel);
-
-
-
-
-
-        menuHostGame.add(Box.createVerticalStrut(10));
-
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuHostGame.add(startGameButton);
-
-
-        menuHostGame.add(Box.createVerticalGlue());
-        menuHostGame.add(Box.createVerticalStrut(10));
-
-        menuHostGame.add(Box.createHorizontalGlue());
-
-
-
-        menuHostGame.add(Box.createVerticalGlue());
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuHostGame.add(backFromHostLobbyButton);
-        menuHostGame.add(Box.createVerticalStrut(10));
-
-
-
-
-
-        JButton joinGameButton = standardButtonGenerate("Join Game");
-
-
-
-        JTextField ipAddressGetTextField =new JTextField("192.168.18.14");
-        ipAddressGetTextField.setMaximumSize(new Dimension(200, 1));
-
-        JTextField nickNameTextFieldJoinMenu =new JTextField("Player");
-        nickNameTextFieldJoinMenu.setMaximumSize(new Dimension(200, 1));
-
-        JButton statusButton =standardButtonGenerate("Server nie istnieje!!");
-        statusButton.setVisible(false);
-
-
-        JButton backFromJoinLobbyButton =standardButtonGenerate("Back!");
-        statusButton.setVisible(false);
-
-        JButton changeNickNameJoinButton =standardButtonGenerate("Zmień!");
-
-
-
-        changeNickNameJoinButton.setVisible(false);
-
-        JPanel menuJoinGame = new JPanel();
-        menuJoinGame.setOpaque(false);
-        menuJoinGame.setLayout(new BoxLayout(menuJoinGame, BoxLayout.Y_AXIS));
-        menuJoinGame.add(Box.createVerticalGlue());
-        menuJoinGame.add(joinGameButton);
-        menuHostGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(nickNameTextFieldJoinMenu);
-        menuJoinGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(changeNickNameJoinButton);
-        menuJoinGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(ipAddressGetTextField);
-        menuJoinGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(statusButton);
-        menuJoinGame.add(Box.createVerticalStrut(10));
-        menuJoinGame.add(backFromJoinLobbyButton);
-        menuJoinGame.add(Box.createVerticalStrut(10));
-
-        // Tworzenie panelu Container
         JPanel container;
+        // Tworzenie panelu Container
         container = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -219,38 +35,56 @@ public class MainWindow {
             }
         };
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        logoLabel.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
-        container.add(logoLabel);
-        container.add(menuEnter);
-        container.add(menuHostGame,BorderLayout.NORTH);
-        container.add(menuJoinGame);
-        menuPlay.setVisible(false);
-        menuHostGame.setVisible(false);
-        menuJoinGame.setVisible(false);
-        container.add(menuPlay);
+        menuWindow.logoLabel.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
+        container.add(menuWindow.logoLabel);
+        container.add(menuWindow.mainMenu);
+        container.add(menuWindow.menuHostGame, BorderLayout.NORTH);
+        container.add(menuWindow.menuJoinGame);
+        menuWindow.menuPlay.setVisible(false);
+        menuWindow.menuHostGame.setVisible(false);
+        menuWindow.menuJoinGame.setVisible(false);
+        container.add(menuWindow.menuPlay);
 
 
 
 
         //akcje przycisków
-        playButton.addActionListener(back -> {
-            menuEnter.setVisible(false);
-            menuPlay.setVisible(true);
+        menuWindow.playButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(false);
+            menuWindow.menuPlay.setVisible(true);
         });
 
-        backButton.addActionListener(back -> {
-            menuPlay.setVisible(false);
-            menuEnter.setVisible(true);
+        menuWindow.enterJoinMenuButton.addActionListener(back -> {
+            menuWindow.menuPlay.setVisible(false);
+            menuWindow.menuJoinGame.setVisible(true);
         });
 
+        menuWindow.joinGameButton.addActionListener(back -> {
+            menuWindow.menuPlay.setVisible(false);
+            menuWindow.menuJoinGame.setVisible(true);
 
-        List<JButton> listButtons=new ArrayList<>();
-        hostButton.addActionListener(back -> {
+            try {
+                this.client=new Client();
+                this.client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
+                this.client.SetCommunicationParameters(this.client.clientSocket);
 
+                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.joinGameListButtons);
+                clientReadFromServer.start();
+
+                this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
+
+            } catch (IOException e) {
+                System.out.print(e);
+                /*statusButton.setVisible(true);*/
+            }
+
+        });
+
+        menuWindow.enterHostMenuButton.addActionListener(back -> {
             this.server=new Server();
 
-            menuPlay.setVisible(false);
-            menuHostGame.setVisible(true);
+            menuWindow.menuPlay.setVisible(false);
+            menuWindow.menuHostGame.setVisible(true);
             synchronized (this) {
                 stopHostingGame=false;
             }
@@ -265,28 +99,26 @@ public class MainWindow {
                     throw new RuntimeException(e);
                 }
 
-                ServerMainThread serverMainThread=new ServerMainThread(server,listButtons,menuHostGame);
+                ServerMainThread serverMainThread=new ServerMainThread(server);
                 serverMainThread.start();
                 while (true){
 
                     synchronized (this) {
                         if(gameStarted || stopHostingGame){
-                            System.out.print("STOP HOSTING\n");
                             break;
                         }
                     }
-                    Socket tmp_clientSock;
+                    Socket tmp_clientSock = null;
                     try {
                         tmp_clientSock = this.server.serverSocketChannel.accept();
                         server.addSemaphore();
-                        /*System.out.print(this.server.listOfCommunication.size());*/
                         Communication tmp_Comm=this.server.listOfCommunication.get(this.server.listOfCommunication.size()-1);
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
                         serverWriteThread.start();
 
-                    } catch (IOException ignored) {}
+                    } catch (IOException e) {}
                 }
 
             });
@@ -298,107 +130,89 @@ public class MainWindow {
                     this.client.ClientConnect("localhost",8080);
                     this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuHostGame,hostStatusButton,true,nickNameTextFieldHostMenu);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.hostGameListButtons);
                     clientReadFromServer.start();
-
-                    this.client.fromClient.println("setNickname:"+nickNameTextFieldHostMenu.getText());
+                    this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
                     break;
-                } catch (IOException ignored) {}
+                } catch (IOException e) {}
             }
-
         });
 
-        startGameButton.addActionListener(back -> {
-            synchronized (this) {
-                gameStarted=true;
-            }
-            /* Collections.shuffle(server.listOfSockets);*/
+        menuWindow.backToMainMenuButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(true);
+            menuWindow.menuPlay.setVisible(false);
         });
 
-        joinButton.addActionListener(back -> {
-            menuPlay.setVisible(false);
-            menuJoinGame.setVisible(true);
-        });
-
-        joinGameButton.addActionListener(back -> {
-
-            try {
-                this.client=new Client();
-                this.client.ClientConnect("localhost",8080);
-                this.client.SetCommunicationParameters(this.client.clientSocket);
-
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,listButtons,menuJoinGame,statusButton,false,nickNameTextFieldJoinMenu);
-                clientReadFromServer.start();
-
-                this.client.fromClient.println("setNickname:"+nickNameTextFieldJoinMenu.getText());
-
-                ipAddressGetTextField.setVisible(false);
-                /*nickNameTextFieldJoinMenu.setVisible(false);*/
-                joinGameButton.setVisible(false);
-                changeNickNameJoinButton.setVisible(true);
-
-            } catch (IOException e) {
-                statusButton.setVisible(true);
-            }
-
-        });
-
-        backFromHostLobbyButton.addActionListener(back -> {
-            /*System.out.print(this.server.listOfSockets.size());
-
-            for(int i=0;i<tmp_button.size();i++){
-                menuHostGame.remove(tmp_button.get(i));
-            }
-            synchronized (this) {
-                stopHostingGame=true;
-            }
-
-            try {
-                this.server.serverSocketChannel.close();
-                Thread.sleep(1000);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            menuPlay.setVisible(true);
-            menuHostGame.setVisible(false);*/
-        });
-
-        changeNickNameJoinButton.addActionListener(back -> this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText()));
-
-        backFromJoinLobbyButton.addActionListener(back -> {
+        menuWindow.backFromJoinMenuButton.addActionListener(back -> {
             try{
                 this.client.fromClient.println("Quit");
-            }catch (NullPointerException ignored){}
+            }catch (NullPointerException error){}
+            menuWindow.menuPlay.setVisible(true);
+            menuWindow.menuJoinGame.setVisible(false);
+        });
 
-            /*System.out.print("quit\n");*/
-            for (JButton listButton : listButtons) {
-                menuJoinGame.remove(listButton);
-            }
-            ipAddressGetTextField.setVisible(true);
-            nickNameTextFieldJoinMenu.setVisible(true);
-            joinGameButton.setVisible(true);
-            statusButton.setVisible(false);
-            menuPlay.setVisible(true);
-            menuJoinGame.setVisible(false);
-            changeNickNameJoinButton.setVisible(false);
+        menuWindow.backFromHostMenuButton.addActionListener(back -> {
+            menuWindow.menuPlay.setVisible(true);
+            menuWindow.menuHostGame.setVisible(false);
+        });
 
+        menuWindow.changeNickNameHostButton.addActionListener(back -> {
+            this.client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
+        });
+
+        menuWindow.changeNickNameJoinButton.addActionListener(back -> {
+            this.client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
         });
 
 
-        changeNickNameHostButton.addActionListener(back -> this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText()));
+
+
+//        startGameButton.addActionListener(back -> {
+//            synchronized (this) {
+//                gameStarted=true;
+//            }
+//           *//* Collections.shuffle(server.listOfSockets);*//*
+//        });
+//
+//        joinButton.addActionListener(back -> {
+//            menuPlay.setVisible(false);
+//            menuJoinGame.setVisible(true);
+//        });
+//
+//
+//        backFromHostLobbyButton.addActionListener(back -> {
+//            try{
+//                this.client.fromClient.println("Quit");
+//            }catch (NullPointerException error){}
+//
+//        });
+//
+//        changeNickNameJoinButton.addActionListener(back -> {
+//            this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText());
+//        });
+//
+//        backFromJoinLobbyButton.addActionListener(back -> {
+//            try{
+//                this.client.fromClient.println("Quit");
+//            }catch (NullPointerException error){}
+//
+//        });
+//
+//
+//        changeNickNameHostButton.addActionListener(back -> {
+//            this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText());
+//        });
 
 
 
 
-        leaveButton.addActionListener(leaveGame -> System.exit(0));
-
+        menuWindow.leaveButton.addActionListener(leaveGame -> System.exit(0));
 
         window = new JFrame();
         window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(800, 600);
-        window.setResizable(false);
+        window.setSize(800, 500);
         window.setLocationRelativeTo(null);
         window.add(container);
 

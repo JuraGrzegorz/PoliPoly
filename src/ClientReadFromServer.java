@@ -5,103 +5,84 @@ import java.io.IOException;
 import java.util.List;
 
 public class ClientReadFromServer extends Thread{
-    private final BufferedReader intoClient;
+    private BufferedReader intoClient;
+    MenuWindow menuWindow;
     List<JButton> listButtons;
-    JPanel menuJoinGame;
-    JButton statusButton;
+    int countOfPlayer;
 
-    Boolean isLocalUser;
-
-    JTextField nickNameFiled;
-    public ClientReadFromServer(BufferedReader intoClient,List<JButton> listButtons,JPanel menuJoinGame,JButton statusButton, Boolean isLocalUser,JTextField nickNameFiled) {
+    public ClientReadFromServer(BufferedReader intoClient,MenuWindow menuWindow,List<JButton> listButtons) {
         this.intoClient=intoClient;
+        this.menuWindow=menuWindow;
         this.listButtons=listButtons;
-        this.menuJoinGame=menuJoinGame;
-        this.statusButton=statusButton;
-        this.isLocalUser=isLocalUser;
-        this.nickNameFiled=nickNameFiled;
+        countOfPlayer=0;
     }
-
-    /*public ClientReadFromServer(BufferedReader intoClient) {
-        this.intoClient=intoClient;
-        isLocalUser=true;
-    }*/
-
 
     public void run() {
         String message;
         while (true){
             try {
                 message=intoClient.readLine();
-                if(!isLocalUser){
-                    if(message.startsWith("JoiningLobby:")){
-                        String[] tmp=message.split(":");
-                        tmp=tmp[1].split(",");
-                        for(String UsersNicks:tmp){
+                if(message.startsWith("JoiningLobby:")){
+                    String[] tmp=message.split(":");
+                    tmp=tmp[1].split(",");
 
-                            listButtons.add(standardButtonGenerate(UsersNicks));
-                            menuJoinGame.add(listButtons.get(listButtons.size()-1));
-                        }
-
-                        menuJoinGame.setVisible(false);
-                        menuJoinGame.setVisible(true);
-                    }
-
-                    if(message.startsWith("PlayerDisconnect:")){
-                        String[] tmp=message.split(":");
-
-                        for(int i=0;i<listButtons.size();i++){
-                            System.out.print(listButtons.get(i).getText()+ " "+tmp[1]+"\n");
-                            if(listButtons.get(i).getText().equals(tmp[1])){
-                                menuJoinGame.remove(listButtons.get(i));
-                                listButtons.remove(i);
-                                break;
-                            }
-                        }
-                        menuJoinGame.setVisible(false);
-                        menuJoinGame.setVisible(true);
-                    }
-
-                    if(message.startsWith("ConfirmChangeNickname:")){
-                        message = message.substring(("ConfirmChangeNickname:").length());
-                        String[] tmp=message.split(":");
-                        for (JButton listButton : listButtons) {
-                            if (listButton.getText().equals(tmp[0])) {
-                                listButton.setText(tmp[1]);
-                                break;
-                            }
-                        }
-
-                        statusButton.setVisible(false);
-                        menuJoinGame.setVisible(false);
-                        menuJoinGame.setVisible(true);
+                    for(String UsersNicks:tmp){
+                        listButtons.get(countOfPlayer).setText(UsersNicks);
+                        countOfPlayer++;
                     }
                 }
 
-                if(message.equals("nickNameTaken")){
-                    statusButton.setText("Nick został zajety !!");
-                    statusButton.setVisible(true);
-                    menuJoinGame.setVisible(false);
-                    menuJoinGame.setVisible(true);
+                if(message.startsWith("PlayerDisconnect:")){
+                    String[] tmp=message.split(":");
+                    for(int i=0;i<listButtons.size();i++){
+
+                        if(listButtons.get(i).getText().equals(tmp[1])){
+                            int j;
+                            for(j=i;j<countOfPlayer-1;j++){
+                                listButtons.get(j).setText(listButtons.get(j+1).getText());
+                            }
+                            listButtons.get(j).setText(String.valueOf(countOfPlayer));
+                            countOfPlayer--;
+                            break;
+                        }
+
+                    }
                 }
 
+                if(message.startsWith("ConfirmChangeNickname:")){
+                    message = message.substring(("ConfirmChangeNickname:").length());
+                    String[] tmp=message.split(":");
+                    for(int i=0;i<listButtons.size();i++){
+                        if(listButtons.get(i).getText().equals(tmp[0])){
+                            listButtons.get(i).setText(tmp[1]);
+                            break;
+                        }
+                    }
+                }
+
+//                if(message.equals("nickNameTakenChanging")){
+//                    statusButton.setText("Nick został zajety !!");
+//                    statusButton.setVisible(true);
+//                    menuJoinGame.setVisible(false);
+//                    menuJoinGame.setVisible(true);
+//                }
+//                if(message.equals("nickNameTaken")){
+//                    statusButton.setText("Nick został zajety !!");
+//                    statusButton.setVisible(true);
+//                    menuJoinGame.setVisible(false);
+//                    menuJoinGame.setVisible(true);
+//                }
+//
                 if(message.startsWith("ConfirmQuit")){
+                    for(int i=0;i<listButtons.size();i++){
+                        listButtons.get(i).setText(String.valueOf(i+1));
+                    }
                     return;
                 }
-                /*System.out.print(message);*/
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-    }
-    public JButton standardButtonGenerate (String name){
-        JButton tmp = new JButton(name);
-        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tmp.setFont(new Font("Calibri", Font.PLAIN, 16));
-        tmp.setBackground(new Color(0x2dce98));
-        tmp.setForeground(Color.white);
-        tmp.setUI(new StyledButtonUI());
-        tmp.setPreferredSize(new Dimension(300, 50));
-        return tmp;
     }
 }
