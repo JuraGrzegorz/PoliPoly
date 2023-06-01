@@ -2,10 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MenuWindow {
-    private static final JFrame window = new JFrame();
     private static final int BUTTONFONTSIZE = 16;
 
     JButton playButton;
@@ -16,6 +17,7 @@ public class MenuWindow {
     JButton backToMainMenuButton;
     JButton backFromJoinMenuButton;
 
+    JPanel menuHostGame;
     JButton backFromHostMenuButton;
 
     JButton startGameButton;
@@ -29,8 +31,12 @@ public class MenuWindow {
     JPanel menuJoinGame;
     JPanel JoinPlayersPanel;
     JPanel hostPlayersPanel;
-
-
+    JLabel logoLabel;
+    JTextField nickNameTextFieldHostMenu;
+    JTextField ipAddressGetTextField;
+    JTextField nickNameTextFieldJoinMenu;
+    List<JButton> joinGameListButtons;
+    List<JButton> hostGameListButtons;
     private JButton standardButtonGenerate(String name) {
         JButton tmp = new JButton(name);
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -54,6 +60,17 @@ public class MenuWindow {
     }
 
     public MenuWindow() {
+        joinGameListButtons =new ArrayList<>();
+        hostGameListButtons=new ArrayList<>();
+        hostGameListButtons.add(standardButtonGenerate("1"));
+        hostGameListButtons.add(standardButtonGenerate("2"));
+        hostGameListButtons.add(standardButtonGenerate("3"));
+        hostGameListButtons.add(standardButtonGenerate("4"));
+        joinGameListButtons.add(standardButtonGenerate("1"));
+        joinGameListButtons.add(standardButtonGenerate("2"));
+        joinGameListButtons.add(standardButtonGenerate("3"));
+        joinGameListButtons.add(standardButtonGenerate("4"));
+
 
         InetAddress localhost;
         try {
@@ -64,7 +81,7 @@ public class MenuWindow {
 
         // Dodanie JLabel z logo
         ImageIcon logo = new ImageIcon("assets/Polipoly.png");
-        JLabel logoLabel = new JLabel(logo);
+        logoLabel = new JLabel(logo);
 
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -117,7 +134,7 @@ public class MenuWindow {
         ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-        JTextField nickNameTextFieldHostMenu = new JTextField("Host");
+        nickNameTextFieldHostMenu = new JTextField("Host");
         nickNameTextFieldHostMenu.setUI(new StyleTextFieldUI());
         nickNameTextFieldHostMenu.setMaximumSize(new Dimension(350, 50));
 
@@ -127,7 +144,7 @@ public class MenuWindow {
 
 
         //Panel Po wciśnięciu host
-        JPanel menuHostGame = new JPanel();
+        menuHostGame = new JPanel();
         menuHostGame.setOpaque(false);
 
         JPanel hostNickPanel = new JPanel();
@@ -146,15 +163,12 @@ public class MenuWindow {
         hostNickPanel.add(nickNameTextFieldHostMenu);
         nickNameTextFieldHostMenu.setPreferredSize(new Dimension(100, 30));
         hostNickPanel.add(changeNickNameHostButton);
-
-
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(hostPlayersPanel);
-        hostPlayersPanel.add(standardButtonGenerate("1"));
-        hostPlayersPanel.add(standardButtonGenerate("2"));
-        hostPlayersPanel.add(standardButtonGenerate("3"));
-        hostPlayersPanel.add(standardButtonGenerate("4"));
-
+        hostPlayersPanel.add(hostGameListButtons.get(0));
+        hostPlayersPanel.add(hostGameListButtons.get(1));
+        hostPlayersPanel.add(hostGameListButtons.get(2));
+        hostPlayersPanel.add(hostGameListButtons.get(3));
         menuHostGame.add(Box.createVerticalStrut(10));
         menuHostGame.add(hostBottomPanel);
         hostBottomPanel.add(startGameButton);
@@ -164,11 +178,11 @@ public class MenuWindow {
         joinGameButton = standardButtonGenerate("Dołącz");
 
 
-        JTextField ipAddressGetTextField = new JTextField("192.168.18.14");
+        ipAddressGetTextField = new JTextField("192.168.18.14");
         ipAddressGetTextField.setUI(new StyleTextFieldUI());
         ipAddressGetTextField.setMaximumSize(new Dimension(300, 50));
 
-        JTextField nickNameTextFieldJoinMenu = new JTextField("Player");
+        nickNameTextFieldJoinMenu = new JTextField("Player");
         nickNameTextFieldJoinMenu.setUI(new StyleTextFieldUI());
         nickNameTextFieldJoinMenu.setPreferredSize(new Dimension(200, 50));
 
@@ -193,78 +207,14 @@ public class MenuWindow {
 
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(JoinPlayersPanel);
-        JoinPlayersPanel.add(standardButtonGenerate("1"));
-        JoinPlayersPanel.add(standardButtonGenerate("2"));
-        JoinPlayersPanel.add(standardButtonGenerate("3"));
-        JoinPlayersPanel.add(standardButtonGenerate("4"));
+        JoinPlayersPanel.add(joinGameListButtons.get(0));
+        JoinPlayersPanel.add(joinGameListButtons.get(1));
+        JoinPlayersPanel.add(joinGameListButtons.get(2));
+        JoinPlayersPanel.add(joinGameListButtons.get(3));
 
         menuJoinGame.add(Box.createVerticalStrut(10));
         menuJoinGame.add(joinBottomPanel);
         joinBottomPanel.add(joinGameButton);
         joinBottomPanel.add(backFromJoinMenuButton);
-
-
-        // Tworzenie panelu Container
-        /*JPanel container;
-        container = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon menuBackground = new ImageIcon("assets/tmp_bg.png");
-                g.drawImage(menuBackground.getImage(), 0, 0, null);
-            }
-        };
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        logoLabel.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
-        container.add(logoLabel);
-        container.add(mainMenu);
-        container.add(menuHostGame, BorderLayout.NORTH);
-        container.add(menuJoinGame);
-        menuPlay.setVisible(false);
-        menuHostGame.setVisible(false);
-        menuJoinGame.setVisible(false);
-        container.add(menuPlay);*/
-
-
-        /*playButton.addActionListener(back -> {
-            mainMenu.setVisible(false);
-            menuPlay.setVisible(true);
-        });
-
-        enterJoinMenuButton.addActionListener(back -> {
-            menuPlay.setVisible(false);
-            menuJoinGame.setVisible(true);
-        });
-
-        enterHostMenuButton.addActionListener(back -> {
-            menuPlay.setVisible(false);
-            menuHostGame.setVisible(true);
-        });
-
-        backToMainMenuButton.addActionListener(back -> {
-            mainMenu.setVisible(true);
-            menuPlay.setVisible(false);
-        });
-
-        backFromJoinMenuButton.addActionListener(back -> {
-            menuPlay.setVisible(true);
-            menuJoinGame.setVisible(false);
-        });
-
-        backFromHostMenuButton.addActionListener(back -> {
-            menuPlay.setVisible(true);
-            menuHostGame.setVisible(false);
-        });
-
-        leaveButton.addActionListener(leaveGame -> System.exit(0));
-*/
-
-        /*window.setTitle("PoliPoly");
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(800, 600);
-        window.setResizable(false);
-        window.setLocationRelativeTo(null);
-        window.add(container);*/
-
     }
 }
