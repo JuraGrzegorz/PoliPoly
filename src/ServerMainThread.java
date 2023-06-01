@@ -70,13 +70,13 @@ public class ServerMainThread extends Thread{
         val.syncServerWriteToClient.release();
     }
     void quitCommand(Communication val){
+        int indexToDel = 0;
         for(int i=0;i<server.listOfCommunication.size();i++){
-            if(server.listOfCommunication.get(i).nickName==val.nickName){
+            if(server.listOfCommunication.get(i).nickName.equals(val.nickName)){
                 //wylaczenie watkow !!
-
                 server.listOfCommunication.get(i).message="ConfirmQuit";
                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
-                server.listOfCommunication.remove(i);
+                indexToDel=i;
                 if(i==0){
                     System.out.print("HOSTOFF\n");
                 }
@@ -85,6 +85,7 @@ public class ServerMainThread extends Thread{
                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
             }
         }
+        server.listOfCommunication.remove(indexToDel);
     }
     void changeNicknameCommand(Communication val){
         String nickName = val.message.substring(("changeNickname:").length());
