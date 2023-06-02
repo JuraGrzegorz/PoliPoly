@@ -168,12 +168,13 @@ public class MainWindow {
 
 
 
-//        startGameButton.addActionListener(back -> {
-//            synchronized (this) {
-//                gameStarted=true;
-//            }
-//           *//* Collections.shuffle(server.listOfSockets);*//*
-//        });
+        menuWindow.startGameButton.addActionListener(back -> {
+            /*synchronized (this) {
+                gameStarted=true;
+            }*/
+           NickNameTakenWindow test=new NickNameTakenWindow();
+           test.show();
+        });
 //
 //        joinButton.addActionListener(back -> {
 //            menuPlay.setVisible(false);
@@ -212,7 +213,7 @@ public class MainWindow {
         window = new JFrame();
         window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(800, 500);
+        window.setSize(800, 600);
         window.setLocationRelativeTo(null);
         window.add(container);
 
