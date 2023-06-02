@@ -37,7 +37,7 @@ public class MenuWindow {
     JTextField nickNameTextFieldJoinMenu;
     List<JButton> joinGameListButtons;
     List<JButton> hostGameListButtons;
-    private JButton standardButtonGenerate(String name) {
+    static JButton standardButtonGenerate(String name) {
         JButton tmp = new JButton(name);
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
         tmp.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));

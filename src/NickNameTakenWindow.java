@@ -15,7 +15,6 @@ public class NickNameTakenWindow {
 
     public NickNameTakenWindow() {
 
-
         okButton = MenuWindow.standardButtonGenerate("OK");
         okButton.setPreferredSize(new Dimension(300, 40));
 
