@@ -71,6 +71,7 @@ public class ServerMainThread extends Thread{
     }
     void quitCommand(Communication val){
         int indexToDel = 0;
+
         for(int i=0;i<server.listOfCommunication.size();i++){
             if(server.listOfCommunication.get(i).nickName.equals(val.nickName)){
                 //wylaczenie watkow !!
@@ -105,6 +106,7 @@ public class ServerMainThread extends Thread{
             }
         }else{
             val.message="nickNameTakenChanging";
+            val.syncServerWriteToClient.release();
         }
     }
 }

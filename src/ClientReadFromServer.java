@@ -9,12 +9,13 @@ public class ClientReadFromServer extends Thread{
     MenuWindow menuWindow;
     List<JButton> listButtons;
     int countOfPlayer;
-
-    public ClientReadFromServer(BufferedReader intoClient,MenuWindow menuWindow,List<JButton> listButtons) {
+    NickNameTakenWindow alertWindow;
+    public ClientReadFromServer(BufferedReader intoClient,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow) {
         this.intoClient=intoClient;
         this.menuWindow=menuWindow;
         this.listButtons=listButtons;
         countOfPlayer=0;
+        this.alertWindow=alertWindow;
     }
 
     public void run() {
@@ -60,23 +61,21 @@ public class ClientReadFromServer extends Thread{
                     }
                 }
 
-//                if(message.equals("nickNameTakenChanging")){
-//                    statusButton.setText("Nick został zajety !!");
-//                    statusButton.setVisible(true);
-//                    menuJoinGame.setVisible(false);
-//                    menuJoinGame.setVisible(true);
-//                }
-//                if(message.equals("nickNameTaken")){
-//                    statusButton.setText("Nick został zajety !!");
-//                    statusButton.setVisible(true);
-//                    menuJoinGame.setVisible(false);
-//                    menuJoinGame.setVisible(true);
-//                }
-//
+                if(message.equals("nickNameTakenChanging")){
+                    alertWindow.setMessage("Nick jest zajety!!");
+                    alertWindow.show();
+                }
+                if(message.equals("nickNameTaken")){
+                    alertWindow.setMessage("Nick jest zajety!!");
+                    alertWindow.show();
+                }
+
                 if(message.startsWith("ConfirmQuit")){
                     for(int i=0;i<listButtons.size();i++){
                         listButtons.get(i).setText(String.valueOf(i+1));
                     }
+                    menuWindow.menuPlay.setVisible(true);
+                    menuWindow.menuJoinGame.setVisible(false);
                     return;
                 }
 

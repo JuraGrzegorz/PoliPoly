@@ -18,12 +18,14 @@ public class MainWindow {
     boolean gameStarted;
     boolean stopHostingGame;
 
+    NickNameTakenWindow alertWindow;
 
     public MainWindow(){
         gameStarted=false;
         stopHostingGame=false;
         MenuWindow menuWindow=new MenuWindow();
-
+        alertWindow=new NickNameTakenWindow();
+        client=null;
         JPanel container;
         // Tworzenie panelu Container
         container = new JPanel() {
@@ -68,7 +70,7 @@ public class MainWindow {
                 this.client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
                 this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.joinGameListButtons);
+                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.joinGameListButtons,alertWindow);
                 clientReadFromServer.start();
 
                 this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
@@ -83,21 +85,23 @@ public class MainWindow {
         menuWindow.enterHostMenuButton.addActionListener(back -> {
             this.server=new Server();
 
-            menuWindow.menuPlay.setVisible(false);
-            menuWindow.menuHostGame.setVisible(true);
             synchronized (this) {
                 stopHostingGame=false;
             }
 
+            try {
+                this.server.openSocket(8080);
+                this.server.serverSocketChannel.setSoTimeout(1000);
+
+            } catch (IOException e) {
+                alertWindow.setMessage("Server juz istnieje!");
+                alertWindow.show();
+                return;
+            }
+            menuWindow.menuPlay.setVisible(false);
+            menuWindow.menuHostGame.setVisible(true);
 
             Thread ThreadWaitingForPlayers = new Thread(() -> {
-
-                try {
-                    this.server.openSocket(8080);
-                    this.server.serverSocketChannel.setSoTimeout(1000);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
 
                 ServerMainThread serverMainThread=new ServerMainThread(server);
                 serverMainThread.start();
@@ -130,7 +134,7 @@ public class MainWindow {
                     this.client.ClientConnect("localhost",8080);
                     this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.hostGameListButtons);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.hostGameListButtons,alertWindow);
                     clientReadFromServer.start();
                     this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
@@ -145,16 +149,21 @@ public class MainWindow {
         });
 
         menuWindow.backFromJoinMenuButton.addActionListener(back -> {
-            try{
-                this.client.fromClient.println("Quit");
-            }catch (NullPointerException error){}
-            menuWindow.menuPlay.setVisible(true);
-            menuWindow.menuJoinGame.setVisible(false);
+            if(client!=null){
+                try{
+                    this.client.fromClient.println("Quit");
+                    client=null;
+                }catch (NullPointerException error){}
+            }else{
+                menuWindow.menuPlay.setVisible(true);
+                menuWindow.menuJoinGame.setVisible(false);
+            }
         });
 
         menuWindow.backFromHostMenuButton.addActionListener(back -> {
-            menuWindow.menuPlay.setVisible(true);
-            menuWindow.menuHostGame.setVisible(false);
+            try{
+                this.client.fromClient.println("Quit");
+            }catch (NullPointerException error){}
         });
 
         menuWindow.changeNickNameHostButton.addActionListener(back -> {
@@ -172,41 +181,7 @@ public class MainWindow {
             /*synchronized (this) {
                 gameStarted=true;
             }*/
-           NickNameTakenWindow test=new NickNameTakenWindow();
-           test.show();
         });
-//
-//        joinButton.addActionListener(back -> {
-//            menuPlay.setVisible(false);
-//            menuJoinGame.setVisible(true);
-//        });
-//
-//
-//        backFromHostLobbyButton.addActionListener(back -> {
-//            try{
-//                this.client.fromClient.println("Quit");
-//            }catch (NullPointerException error){}
-//
-//        });
-//
-//        changeNickNameJoinButton.addActionListener(back -> {
-//            this.client.fromClient.println("changeNickname:"+nickNameTextFieldJoinMenu.getText());
-//        });
-//
-//        backFromJoinLobbyButton.addActionListener(back -> {
-//            try{
-//                this.client.fromClient.println("Quit");
-//            }catch (NullPointerException error){}
-//
-//        });
-//
-//
-//        changeNickNameHostButton.addActionListener(back -> {
-//            this.client.fromClient.println("changeNickname:"+nickNameTextFieldHostMenu.getText());
-//        });
-
-
-
 
         menuWindow.leaveButton.addActionListener(leaveGame -> System.exit(0));
 
