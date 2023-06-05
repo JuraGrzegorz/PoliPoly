@@ -178,6 +178,7 @@ public class MainWindow {
 
 
         menuWindow.startGameButton.addActionListener(back -> {
+            GamingWindow a=new GamingWindow();
             /*synchronized (this) {
                 gameStarted=true;
             }*/

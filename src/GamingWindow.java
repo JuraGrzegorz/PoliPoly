@@ -5,7 +5,6 @@ import java.awt.*;
 public class GamingWindow {
     final private int RECTANGULAR_FIELDS_AMOUNT = 28;
     final private int SQUARE_FIELDS_AMOUNT = 4;
-
     final private int SQUARE_FIELDS_SIDE_LENGTH = 165;
     final private int RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH = 100;
     final private int RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH = 165;
