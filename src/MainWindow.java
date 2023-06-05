@@ -62,24 +62,24 @@ public class MainWindow {
         });
 
         menuWindow.joinGameButton.addActionListener(back -> {
-            menuWindow.menuPlay.setVisible(false);
-            menuWindow.menuJoinGame.setVisible(true);
 
-            try {
-                this.client=new Client();
-                this.client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
-                this.client.SetCommunicationParameters(this.client.clientSocket);
+            if(this.client==null){
 
-                ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.joinGameListButtons,alertWindow);
-                clientReadFromServer.start();
+                try {
+                    this.client=new Client();
+                    this.client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
+                    this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,client.fromClient,menuWindow,menuWindow.joinGameListButtons,alertWindow);
+                    clientReadFromServer.start();
 
-            } catch (IOException e) {
-                System.out.print(e);
-                /*statusButton.setVisible(true);*/
+                    this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
+
+                } catch (IOException e) {
+                    System.out.print(e);
+                    /*statusButton.setVisible(true);*/
+                }
             }
-
         });
 
         menuWindow.enterHostMenuButton.addActionListener(back -> {
@@ -134,7 +134,7 @@ public class MainWindow {
                     this.client.ClientConnect("localhost",8080);
                     this.client.SetCommunicationParameters(this.client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,menuWindow,menuWindow.hostGameListButtons,alertWindow);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,client.fromClient,menuWindow,menuWindow.hostGameListButtons,alertWindow);
                     clientReadFromServer.start();
                     this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 

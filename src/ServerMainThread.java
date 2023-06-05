@@ -79,7 +79,11 @@ public class ServerMainThread extends Thread{
                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                 indexToDel=i;
                 if(i==0){
-                    System.out.print("HOSTOFF\n");
+                    for(int j=1;j<server.listOfCommunication.size();j++){
+                        server.listOfCommunication.get(j).message="ForceQuit";
+                        server.listOfCommunication.get(j).syncServerWriteToClient.release();
+                    }
+                    break;
                 }
             }else{
                 server.listOfCommunication.get(i).message="PlayerDisconnect:"+val.nickName;

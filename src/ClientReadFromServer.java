@@ -2,16 +2,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class ClientReadFromServer extends Thread{
-    private BufferedReader intoClient;
+    private final BufferedReader intoClient;
+
+    private PrintWriter fromClient;
+
     MenuWindow menuWindow;
     List<JButton> listButtons;
     int countOfPlayer;
     NickNameTakenWindow alertWindow;
-    public ClientReadFromServer(BufferedReader intoClient,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow) {
+    public ClientReadFromServer(BufferedReader intoClient,PrintWriter fromClient,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow) {
         this.intoClient=intoClient;
+        this.fromClient=fromClient;
         this.menuWindow=menuWindow;
         this.listButtons=listButtons;
         countOfPlayer=0;
@@ -75,7 +80,23 @@ public class ClientReadFromServer extends Thread{
                         listButtons.get(i).setText(String.valueOf(i+1));
                     }
                     menuWindow.menuPlay.setVisible(true);
+                    menuWindow.menuHostGame.setVisible(false);
                     menuWindow.menuJoinGame.setVisible(false);
+                    return;
+                }
+
+                if(message.equals("ForceQuit")){
+                    fromClient.println("Quit");
+                    for(int i=0;i<listButtons.size();i++){
+                        listButtons.get(i).setText(String.valueOf(i+1));
+                    }
+                    menuWindow.menuPlay.setVisible(true);
+                    menuWindow.menuHostGame.setVisible(false);
+                    menuWindow.menuJoinGame.setVisible(false);
+
+                    alertWindow.setMessage("Host odłaczony!!");
+                    alertWindow.show();
+
                     return;
                 }
 

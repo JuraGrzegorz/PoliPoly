@@ -15,6 +15,10 @@ public class ServerWriteTOClient extends Thread{
         while (true){
             try {
                 communication.syncServerWriteToClient.acquire();
+                if(communication.message.equals("ConfirmQuit") || communication.message.equals("ForceQuit")){
+                    fromServer.println(communication.message);
+                    break;
+                }
                 fromServer.println(communication.message);
                 communication.message="";
             } catch (InterruptedException e) {

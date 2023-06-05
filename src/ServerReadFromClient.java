@@ -18,6 +18,10 @@ public class ServerReadFromClient extends Thread{
         while (true){
             try {
                 communication.message=intoServer.readLine();
+                if(communication.message.equals("Quit")){
+                    syncJoiningPlayers.release();
+                    break;
+                }
                 syncJoiningPlayers.release();
             } catch (IOException e) {
                 throw new RuntimeException(e);
