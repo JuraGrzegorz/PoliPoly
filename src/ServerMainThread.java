@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ServerMainThread extends Thread{
-    private Server server;
+    private final Server server;
 
     ServerMainThread(Server server){
         this.server=server;

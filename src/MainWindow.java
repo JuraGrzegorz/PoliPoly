@@ -1,31 +1,27 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.*;
-import java.util.List;
 
 
 public class MainWindow {
     private final JFrame window;
     private static final int BUTTONFONTSIZE = 16;
 
-    Server server;
-    Client client;
+    private Server server;
+    private Client client;
     boolean gameStarted;
     boolean stopHostingGame;
 
-    NickNameTakenWindow alertWindow;
+    private final NickNameTakenWindow alertWindow;
 
     public MainWindow(){
         gameStarted=false;
         stopHostingGame=false;
         MenuWindow menuWindow=new MenuWindow();
         alertWindow=new NickNameTakenWindow();
-        client=null;
+        Player player=new Player();
+
         JPanel container;
         // Tworzenie panelu Container
         container = new JPanel() {
@@ -63,35 +59,36 @@ public class MainWindow {
 
         menuWindow.joinGameButton.addActionListener(back -> {
 
-            if(this.client==null){
-
+            if(!player.playerConnected){
                 try {
-                    this.client=new Client();
-                    this.client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
-                    this.client.SetCommunicationParameters(this.client.clientSocket);
-
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,client.fromClient,menuWindow,menuWindow.joinGameListButtons,alertWindow);
+                    client=new Client();
+                    client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
+                    client.SetCommunicationParameters(client.clientSocket);
+                    player.PlayerConnect();
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player);
                     clientReadFromServer.start();
 
-                    this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
+                    client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
 
                 } catch (IOException e) {
-                    System.out.print(e);
-                    /*statusButton.setVisible(true);*/
+
                 }
+            }else{
+                alertWindow.setMessage("Jesteś juz w lobby!!");
+                alertWindow.show();
             }
         });
 
         menuWindow.enterHostMenuButton.addActionListener(back -> {
-            this.server=new Server();
+            server=new Server();
 
             synchronized (this) {
                 stopHostingGame=false;
             }
 
             try {
-                this.server.openSocket(8080);
-                this.server.serverSocketChannel.setSoTimeout(1000);
+                server.openSocket(8080);
+                server.serverSocketChannel.setSoTimeout(1000);
 
             } catch (IOException e) {
                 alertWindow.setMessage("Server juz istnieje!");
@@ -114,9 +111,9 @@ public class MainWindow {
                     }
                     Socket tmp_clientSock = null;
                     try {
-                        tmp_clientSock = this.server.serverSocketChannel.accept();
+                        tmp_clientSock = server.serverSocketChannel.accept();
                         server.addSemaphore();
-                        Communication tmp_Comm=this.server.listOfCommunication.get(this.server.listOfCommunication.size()-1);
+                        Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
@@ -130,13 +127,13 @@ public class MainWindow {
 
             while (true){
                 try {
-                    this.client=new Client();
-                    this.client.ClientConnect("localhost",8080);
-                    this.client.SetCommunicationParameters(this.client.clientSocket);
+                    client=new Client();
+                    client.ClientConnect("localhost",8080);
+                    client.SetCommunicationParameters(client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client.intoClient,client.fromClient,menuWindow,menuWindow.hostGameListButtons,alertWindow);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player);
                     clientReadFromServer.start();
-                    this.client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
+                    client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
                     break;
                 } catch (IOException e) {}
@@ -151,9 +148,11 @@ public class MainWindow {
         menuWindow.backFromJoinMenuButton.addActionListener(back -> {
             if(client!=null){
                 try{
-                    this.client.fromClient.println("Quit");
-                    client=null;
-                }catch (NullPointerException error){}
+                    client.fromClient.println("Quit");
+                    player.PlayerDisconnect();
+                }catch (NullPointerException error) {
+
+                }
             }else{
                 menuWindow.menuPlay.setVisible(true);
                 menuWindow.menuJoinGame.setVisible(false);
@@ -161,17 +160,27 @@ public class MainWindow {
         });
 
         menuWindow.backFromHostMenuButton.addActionListener(back -> {
-            try{
-                this.client.fromClient.println("Quit");
-            }catch (NullPointerException error){}
+            synchronized (this) {
+                stopHostingGame=true;
+                try {
+                    Thread.sleep(1000);
+                    server.serverSocketChannel.close();
+                    client.fromClient.println("Quit");
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         });
 
         menuWindow.changeNickNameHostButton.addActionListener(back -> {
-            this.client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
+            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
         });
 
         menuWindow.changeNickNameJoinButton.addActionListener(back -> {
-            this.client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
+            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
         });
 
 

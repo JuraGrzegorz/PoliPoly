@@ -26,7 +26,7 @@ public class Server {
         syncJoiningPlayers=new Semaphore(0);
     }
     void openSocket(int port) throws IOException {
-        this.serverSocketChannel= new ServerSocket(port);
+        serverSocketChannel= new ServerSocket(port);
     }
     void addSemaphore(){
         Communication tmp=new Communication();

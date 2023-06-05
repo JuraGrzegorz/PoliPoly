@@ -18,8 +18,21 @@ public class Client {
         if(clientSocket==null){
             return;
         }
-        this.fromClient = new PrintWriter(clientSocket.getOutputStream(), true);
-        this.intoClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        fromClient = new PrintWriter(clientSocket.getOutputStream(), true);
+        intoClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    }
+}
+
+class Player{
+    boolean playerConnected;
+    Player(){
+        playerConnected=false;
     }
 
+    void PlayerConnect(){
+        playerConnected=true;
+    }
+    void PlayerDisconnect(){
+        playerConnected=false;
+    }
 }
