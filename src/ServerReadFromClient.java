@@ -5,9 +5,9 @@ import java.net.Socket;
 import java.util.concurrent.Semaphore;
 
 public class ServerReadFromClient extends Thread{
-    private BufferedReader  intoServer;
-    private Communication communication;
-    Semaphore syncJoiningPlayers;
+    private final BufferedReader  intoServer;
+    private final Communication communication;
+    private final Semaphore syncJoiningPlayers;
     public ServerReadFromClient(Socket clientSocket, Communication communication, Semaphore syncJoiningPlayers) throws IOException {
         this.intoServer=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this.communication=communication;

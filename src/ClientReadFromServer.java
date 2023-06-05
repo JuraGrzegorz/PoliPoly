@@ -6,17 +6,15 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class ClientReadFromServer extends Thread{
-    private final BufferedReader intoClient;
-
-    private PrintWriter fromClient;
-
-    MenuWindow menuWindow;
-    List<JButton> listButtons;
-    int countOfPlayer;
-    NickNameTakenWindow alertWindow;
-    public ClientReadFromServer(BufferedReader intoClient,PrintWriter fromClient,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow) {
-        this.intoClient=intoClient;
-        this.fromClient=fromClient;
+    private final Client client;
+    private final Player player;
+    private final MenuWindow menuWindow;
+    private final List<JButton> listButtons;
+    private int countOfPlayer;
+    private final NickNameTakenWindow alertWindow;
+    public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
+        this.client=client;
+        this.player=player;
         this.menuWindow=menuWindow;
         this.listButtons=listButtons;
         countOfPlayer=0;
@@ -27,7 +25,7 @@ public class ClientReadFromServer extends Thread{
         String message;
         while (true){
             try {
-                message=intoClient.readLine();
+                message=client.intoClient.readLine();
                 if(message.startsWith("JoiningLobby:")){
                     String[] tmp=message.split(":");
                     tmp=tmp[1].split(",");
@@ -86,17 +84,17 @@ public class ClientReadFromServer extends Thread{
                 }
 
                 if(message.equals("ForceQuit")){
-                    fromClient.println("Quit");
+                    client.fromClient.println("Quit");
                     for(int i=0;i<listButtons.size();i++){
                         listButtons.get(i).setText(String.valueOf(i+1));
                     }
+
                     menuWindow.menuPlay.setVisible(true);
-                    menuWindow.menuHostGame.setVisible(false);
                     menuWindow.menuJoinGame.setVisible(false);
 
                     alertWindow.setMessage("Host odłaczony!!");
                     alertWindow.show();
-
+                    player.PlayerDisconnect();
                     return;
                 }
 

@@ -3,8 +3,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerWriteTOClient extends Thread{
-    private PrintWriter fromServer;
-    private Communication communication;
+    private final PrintWriter fromServer;
+    private final Communication communication;
 
     public ServerWriteTOClient(Socket clientSocket, Communication communication) throws IOException {
         this.fromServer=new PrintWriter(clientSocket.getOutputStream(), true);
