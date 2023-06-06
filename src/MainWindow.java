@@ -151,7 +151,7 @@ public class MainWindow {
                     client.fromClient.println("Quit");
                     player.PlayerDisconnect();
                 }catch (NullPointerException error) {
-
+                    System.err.println(error.getMessage());
                 }
             }else{
                 menuWindow.menuPlay.setVisible(true);
@@ -187,7 +187,11 @@ public class MainWindow {
 
 
         menuWindow.startGameButton.addActionListener(back -> {
-            GamingWindow a=new GamingWindow();
+            try {
+                GamingWindow a=new GamingWindow();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             /*synchronized (this) {
                 gameStarted=true;

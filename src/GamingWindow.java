@@ -1,6 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GamingWindow {
     final private int RECTANGULAR_FIELDS_AMOUNT = 28;
@@ -14,16 +18,29 @@ public class GamingWindow {
     final private int SQUARE_PLACEMENT_OFFSET_X = 864;
     final private int SQUARE_PLACEMENT_OFFSET_Y = 864;
 
+    final private int PLAYER_SECTION_OFFSET_X = 1085;
+    final private int PLAYER_SECTION_OFFSET_Y = 25;
+
+    JFrame windowFrame;
+    JPanel gameContents;
+    JPanel cardsPanel;
+    JPanel cashPanel;
+    JPanel playerTurnPanel;
+    JPanel mouseHoverInfoPanel;
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
-    GamingWindow(){
-        JFrame windowFrame = new JFrame();
-        JPanel gameContents = new JPanel();
-        gameContents.setPreferredSize(new Dimension(1080,1080));
+    GamingWindow() throws IOException {
+        windowFrame = new JFrame();
+        gameContents = new JPanel();
+        cardsPanel = new JPanel();
+        cashPanel = new JPanel();
+        playerTurnPanel = new JPanel();
+        mouseHoverInfoPanel = new JPanel();
+
+        gameContents.setPreferredSize(new Dimension(WINDOW_SIDE_LENGTH,WINDOW_SIDE_HEIGHT));
         windowFrame.getContentPane().add(gameContents);
         windowFrame.pack();
 
-        windowFrame.setSize(WINDOW_SIDE_LENGTH, WINDOW_SIDE_HEIGHT);
         windowFrame.setTitle("Polipoly");
         windowFrame.setLayout(null);
         windowFrame.setVisible(true);
@@ -42,10 +59,16 @@ public class GamingWindow {
         paintVerticalRectangularFields(windowFrame, verticalFieldsArray);
         paintCornerFields(windowFrame, squareFieldsArray);
         paintHorizontalRectangularFields(windowFrame, horizontalFieldsArray);
-
+        paintPlayerSection(windowFrame, cardsPanel, cashPanel, playerTurnPanel, mouseHoverInfoPanel);
         windowFrame.add(gameContents);
 
+        windowFrame.invalidate();
+        windowFrame.validate();
+        windowFrame.repaint();
     }
+
+
+
 
     private void paintHorizontalRectangularFields(JFrame windowFrame, JPanel[] horizontalFieldsArray) {
         int rectangularFieldOffset = SQUARE_FIELDS_SIDE_LENGTH;
@@ -132,5 +155,61 @@ public class GamingWindow {
             squareFieldsArray[i].setBorder(blackline);
             windowFrame.add(squareFieldsArray[i]);
         }
+    }
+
+    public void paintPlayerSection(JFrame gameWindow, JPanel cardsPanel, JPanel cashPanel, JPanel playerTurnPanel, JPanel mouseHoverInfoPanel) throws IOException {
+        generateCardsPanel(cardsPanel);
+        generateCashPanel(cashPanel);
+        generatePlayerTurnPanel(playerTurnPanel);
+        generateMouseHoverInfoPanel(mouseHoverInfoPanel);
+
+        gameWindow.add(cardsPanel);
+        gameWindow.add(cashPanel);
+        gameWindow.add(playerTurnPanel);
+        gameWindow.add(mouseHoverInfoPanel);
+    }
+
+    public void generateCardsPanel(JPanel cardsPanel) throws IOException {
+        Rectangle cardsPanelRectangle = new Rectangle(25+ PLAYER_SECTION_OFFSET_X, 340-PLAYER_SECTION_OFFSET_Y, 725, 630);
+        cardsPanel.setBounds(cardsPanelRectangle);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\karciochy.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        cardsPanel.add(picLabel);
+        cardsPanel.setBorder(blackline);
+        cardsPanel.setBackground(Color.black);
+//        cardsPanel.setBackground(Color.CYAN);
+    }
+
+    public void generateCashPanel(JPanel cashPanel) throws IOException {
+        Rectangle cashPanelRectangle = new Rectangle(450+ PLAYER_SECTION_OFFSET_X, 25-PLAYER_SECTION_OFFSET_Y, 300, 50);
+        cashPanel.setBounds(cashPanelRectangle);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\manymanymany.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        cashPanel.add(picLabel);
+        cashPanel.setBorder(blackline);
+        cashPanel.setBackground(Color.black);
+//        cashPanel.setBackground(Color.CYAN);
+    }
+
+    private void generatePlayerTurnPanel(JPanel playerTurnPanel) throws IOException {
+        Rectangle playerTurnPanelRectangle = new Rectangle(25+ PLAYER_SECTION_OFFSET_X, 25-PLAYER_SECTION_OFFSET_Y, 400, 50);
+        playerTurnPanel.setBounds(playerTurnPanelRectangle);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\turagracz.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        playerTurnPanel.add(picLabel);
+        playerTurnPanel.setBorder(blackline);
+        playerTurnPanel.setBackground(Color.black);
+//        playerTurnPanel.setBackground(Color.CYAN);
+    }
+
+    private void generateMouseHoverInfoPanel(JPanel mouseHoverInfoPanel) throws IOException {
+        Rectangle mouseHoverInfoPanelRectangle = new Rectangle(25+ PLAYER_SECTION_OFFSET_X, 100-PLAYER_SECTION_OFFSET_Y, 725, 220);
+        mouseHoverInfoPanel.setBounds(mouseHoverInfoPanelRectangle);
+        BufferedImage myPicture = ImageIO.read(new File("assets\\info.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        mouseHoverInfoPanel.add(picLabel);
+        mouseHoverInfoPanel.setBorder(blackline);
+        mouseHoverInfoPanel.setBackground(Color.black);
+//        mouseHoverInfoPanel.setBackground(Color.CYAN);
     }
 }
