@@ -27,6 +27,11 @@ public class GamingWindow {
     JPanel cashPanel;
     JPanel playerTurnPanel;
     JPanel mouseHoverInfoPanel;
+
+    JPanel[] verticalFieldsArray;
+    JPanel[] horizontalFieldsArray;
+    JPanel[] squareFieldsArray;
+
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
     GamingWindow() throws IOException {
@@ -51,14 +56,12 @@ public class GamingWindow {
         gameContents.setVisible(true);
         gameContents.setLayout(null);
 
-        JPanel[] verticalFieldsArray = new JPanel[14];
-        JPanel[] horizontalFieldsArray = new JPanel[14];
-        JPanel[] squareFieldsArray = new JPanel[4];
+        verticalFieldsArray = new JPanel[14];
+        horizontalFieldsArray = new JPanel[14];
+        squareFieldsArray = new JPanel[4];
 
-
-        paintVerticalRectangularFields(windowFrame, verticalFieldsArray);
         paintCornerFields(windowFrame, squareFieldsArray);
-        paintHorizontalRectangularFields(windowFrame, horizontalFieldsArray);
+        paintRectangularFields();
         paintPlayerSection(windowFrame, cardsPanel, cashPanel, playerTurnPanel, mouseHoverInfoPanel);
         windowFrame.add(gameContents);
 
@@ -70,11 +73,13 @@ public class GamingWindow {
 
 
 
-    private void paintHorizontalRectangularFields(JFrame windowFrame, JPanel[] horizontalFieldsArray) {
+    private void paintRectangularFields() {
         int rectangularFieldOffset = SQUARE_FIELDS_SIDE_LENGTH;
         for(int i=0; i<(RECTANGULAR_FIELDS_AMOUNT/2)-1; i+=2){
             horizontalFieldsArray[i] = new JPanel();
             horizontalFieldsArray[i+1] = new JPanel();
+            verticalFieldsArray[i] = new JPanel();
+            verticalFieldsArray[i+1] = new JPanel();
 
             horizontalFieldsArray[i].setBounds(
                     rectangularFieldOffset,
@@ -89,28 +94,6 @@ public class GamingWindow {
                     RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH
             );
 
-            horizontalFieldsArray[i].setBackground(Color.cyan);
-            horizontalFieldsArray[i+1].setBackground(Color.cyan);
-
-            horizontalFieldsArray[i].setVisible(true);
-            horizontalFieldsArray[i+1].setVisible(true);
-
-            horizontalFieldsArray[i].setBorder(blackline);
-            horizontalFieldsArray[i+1].setBorder(blackline);
-
-            windowFrame.add(horizontalFieldsArray[i]);
-            windowFrame.add(horizontalFieldsArray[i+1]);
-            rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
-        }
-    }
-
-
-    private void paintVerticalRectangularFields(JFrame windowFrame, JPanel[] verticalFieldsArray) {
-        int rectangularFieldOffset = SQUARE_FIELDS_SIDE_LENGTH;
-        for(int i=0; i<(RECTANGULAR_FIELDS_AMOUNT/2)-1; i+=2){
-            verticalFieldsArray[i] = new JPanel();
-            verticalFieldsArray[i+1] = new JPanel();
-
             verticalFieldsArray[i].setBounds(
                     0,
                     rectangularFieldOffset,
@@ -124,21 +107,29 @@ public class GamingWindow {
                     RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH
             );
 
+            horizontalFieldsArray[i].setBackground(Color.cyan);
+            horizontalFieldsArray[i+1].setBackground(Color.cyan);
             verticalFieldsArray[i].setBackground(Color.cyan);
             verticalFieldsArray[i+1].setBackground(Color.cyan);
 
+            horizontalFieldsArray[i].setVisible(true);
+            horizontalFieldsArray[i+1].setVisible(true);
             verticalFieldsArray[i].setVisible(true);
             verticalFieldsArray[i+1].setVisible(true);
 
+            horizontalFieldsArray[i].setBorder(blackline);
+            horizontalFieldsArray[i+1].setBorder(blackline);
             verticalFieldsArray[i].setBorder(blackline);
             verticalFieldsArray[i+1].setBorder(blackline);
 
+            windowFrame.add(horizontalFieldsArray[i]);
+            windowFrame.add(horizontalFieldsArray[i+1]);
             windowFrame.add(verticalFieldsArray[i]);
             windowFrame.add(verticalFieldsArray[i+1]);
+
             rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
         }
     }
-
 
     private void paintCornerFields(JFrame windowFrame, JPanel[] squareFieldsArray) {
         for(int i=0; i<SQUARE_FIELDS_AMOUNT; i++){
