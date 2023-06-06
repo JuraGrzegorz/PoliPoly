@@ -14,12 +14,18 @@ public class GamingWindow {
     final private int SQUARE_PLACEMENT_OFFSET_X = 864;
     final private int SQUARE_PLACEMENT_OFFSET_Y = 864;
 
+    JFrame windowFrame;
+    JPanel gameContents;
+    JPanel[] verticalFieldsArray;
+    JPanel[] horizontalFieldsArray;
+    JPanel[] squareFieldsArray;
+
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
-    GamingWindow(){
-        JFrame windowFrame = new JFrame();
-        JPanel gameContents = new JPanel();
-        gameContents.setPreferredSize(new Dimension(1080,1080));
+    GamingWindow() {
+        windowFrame = new JFrame();
+        gameContents = new JPanel();
+        gameContents.setPreferredSize(new Dimension(1080, 1080));
         windowFrame.getContentPane().add(gameContents);
         windowFrame.pack();
 
@@ -34,9 +40,9 @@ public class GamingWindow {
         gameContents.setVisible(true);
         gameContents.setLayout(null);
 
-        JPanel[] verticalFieldsArray = new JPanel[14];
-        JPanel[] horizontalFieldsArray = new JPanel[14];
-        JPanel[] squareFieldsArray = new JPanel[4];
+        verticalFieldsArray = new JPanel[14];
+        horizontalFieldsArray = new JPanel[14];
+        squareFieldsArray = new JPanel[4];
 
 
         paintVerticalRectangularFields(windowFrame, verticalFieldsArray);
@@ -49,9 +55,9 @@ public class GamingWindow {
 
     private void paintHorizontalRectangularFields(JFrame windowFrame, JPanel[] horizontalFieldsArray) {
         int rectangularFieldOffset = SQUARE_FIELDS_SIDE_LENGTH;
-        for(int i=0; i<(RECTANGULAR_FIELDS_AMOUNT/2)-1; i+=2){
+        for (int i = 0; i < (RECTANGULAR_FIELDS_AMOUNT / 2) - 1; i += 2) {
             horizontalFieldsArray[i] = new JPanel();
-            horizontalFieldsArray[i+1] = new JPanel();
+            horizontalFieldsArray[i + 1] = new JPanel();
 
             horizontalFieldsArray[i].setBounds(
                     rectangularFieldOffset,
@@ -59,7 +65,7 @@ public class GamingWindow {
                     RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH,
                     RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH
             );
-            horizontalFieldsArray[i+1].setBounds(
+            horizontalFieldsArray[i + 1].setBounds(
                     rectangularFieldOffset,
                     SQUARE_PLACEMENT_OFFSET_Y,
                     RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH,
@@ -67,16 +73,16 @@ public class GamingWindow {
             );
 
             horizontalFieldsArray[i].setBackground(Color.cyan);
-            horizontalFieldsArray[i+1].setBackground(Color.cyan);
+            horizontalFieldsArray[i + 1].setBackground(Color.cyan);
 
             horizontalFieldsArray[i].setVisible(true);
-            horizontalFieldsArray[i+1].setVisible(true);
+            horizontalFieldsArray[i + 1].setVisible(true);
 
             horizontalFieldsArray[i].setBorder(blackline);
-            horizontalFieldsArray[i+1].setBorder(blackline);
+            horizontalFieldsArray[i + 1].setBorder(blackline);
 
             windowFrame.add(horizontalFieldsArray[i]);
-            windowFrame.add(horizontalFieldsArray[i+1]);
+            windowFrame.add(horizontalFieldsArray[i + 1]);
             rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
         }
     }
@@ -84,9 +90,9 @@ public class GamingWindow {
 
     private void paintVerticalRectangularFields(JFrame windowFrame, JPanel[] verticalFieldsArray) {
         int rectangularFieldOffset = SQUARE_FIELDS_SIDE_LENGTH;
-        for(int i=0; i<(RECTANGULAR_FIELDS_AMOUNT/2)-1; i+=2){
+        for (int i = 0; i < (RECTANGULAR_FIELDS_AMOUNT / 2) - 1; i += 2) {
             verticalFieldsArray[i] = new JPanel();
-            verticalFieldsArray[i+1] = new JPanel();
+            verticalFieldsArray[i + 1] = new JPanel();
 
             verticalFieldsArray[i].setBounds(
                     0,
@@ -94,7 +100,7 @@ public class GamingWindow {
                     RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH,
                     RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH
             );
-            verticalFieldsArray[i+1].setBounds(
+            verticalFieldsArray[i + 1].setBounds(
                     SQUARE_PLACEMENT_OFFSET_X,
                     rectangularFieldOffset,
                     RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH,
@@ -102,29 +108,32 @@ public class GamingWindow {
             );
 
             verticalFieldsArray[i].setBackground(Color.cyan);
-            verticalFieldsArray[i+1].setBackground(Color.cyan);
+            verticalFieldsArray[i + 1].setBackground(Color.cyan);
 
             verticalFieldsArray[i].setVisible(true);
-            verticalFieldsArray[i+1].setVisible(true);
+            verticalFieldsArray[i + 1].setVisible(true);
 
             verticalFieldsArray[i].setBorder(blackline);
-            verticalFieldsArray[i+1].setBorder(blackline);
+            verticalFieldsArray[i + 1].setBorder(blackline);
 
             windowFrame.add(verticalFieldsArray[i]);
-            windowFrame.add(verticalFieldsArray[i+1]);
+            windowFrame.add(verticalFieldsArray[i + 1]);
             rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
         }
     }
 
 
     private void paintCornerFields(JFrame windowFrame, JPanel[] squareFieldsArray) {
-        for(int i=0; i<SQUARE_FIELDS_AMOUNT; i++){
+        for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
             squareFieldsArray[i] = new JPanel();
             switch (i) {
                 case 0 -> squareFieldsArray[i].setBounds(0, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                case 1 -> squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 1 ->
+                        squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 2 ->
+                        squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 3 ->
+                        squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
 
             }
             squareFieldsArray[i].setBackground(Color.green);
