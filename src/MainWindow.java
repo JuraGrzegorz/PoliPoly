@@ -146,7 +146,7 @@ public class MainWindow {
         });
 
         menuWindow.backFromJoinMenuButton.addActionListener(back -> {
-            if(client!=null){
+            if(player.playerConnected){
                 try{
                     client.fromClient.println("Quit");
                     player.PlayerDisconnect();
@@ -188,6 +188,7 @@ public class MainWindow {
 
         menuWindow.startGameButton.addActionListener(back -> {
             GamingWindow a=new GamingWindow();
+
             /*synchronized (this) {
                 gameStarted=true;
             }*/
