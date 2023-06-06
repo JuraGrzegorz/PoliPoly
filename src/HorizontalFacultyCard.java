@@ -2,19 +2,21 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.io.IOException;
 
-public class FacultyCard {
+public class HorizontalFacultyCard {
 
-//    private String frameTitle;
+    //    private String frameTitle;
     private JFrame gameFrame;
     private JPanel uponPanel;
     private JPanel namePanel;
     private JPanel[] pawnPanel;
     private JPanel[] housePanel;
 
-    public FacultyCard(){
+    public HorizontalFacultyCard(){
         gameFrame = new JFrame();
         uponPanel = new JPanel(new GridBagLayout());
         namePanel = new JPanel(new GridBagLayout());
@@ -54,54 +56,102 @@ public class FacultyCard {
 
         gameFrame.setTitle("Karta wydzialu");
         gameFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        gameFrame.setSize(400,600);
+        gameFrame.setSize(165,100);
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setResizable(false);
         gameFrame.setVisible(true);
 
     }
-    private void makeUponPanel(){
-        Rectangle uponPanelRectangle = new Rectangle(0,0,400,100);
+    private void makeUponPanel() {
+        Rectangle uponPanelRectangle = new Rectangle(0, 0, 28, 100);
         uponPanel.setBounds(uponPanelRectangle);
-        JLabel uponPanelLabel = new JLabel("1500$");
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 30));
+        JPanel uponPanelContent = new JPanel(new BorderLayout());
+        uponPanelContent.setOpaque(false);
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
-        constraints.fill = GridBagConstraints.CENTER;
+        JLabel uponPanelLabel = new JLabel("1500$") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.translate(getWidth() / 2, getHeight() / 2);
+                g2d.rotate(-Math.PI / 2);
+                g2d.setFont(getFont());
+                g2d.setColor(getForeground());
+                g2d.drawString(getText(), -getFontMetrics(getFont()).stringWidth(getText()) / 2, getFontMetrics(getFont()).getAscent() / 2);
+                g2d.dispose();
+            }
+        };
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+
+        uponPanelLabel.setVerticalAlignment(JLabel.CENTER);
+        uponPanelLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        uponPanelLabel.setPreferredSize(new Dimension(uponPanelRectangle.height, uponPanelRectangle.width));
+
+        uponPanelContent.add(Box.createVerticalGlue(), BorderLayout.NORTH);
+        uponPanelContent.add(Box.createHorizontalGlue(), BorderLayout.WEST);
+        uponPanelContent.add(uponPanelLabel, BorderLayout.CENTER);
+        uponPanelContent.add(Box.createHorizontalGlue(), BorderLayout.EAST);
+        uponPanelContent.add(Box.createVerticalGlue(), BorderLayout.SOUTH);
+
+        uponPanel.setLayout(new BorderLayout());
+        uponPanel.add(uponPanelContent, BorderLayout.CENTER);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         uponPanel.setBorder(border);
 
-        uponPanel.setBackground(Color.green);
-        uponPanel.add(uponPanelLabel, constraints);
+        uponPanel.setBackground(Color.GREEN);
+
+        gameFrame.add(uponPanel);
     }
 
-    private void makeNamePanel(){
-        Rectangle nameRectangle = new Rectangle(0,100,400,50);
-        namePanel.setBounds(nameRectangle);
-        JLabel nameLabel = new JLabel("DMCS");
-        nameLabel.setFont(new Font("Calibri", Font.BOLD, 30));
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
-        constraints.fill = GridBagConstraints.CENTER;
+
+
+
+    private void makeNamePanel(){
+        Rectangle nameRectangle = new Rectangle(28,0,14,100);
+        namePanel.setBounds(nameRectangle);
+        JPanel namePanelContent = new JPanel(new BorderLayout());
+        namePanelContent.setOpaque(false);
+
+        JLabel namePanelLabel = new JLabel("DMCS") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.translate(getWidth() / 2, getHeight() / 2);
+                g2d.rotate(-Math.PI / 2);
+                g2d.setFont(getFont());
+                g2d.setColor(getForeground());
+                g2d.drawString(getText(), -getFontMetrics(getFont()).stringWidth(getText()) / 2, getFontMetrics(getFont()).getAscent() / 2);
+                g2d.dispose();
+            }
+        };
+        namePanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+
+        namePanelLabel.setVerticalAlignment(JLabel.CENTER);
+        namePanelLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        namePanelLabel.setPreferredSize(new Dimension(nameRectangle.height, nameRectangle.width));
+
+        namePanelContent.add(Box.createVerticalGlue(), BorderLayout.NORTH);
+        namePanelContent.add(Box.createHorizontalGlue(), BorderLayout.WEST);
+        namePanelContent.add(namePanelLabel, BorderLayout.CENTER);
+        namePanelContent.add(Box.createHorizontalGlue(), BorderLayout.EAST);
+        namePanelContent.add(Box.createVerticalGlue(), BorderLayout.SOUTH);
+
+        namePanel.setLayout(new BorderLayout());
+        namePanel.add(namePanelContent, BorderLayout.CENTER);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         namePanel.setBorder(border);
 
         namePanel.setBackground(Color.WHITE);
-        namePanel.add(nameLabel,constraints);
+
+        gameFrame.add(namePanel);
     }
     private void makePawnPanel() {
         for (int i = 0; i < 4; i++) {
-            pawnPanel[i].setBounds(90 + i % 2 * 120, 190 + i / 2 * 120, 80, 80);
+            pawnPanel[i].setBounds(52 + i / 2 * 33, 22 + i % 2 * 30, 22, 22);
             pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
             try {
@@ -109,8 +159,8 @@ public class FacultyCard {
                 Image pawnImage = ImageIO.read(pawnImageFile);
 
                 // Scale the pawn image to a larger size
-                int scaledWidth = 60;
-                int scaledHeight = 60;
+                int scaledWidth = 15;
+                int scaledHeight = 15;
                 Image scaledPawnImage = pawnImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
                 // Create a custom JPanel to display the pawn graphic
@@ -119,7 +169,7 @@ public class FacultyCard {
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
                         // Draw the scaled pawn image with transparency
-                        g.drawImage(scaledPawnImage, 10, 10, null);
+                        g.drawImage(scaledPawnImage, 0, 0, null);
                     }
                 };
                 pawnImagePanel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
@@ -138,7 +188,7 @@ public class FacultyCard {
         }
     }
     private void makeHousePanel(){
-        Rectangle houseRectangle0 = new Rectangle(10,450,100,100);
+        Rectangle houseRectangle0 = new Rectangle(124,3,25,25);
         housePanel[0].setBounds(houseRectangle0);
         housePanel[0].setBackground(Color.lightGray);
         JLabel houseLabel0 = new JLabel("D1");
@@ -146,14 +196,14 @@ public class FacultyCard {
         housePanel[0].setBorder(border);
         housePanel[0].add(houseLabel0);
 
-        Rectangle houseRectangle1 = new Rectangle(140,450,100,100);
+        Rectangle houseRectangle1 = new Rectangle(124,35,25,25);
         housePanel[1].setBounds(houseRectangle1);
         housePanel[1].setBackground(Color.lightGray);
         JLabel houseLabel1 = new JLabel("D2");
         housePanel[1].setBorder(border);
         housePanel[1].add(houseLabel1);
 
-        Rectangle houseRectangle2 = new Rectangle(270,450,100,100);
+        Rectangle houseRectangle2 = new Rectangle(124,67,25,25);
         housePanel[2].setBounds(houseRectangle2);
         housePanel[2].setBackground(Color.lightGray);
         JLabel houseLabel2 = new JLabel("D3");
