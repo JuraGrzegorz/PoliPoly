@@ -40,7 +40,7 @@ import javax.imageio.ImageIO;
 
         public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
             for (int i = 0; i < 4; i++) {
-                pawnPanel[i].setBounds(90 + i % 2 * 120, 190 + i / 2 * 120, 80, 80);
+                pawnPanel[i].setBounds(22 + i % 2 * 30, 52 + i / 2 * 33, 22, 22);
                 pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
                 try {

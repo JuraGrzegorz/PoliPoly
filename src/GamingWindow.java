@@ -119,6 +119,11 @@ public class GamingWindow {
             horizontalFieldsArray[i].setBorder(blackline);
             verticalFieldsArray[i].setBorder(blackline);
 
+            switch(i) {
+                case 1,2,5,6:
+
+            }
+
 
             horizontalFieldsArray[i].setLayout(null);
             if(i==2 || i==6){
@@ -135,10 +140,11 @@ public class GamingWindow {
 
                 imagePanel.setLayout(new OverlayLayout(imagePanel));
 
-                horizontalFieldsArray[i].add(imagePanel);
                 for(int j=0; j<4; j++) {
                     horizontalFieldsArray[i].add(pawnPanel[j]);
                 }
+                horizontalFieldsArray[i].add(imagePanel);
+
                 horizontalFieldsArray[i].setBorder(blackline);
             }
 

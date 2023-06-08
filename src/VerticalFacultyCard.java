@@ -127,6 +127,7 @@ public class VerticalFacultyCard extends JPanel {
                 e.printStackTrace();
             }
 
+
 //            JLabel pawnLabel = new JLabel();
 //            Border border = BorderFactory.createLineBorder(Color.BLACK);
 //            pawnPanel[i].setBorder(border);
