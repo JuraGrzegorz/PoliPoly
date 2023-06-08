@@ -16,6 +16,7 @@ public class GamingWindow {
     final private int WINDOW_SIDE_LENGTH = 1920;
     final private int WINDOW_SIDE_HEIGHT = 1080;
 
+
     final private int SQUARE_PLACEMENT_OFFSET_X = 864;
     final private int SQUARE_PLACEMENT_OFFSET_Y = 864;
 

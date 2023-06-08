@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
 public class HorizontalFacultyCard {
 
     //    private String frameTitle;

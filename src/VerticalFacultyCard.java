@@ -7,57 +7,10 @@ import java.io.IOException;
 
 public class VerticalFacultyCard extends JPanel {
 
-    //    private String frameTitle;
-//    private JPanel gameFrame;
-//    private static JPanel uponPanel;
-//    private static JPanel namePanel;
-//    private static JPanel[] pawnPanel;
-//    private static JPanel[] housePanel;
-
     public VerticalFacultyCard() {
-//        gameFrame = new JPanel(new GridBagLayout());
-//        uponPanel = new JPanel(new GridBagLayout());
-//        namePanel = new JPanel(new GridBagLayout());
-//        pawnPanel = new JPanel[4];
-//        for (int i = 0; i < 4; i++) {
-//            pawnPanel[i] = new JPanel();
-//        }
-//        housePanel = new JPanel[3];
-//        for (int i = 0; i < 3; i++) {
-//            housePanel[i] = new JPanel();
-//        }
 
-//        makeUponPanel();
-//        makeNamePanel();
-//        makePawnPanel();
-//        makeHousePanel();
-
-//        makeGameFrame();
     }
 
-//    public FacultyCard(String frameTitle){
-//        this.frameTitle = frameTitle;
-//
-//    }
-
-//    public void makeGameFrame() {
-//        gameFrame.setLayout(null);
-//
-//        gameFrame.add(uponPanel);
-//        gameFrame.add(namePanel);
-//        for (int i = 0; i < 4; i++) {
-//            gameFrame.add(pawnPanel[i]);
-//        }
-//        for (int i = 0; i < 3; i++) {
-//            gameFrame.add(housePanel[i]);
-//        }
-//
-//
-//        gameFrame.setBounds(0, 0, 100, 165);
-//        gameFrame.setVisible(true);
-//        add(gameFrame);
-
-//    }
 
     public static void makeUponPanel(JPanel uponPanel, int x) {
         Rectangle uponPanelRectangle;
