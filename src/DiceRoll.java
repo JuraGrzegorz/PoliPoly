@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -30,7 +29,7 @@ public class DiceRoll extends JPanel {
         currentDiceValue = 1; // Początkowa wartość kostki
 
         setPreferredSize(new Dimension(DICE_SIZE, DICE_SIZE));
-        setBackground(Color.GREEN);
+        setOpaque(false);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

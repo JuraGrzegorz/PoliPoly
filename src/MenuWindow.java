@@ -125,7 +125,7 @@ public class MenuWindow {
         menuPlay.add(Box.createVerticalGlue());
 
 
-        startGameButton = standardButtonGenerate("Star Game");
+        startGameButton = standardButtonGenerate("Rozpocznij");
 
 
         ip_info = new JLabel();

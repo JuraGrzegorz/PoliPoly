@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 public class GamingWindow {
     final private int RECTANGULAR_FIELDS_AMOUNT = 28;
@@ -34,12 +34,18 @@ public class GamingWindow {
     JPanel[] horizontalFieldsArray;
     JPanel[] squareFieldsArray;
 
+    JButton leaveFromGameButton;
+    JButton buyPropertyButton;
+
+    JPanel inGameButtonPanel;
+
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
     GamingWindow() throws IOException {
         windowFrame = new JFrame();
         gameContents = new JPanel();
         cardsPanel = new JPanel();
+        inGameButtonPanel = new JPanel();
         cashPanel = new JPanel();
         playerTurnPanel = new JPanel();
         mouseHoverInfoPanel = new JPanel();
@@ -54,7 +60,7 @@ public class GamingWindow {
         windowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         windowFrame.setResizable(false);
 
-        gameContents.setBackground(Color.white);
+        gameContents.setBackground(Color.LIGHT_GRAY);
         gameContents.setVisible(true);
         gameContents.setLayout(null);
 
@@ -223,67 +229,77 @@ public class GamingWindow {
             }
 
 
-                windowFrame.add(horizontalFieldsArray[i]);
-                windowFrame.add(verticalFieldsArray[i]);
+            windowFrame.add(horizontalFieldsArray[i]);
+            windowFrame.add(verticalFieldsArray[i]);
 
-                if (i % 2 == 0) {
-                    rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
-                }
+            if (i % 2 == 0) {
+                rectangularFieldOffset += RECTANGULAR_FIELDS_SHORTER_SIDE_LENGTH;
             }
         }
+    }
 
 
-        private void paintCornerFields (JFrame windowFrame, JPanel[]squareFieldsArray){
-            for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
-                squareFieldsArray[i] = new JPanel();
-                switch (i) {
-                    case 0 -> squareFieldsArray[i].setBounds(0, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 1 -> squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+    private void paintCornerFields (JFrame windowFrame, JPanel[]squareFieldsArray){
+        for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
+            squareFieldsArray[i] = new JPanel();
+            switch (i) {
+                case 0 -> squareFieldsArray[i].setBounds(0, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 1 -> squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
 
-                }
+            }
 
-                squareFieldsArray[i].setVisible(true);
-                squareFieldsArray[i].setBorder(blackline);
+            squareFieldsArray[i].setVisible(true);
+            squareFieldsArray[i].setBorder(blackline);
 
-                squareFieldsArray[i].setLayout(null);
-                JPanel[] pawnPanel = new JPanel[4];
-                for (int j = 0; j < 4; j++) {
-                    pawnPanel[j] = new JPanel();
-                }
-                JPanel imagePanel = new JPanel();
+            squareFieldsArray[i].setLayout(null);
+            JPanel[] pawnPanel = new JPanel[4];
+            for (int j = 0; j < 4; j++) {
+                pawnPanel[j] = new JPanel();
+            }
+            JPanel imagePanel = new JPanel();
 
-                String imagePath1 = "C:\\Users\\HP\\Desktop\\grey.png";
-                String imagePath2 = "C:\\Users\\HP\\Desktop\\white.png";
-                CornerCard.makeImagePanel(imagePanel, imagePath1);
-                CornerCard.makePawnPanel(pawnPanel, imagePath2);
+            String imagePath1 = "C:\\Users\\HP\\Desktop\\grey.png";
+            String imagePath2 = "C:\\Users\\HP\\Desktop\\white.png";
+            CornerCard.makeImagePanel(imagePanel, imagePath1);
+            CornerCard.makePawnPanel(pawnPanel, imagePath2);
 
-                imagePanel.setLayout(new OverlayLayout(imagePanel));
+            imagePanel.setLayout(new OverlayLayout(imagePanel));
 
-                for (int j = 0; j < 4; j++) {
-                    squareFieldsArray[i].add(pawnPanel[j]);
-                }
-                squareFieldsArray[i].add(imagePanel);
+            for (int j = 0; j < 4; j++) {
+                squareFieldsArray[i].add(pawnPanel[j]);
+            }
+            squareFieldsArray[i].add(imagePanel);
 
-                squareFieldsArray[i].setBorder(blackline);
+            squareFieldsArray[i].setBorder(blackline);
 
 //            squareFieldsArray[i].setBackground(Color.green);
 
-                windowFrame.add(squareFieldsArray[i]);
-            }
+            windowFrame.add(squareFieldsArray[i]);
         }
+    }
 
     public void paintPlayerSection(JFrame gameWindow, JPanel cardsPanel, JPanel cashPanel, JPanel playerTurnPanel, JPanel mouseHoverInfoPanel) throws IOException {
         generateCardsPanel(cardsPanel);
         generateCashPanel(cashPanel);
         generatePlayerTurnPanel(playerTurnPanel);
         generateMouseHoverInfoPanel(mouseHoverInfoPanel);
+        generateinGameButtonPanel(inGameButtonPanel);
+
+
+
 
         gameWindow.add(cardsPanel);
         gameWindow.add(cashPanel);
         gameWindow.add(playerTurnPanel);
         gameWindow.add(mouseHoverInfoPanel);
+        gameWindow.add(inGameButtonPanel);
+
+        DiceRoll diceRollPanel = new DiceRoll();
+        Rectangle diceRollPanelRectangle = new Rectangle(400, 400-PLAYER_SECTION_OFFSET_Y, 230, 230);
+        diceRollPanel.setBounds(diceRollPanelRectangle);
+        gameWindow.add(diceRollPanel);
     }
 
     public void generateCardsPanel(JPanel cardsPanel) throws IOException {
@@ -329,4 +345,21 @@ public class GamingWindow {
         mouseHoverInfoPanel.setBackground(Color.black);
 //        mouseHoverInfoPanel.setBackground(Color.CYAN);
     }
+
+    private void generateinGameButtonPanel(JPanel inGameButtonPanel){
+        Rectangle inGameButtonPanelRectangle = new Rectangle(25+ PLAYER_SECTION_OFFSET_X, 950, 725, 50);
+
+        inGameButtonPanel.setBounds(inGameButtonPanelRectangle);
+        inGameButtonPanel.setOpaque(false);
+
+
+        buyPropertyButton = MenuWindow.standardButtonGenerate("Zakup");
+        leaveFromGameButton = MenuWindow.standardButtonGenerate("Wyjdź");
+        leaveFromGameButton.addActionListener(leaveGame -> System.exit(0));
+
+        inGameButtonPanel.add(buyPropertyButton);
+        inGameButtonPanel.add(leaveFromGameButton);
+    }
+
 }
+
