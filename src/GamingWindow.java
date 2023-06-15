@@ -135,14 +135,18 @@ public class GamingWindow {
 
             switch (i) {
                 case 2, 3, 6, 7, 8, 11:
+                    int help_image=0;
                     JPanel[] pawnPanel1 = new JPanel[4];
                     for (int j = 0; j < 4; j++) {
                         pawnPanel1[j] = new JPanel();
                     }
                     JPanel imagePanel = new JPanel();
 
-                    String imagePath1 = "C:\\Users\\HP\\Desktop\\grey.png";
+                    String imagePath1 = "assets\\grey.png";
                     String imagePath21 = "assets\\white.png";
+//                    if (i == 2 || i == 3) imagePath1 = "assets\\question_mark.jpg";
+//                    if (i == 6 || i == 7) imagePath1 = "assets\\dorm.jpg";
+//                    if (i == 11) imagePath1 = "assets\\dollar.png";
                     VerticalOtherCard.makeImagePanel(imagePanel, imagePath1);
                     VerticalOtherCard.makePawnPanel(pawnPanel1, imagePath21);
 
@@ -164,8 +168,9 @@ public class GamingWindow {
 
 
 
-                    String imagePath12 = "C:\\Users\\HP\\Desktop\\grey.png";
+                    String imagePath12 = "assets\\white.png";
                     String imagePath22 = "assets\\white.png";
+
                     HorizontalOtherCard.makeImagePanel(imagePanel2, imagePath12);
                     HorizontalOtherCard.makePawnPanel(pawnPanel21, imagePath22);
 
@@ -354,7 +359,7 @@ public class GamingWindow {
             }
             JPanel imagePanel = new JPanel();
 
-            String imagePath1 = "C:\\Users\\HP\\Desktop\\grey.png";
+            String imagePath1 = "assets\\grey.png";
             String imagePath2 = "assets\\white.png";
             CornerCard.makeImagePanel(imagePanel, imagePath1);
             CornerCard.makePawnPanel(pawnPanel, imagePath2);
