@@ -143,12 +143,12 @@ public class GamingWindow {
                     JPanel imagePanel = new JPanel();
 
                     String imagePath1 = "assets\\grey.png";
-                    String imagePath21 = "assets\\white.png";
+                    //String imagePath21 = "assets\\white.png";
 //                    if (i == 2 || i == 3) imagePath1 = "assets\\question_mark.jpg";
 //                    if (i == 6 || i == 7) imagePath1 = "assets\\dorm.jpg";
 //                    if (i == 11) imagePath1 = "assets\\dollar.png";
                     VerticalOtherCard.makeImagePanel(imagePanel, imagePath1);
-                    VerticalOtherCard.makePawnPanel(pawnPanel1, imagePath21);
+                    //VerticalOtherCard.makePawnPanel(pawnPanel1, imagePath21);
 
                     imagePanel.setLayout(new OverlayLayout(imagePanel));
 
@@ -169,10 +169,10 @@ public class GamingWindow {
 
 
                     String imagePath12 = "assets\\white.png";
-                    String imagePath22 = "assets\\white.png";
+                    //String imagePath22 = "assets\\white.png";
 
                     HorizontalOtherCard.makeImagePanel(imagePanel2, imagePath12);
-                    HorizontalOtherCard.makePawnPanel(pawnPanel21, imagePath22);
+                    //HorizontalOtherCard.makePawnPanel(pawnPanel21, imagePath22);
 
                     imagePanel2.setLayout(new OverlayLayout(imagePanel2));
 
@@ -203,7 +203,7 @@ public class GamingWindow {
                         for (int j = 0; j < 3; j++) {
                             housePanel[j] = new JPanel();
                         }
-                        String imagePath = "assets\\white.png";
+                        //String imagePath = "assets\\white.png";
 
                         switch(i){
                             case 9:
@@ -242,8 +242,8 @@ public class GamingWindow {
 
 //                        VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2));
 //                        VerticalFacultyCard.makeNamePanel(namePanel, (i % 2));
-                        VerticalFacultyCard.makePawnPanel(pawnPanel, imagePath);
-                        VerticalFacultyCard.makeHousePanel(housePanel, imagePath, (i % 2));
+                        //VerticalFacultyCard.makePawnPanel(pawnPanel, imagePath);
+                        //VerticalFacultyCard.makeHousePanel(housePanel, imagePath, (i % 2));
                         horizontalFieldsArray[i].add(uponPanel);
                         horizontalFieldsArray[i].add(namePanel);
                         for (int j = 0; j < 4; j++) {
@@ -266,7 +266,7 @@ public class GamingWindow {
                         for (int j = 0; j < 3; j++) {
                             housePanel2[j] = new JPanel();
                         }
-                        String imagePath2 = "assets\\white.png";
+                        //String imagePath2 = "assets\\white.png";
 
 
                         switch(i){
@@ -311,8 +311,8 @@ public class GamingWindow {
 
 //                        HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 500, Color.green);
 //                        HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), "TEST");
-                        HorizontalFacultyCard.makePawnPanel(pawnPanel2, imagePath2);
-                        HorizontalFacultyCard.makeHousePanel(housePanel2, imagePath2, (i % 2));
+                        //HorizontalFacultyCard.makePawnPanel(pawnPanel2, imagePath2);
+                        //HorizontalFacultyCard.makeHousePanel(housePanel2, imagePath2, (i % 2));
                         verticalFieldsArray[i].add(uponPanel2);
                         verticalFieldsArray[i].add(namePanel2);
                         for (int j = 0; j < 4; j++) {
@@ -338,7 +338,7 @@ public class GamingWindow {
     }
 
 
-    private void paintCornerFields (JFrame windowFrame, JPanel[]squareFieldsArray){
+    void paintCornerFields(JFrame windowFrame, JPanel[] squareFieldsArray){
         for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
             squareFieldsArray[i] = new JPanel();
             switch (i) {
@@ -362,7 +362,57 @@ public class GamingWindow {
             String imagePath1 = "assets\\grey.png";
             String imagePath2 = "assets\\white.png";
             CornerCard.makeImagePanel(imagePanel, imagePath1);
+
             CornerCard.makePawnPanel(pawnPanel, imagePath2);
+
+
+
+
+            imagePanel.setLayout(new OverlayLayout(imagePanel));
+
+            for (int j = 0; j < 4; j++) {
+                squareFieldsArray[i].add(pawnPanel[j]);
+            }
+            squareFieldsArray[i].add(imagePanel);
+
+            squareFieldsArray[i].setBorder(blackline);
+
+//            squareFieldsArray[i].setBackground(Color.green);
+
+            windowFrame.add(squareFieldsArray[i]);
+        }
+    }
+
+
+    void test(JFrame windowFrame, JPanel[] squareFieldsArray) {
+        for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
+            squareFieldsArray[i] = new JPanel();
+            switch (i) {
+                case 0 -> squareFieldsArray[i].setBounds(0, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 1 -> squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+
+            }
+
+            squareFieldsArray[i].setVisible(true);
+            squareFieldsArray[i].setBorder(blackline);
+
+            squareFieldsArray[i].setLayout(null);
+            JPanel[] pawnPanel = new JPanel[4];
+            for (int j = 0; j < 4; j++) {
+                pawnPanel[j] = new JPanel();
+            }
+            JPanel imagePanel = new JPanel();
+
+            String imagePath1 = "assets\\grey.png";
+            String imagePath2 = "assets\\white.png";
+            CornerCard.makeImagePanel(imagePanel, imagePath1);
+
+            CornerCard.makePawnPanel(pawnPanel, imagePath2);
+
+
+
 
             imagePanel.setLayout(new OverlayLayout(imagePanel));
 

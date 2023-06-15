@@ -103,6 +103,15 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("gameStarted")){
                     gamingWindow=new GamingWindow();
                 }
+
+                if(message.equals("move:")){
+                    System.out.print("dodatrlo");
+                    //gamingWindow.pawnPanel[3].setVisible(false);
+                    System.out.print("koniec");
+                    gamingWindow.windowFrame.setVisible(false);
+                    gamingWindow.windowFrame.setVisible(true);
+
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
