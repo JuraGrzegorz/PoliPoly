@@ -8,10 +8,12 @@ public class ServerReadFromClient extends Thread{
     private final BufferedReader  intoServer;
     private final Communication communication;
     private final Semaphore syncJoiningPlayers;
-    public ServerReadFromClient(Socket clientSocket, Communication communication, Semaphore syncJoiningPlayers) throws IOException {
+    boolean gameStarted;
+    public ServerReadFromClient(Socket clientSocket, Communication communication, Semaphore syncJoiningPlayers,boolean gameStarted) throws IOException {
         this.intoServer=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this.communication=communication;
         this.syncJoiningPlayers=syncJoiningPlayers;
+        this.gameStarted=gameStarted;
     }
 
     public void run() {
@@ -22,7 +24,15 @@ public class ServerReadFromClient extends Thread{
                     syncJoiningPlayers.release();
                     break;
                 }
-                syncJoiningPlayers.release();
+                synchronized (this) {
+                    if(gameStarted){
+                        communication.syncReadFromClient.release();
+                        System.out.print("dziala");
+                    }else{
+                        syncJoiningPlayers.release();
+                    }
+                }
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

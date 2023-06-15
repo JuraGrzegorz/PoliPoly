@@ -12,6 +12,7 @@ public class ClientReadFromServer extends Thread{
     private final List<JButton> listButtons;
     private int countOfPlayer;
     private final NickNameTakenWindow alertWindow;
+    GamingWindow gamingWindow;
     public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
         this.client=client;
         this.player=player;
@@ -19,6 +20,7 @@ public class ClientReadFromServer extends Thread{
         this.listButtons=listButtons;
         countOfPlayer=0;
         this.alertWindow=alertWindow;
+
     }
 
     public void run() {
@@ -98,6 +100,9 @@ public class ClientReadFromServer extends Thread{
                     return;
                 }
 
+                if(message.equals("gameStarted")){
+                    gamingWindow=new GamingWindow();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

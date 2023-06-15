@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ServerMainThread extends Thread{
@@ -32,11 +34,30 @@ public class ServerMainThread extends Thread{
                             changeNicknameCommand(val);
                             break;
                         }
+
+                        if(val.message.startsWith("startGame")){
+                            server.state=1;
+                            for(int i=0;i<server.listOfCommunication.size();i++){
+                                server.listOfCommunication.get(i).message="gameStarted";
+                                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                            }
+                            Collections.shuffle(server.listOfCommunication);
+                            break;
+                        }
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
+            }else{
+                for(Communication val : server.listOfCommunication){
+                    try {
+                        val.syncReadFromClient.acquire();
+
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
