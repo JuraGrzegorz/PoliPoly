@@ -44,7 +44,7 @@ public class HorizontalFacultyCard {
 //
 //    }
 
-//    private void makeGameFrame(){
+    //    private void makeGameFrame(){
 //        gameFrame.setLayout(null);
 //
 //        gameFrame.add(uponPanel);
@@ -64,7 +64,7 @@ public class HorizontalFacultyCard {
 //        gameFrame.setVisible(true);
 //
 //    }
-    public static void makeUponPanel(JPanel uponPanel, int x) {
+    public static void makeUponPanel(JPanel uponPanel, int x, int price, Color color) {
         Rectangle uponPanelRectangle;
         if(x==1){uponPanelRectangle = new Rectangle(0, 0, 28, 100);}
         else{uponPanelRectangle = new Rectangle(137, 0, 28, 100);}
@@ -72,7 +72,7 @@ public class HorizontalFacultyCard {
         JPanel uponPanelContent = new JPanel(new BorderLayout());
         uponPanelContent.setOpaque(false);
 
-        JLabel uponPanelLabel = new JLabel("1500$") {
+        JLabel uponPanelLabel = new JLabel(price+" P$") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
@@ -84,7 +84,7 @@ public class HorizontalFacultyCard {
                 g2d.dispose();
             }
         };
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 12));
 
         uponPanelLabel.setVerticalAlignment(JLabel.CENTER);
         uponPanelLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -103,7 +103,7 @@ public class HorizontalFacultyCard {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         uponPanel.setBorder(border);
 
-        uponPanel.setBackground(Color.GREEN);
+        uponPanel.setBackground(color);
 
 
 //        gameFrame.add(uponPanel);
@@ -113,15 +113,15 @@ public class HorizontalFacultyCard {
 
 
 
-    public static void makeNamePanel(JPanel namePanel, int x){
+    public static void makeNamePanel(JPanel namePanel, int x, String name){
         Rectangle nameRectangle;
-        if(x==1){nameRectangle = new Rectangle(28,0,14,100);}
-        else{nameRectangle = new Rectangle(123,0,14,100);}
+        if(x==1){nameRectangle = new Rectangle(28,0,24,100);}
+        else{nameRectangle = new Rectangle(113,0,24,100);}
         namePanel.setBounds(nameRectangle);
         JPanel namePanelContent = new JPanel(new BorderLayout());
         namePanelContent.setOpaque(false);
 
-        JLabel namePanelLabel = new JLabel("DMCS") {
+        JLabel namePanelLabel = new JLabel(name) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
@@ -133,7 +133,7 @@ public class HorizontalFacultyCard {
                 g2d.dispose();
             }
         };
-        namePanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        namePanelLabel.setFont(new Font("Calibri", Font.BOLD, 12));
 
         namePanelLabel.setVerticalAlignment(JLabel.CENTER);
         namePanelLabel.setHorizontalAlignment(JLabel.CENTER);

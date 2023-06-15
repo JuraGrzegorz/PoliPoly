@@ -12,7 +12,7 @@ public class VerticalFacultyCard extends JPanel {
     }
 
 
-    public static void makeUponPanel(JPanel uponPanel, int x) {
+    public static void makeUponPanel(JPanel uponPanel, int x, int price, Color color) {
         Rectangle uponPanelRectangle;
         if (x == 1) {
             uponPanelRectangle = new Rectangle(0, 0, 100, 28);
@@ -20,7 +20,7 @@ public class VerticalFacultyCard extends JPanel {
             uponPanelRectangle = new Rectangle(0, 137, 100, 28);
         }
         uponPanel.setBounds(uponPanelRectangle);
-        JLabel uponPanelLabel = new JLabel("1500$");
+        JLabel uponPanelLabel = new JLabel(price+"$");
         uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
 
         //
@@ -28,20 +28,24 @@ public class VerticalFacultyCard extends JPanel {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         uponPanel.setBorder(border);
 
-        uponPanel.setBackground(Color.green);
+        uponPanel.setBackground(color);
         uponPanel.add(uponPanelLabel);
     }
 
-    public static void makeNamePanel(JPanel namePanel, int x) {
+//    public static void setColorAndName(String name, Color color){
+//
+//    }
+
+    public static void makeNamePanel(JPanel namePanel, int x, String name) {
         Rectangle nameRectangle;
         if (x == 1) {
-            nameRectangle = new Rectangle(0, 28, 100, 14);
+            nameRectangle = new Rectangle(0, 28, 100, 24);
         } else {
-            nameRectangle = new Rectangle(0, 123, 100, 14);
+            nameRectangle = new Rectangle(0, 123, 100, 24);
         }
         namePanel.setBounds(nameRectangle);
-        JLabel nameLabel = new JLabel("DMCS");
-        nameLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        JLabel nameLabel = new JLabel(name);
+        nameLabel.setFont(new Font("Calibri", Font.BOLD, 12));
 
         //
 
