@@ -34,6 +34,7 @@ public class ClientReadFromServer extends Thread{
 
                     for(String UsersNicks:tmp){
                         listButtons.get(countOfPlayer).setText(UsersNicks);
+                        listButtons.get(countOfPlayer).setBackground(new Color(0xD3D3D3));
                         countOfPlayer++;
                     }
                 }
@@ -45,9 +46,11 @@ public class ClientReadFromServer extends Thread{
                         if(listButtons.get(i).getText().equals(tmp[1])){
                             int j;
                             for(j=i;j<countOfPlayer-1;j++){
-                                listButtons.get(j).setText(listButtons.get(j+1).getText());
+                                listButtons.get(j).setText("");
+                                listButtons.get(j).setBackground(new Color(0x2dce98));
                             }
-                            listButtons.get(j).setText(String.valueOf(countOfPlayer));
+                            listButtons.get(j).setText("");
+                            listButtons.get(j).setBackground(new Color(0x2dce98));
                             countOfPlayer--;
                             break;
                         }
@@ -77,7 +80,8 @@ public class ClientReadFromServer extends Thread{
 
                 if(message.startsWith("ConfirmQuit")){
                     for(int i=0;i<listButtons.size();i++){
-                        listButtons.get(i).setText(String.valueOf(i+1));
+                        listButtons.get(i).setText("");
+                        listButtons.get(i).setBackground(new Color(0x2dce98));
                     }
                     menuWindow.menuPlay.setVisible(true);
                     menuWindow.menuHostGame.setVisible(false);
@@ -88,7 +92,8 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("ForceQuit")){
                     client.fromClient.println("Quit");
                     for(int i=0;i<listButtons.size();i++){
-                        listButtons.get(i).setText(String.valueOf(i+1));
+                        listButtons.get(i).setText("");
+                        listButtons.get(i).setBackground(new Color(0x2dce98));
                     }
 
                     menuWindow.menuPlay.setVisible(true);
@@ -113,7 +118,7 @@ public class ClientReadFromServer extends Thread{
 
 //                    gamingWindow.pawnPanel[15][0].setVisible(false);
                     gamingWindow.playerCash.setText(Integer.toString(100));
-                    
+
                     System.out.print("koniec");
                     gamingWindow.windowFrame.setVisible(false);
                     gamingWindow.windowFrame.setVisible(true);

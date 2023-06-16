@@ -62,14 +62,14 @@ public class MenuWindow {
     public MenuWindow() {
         joinGameListButtons =new ArrayList<>();
         hostGameListButtons=new ArrayList<>();
-        hostGameListButtons.add(standardButtonGenerate("1"));
-        hostGameListButtons.add(standardButtonGenerate("2"));
-        hostGameListButtons.add(standardButtonGenerate("3"));
-        hostGameListButtons.add(standardButtonGenerate("4"));
-        joinGameListButtons.add(standardButtonGenerate("1"));
-        joinGameListButtons.add(standardButtonGenerate("2"));
-        joinGameListButtons.add(standardButtonGenerate("3"));
-        joinGameListButtons.add(standardButtonGenerate("4"));
+        hostGameListButtons.add(standardButtonGenerate(""));
+        hostGameListButtons.add(standardButtonGenerate(""));
+        hostGameListButtons.add(standardButtonGenerate(""));
+        hostGameListButtons.add(standardButtonGenerate(""));
+        joinGameListButtons.add(standardButtonGenerate(""));
+        joinGameListButtons.add(standardButtonGenerate(""));
+        joinGameListButtons.add(standardButtonGenerate(""));
+        joinGameListButtons.add(standardButtonGenerate(""));
 
 
         InetAddress localhost;
