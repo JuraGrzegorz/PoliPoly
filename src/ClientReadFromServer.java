@@ -106,11 +106,17 @@ public class ClientReadFromServer extends Thread{
 
                 if(message.equals("move:")){
                     System.out.print("dodatrlo");
-                    //gamingWindow.pawnPanel[3].setVisible(false);
+//                    for(int i=0;i<32;i++){
+//                        gamingWindow.pawnPanel[i][0].setVisible(false);
+//                        Thread.sleep(1000);
+//                    }
+
+//                    gamingWindow.pawnPanel[15][0].setVisible(false);
+                    gamingWindow.playerCash.setText(Integer.toString(100));
+                    
                     System.out.print("koniec");
                     gamingWindow.windowFrame.setVisible(false);
                     gamingWindow.windowFrame.setVisible(true);
-
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

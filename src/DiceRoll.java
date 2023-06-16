@@ -21,6 +21,8 @@ public class DiceRoll extends JPanel {
     private final Image[] diceImages;
     private int currentDiceValue;
 
+    public int result;
+
     public DiceRoll() {
         diceImages = new Image[6];
         for (int i = 0; i < 6; i++) {
@@ -34,6 +36,7 @@ public class DiceRoll extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rollDice();
+                //wysylanie danych do servera
             }
         });
     }
@@ -56,7 +59,9 @@ public class DiceRoll extends JPanel {
                 Thread.sleep(ANIMATION_DELAY);
             }
 
-            System.out.println(random_number);
+
+            result = random_number;
+            System.out.println(result);
             return random_number; // Final dice value
         }
 
