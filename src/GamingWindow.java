@@ -417,7 +417,6 @@ public class GamingWindow {
         }
     }
 
-
     public void paintPlayerSection(JFrame gameWindow, JPanel cardsPanel, JPanel cashPanel, JPanel playerTurnPanel, JPanel mouseHoverInfoPanel,PrintWriter fromClient) throws IOException {
         generateCardsPanel(cardsPanel);
         generateCashPanel(cashPanel);
