@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 public class ClientReadFromServer extends Thread{
@@ -15,6 +13,7 @@ public class ClientReadFromServer extends Thread{
     GamingWindow gamingWindow;
     int playerCash;
     int[] playersPosition;
+    int localPlayerNumber;
     public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
         this.client=client;
         this.player=player;
@@ -110,10 +109,12 @@ public class ClientReadFromServer extends Thread{
                     return;
                 }
 
-                if(message.equals("gameStarted")){
+                if(message.startsWith("gameStarted:")){
+                    localPlayerNumber= Integer.parseInt(message.substring(("gameStarted:").length()));
                     gamingWindow=new GamingWindow(client.fromClient);
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
+                    gamingWindow.endRound.setVisible(false);
                     gamingWindow.playerCash.setText("800");
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
@@ -121,6 +122,7 @@ public class ClientReadFromServer extends Thread{
                             showOrHide(gamingWindow.pawnPanel,i,j,0);
                         }
                     }
+
                 }
 
                 if(message.startsWith("move:")){
@@ -132,7 +134,13 @@ public class ClientReadFromServer extends Thread{
                     playerNumber=Integer.parseInt(tmp[1]);
                     moveNumber=Integer.parseInt(tmp[0]);
 
-
+                    if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
+                        localPlayerNumber=playerNumber;
+                        gamingWindow.buyPropertyButton.setVisible(true);
+                    }
+                    if(playerNumber==localPlayerNumber){
+                        gamingWindow.endRound.setVisible(true);
+                    }
                     showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
                     playersPosition[playerNumber]=moveNumber;
@@ -140,14 +148,22 @@ public class ClientReadFromServer extends Thread{
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
                 }
-
-                if(message.startsWith("cash:")){
-                    message=message.substring(("cash:").length());
-                    gamingWindow.playerCash.setText(message);
+                if(message.equals("Bought:")){
+                    playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
+                    gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                    gamingWindow.buyPropertyButton.setVisible(false);
+                    gamingWindow.endRound.setVisible(false);
+                }
+                if(message.equals("cash:")){
+                    playerCash+=400;
+                    gamingWindow.playerCash.setText(String.valueOf(playerCash));
                 }
                 if(message.equals("yourTurn")){
                     gamingWindow.diceRollPanel.setVisible(true);
 
+                }
+                if(message.equals("next")){
+                    gamingWindow.endRound.setVisible(false);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
