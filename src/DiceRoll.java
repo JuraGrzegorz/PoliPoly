@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
 
 public class DiceRoll extends JPanel {
 
-    private static final int DICE_SIZE = 230;
+    public static final int DICE_SIZE = 172;
     private static final int ANIMATION_DELAY = 100;
     private static final int FRAME_DELAY = 2000;
-    private static final int ARC_SIZE = 70;
+    private static final int ARC_SIZE = 35;
 
     private final Image[] diceImages;
     private int currentDiceValue;
