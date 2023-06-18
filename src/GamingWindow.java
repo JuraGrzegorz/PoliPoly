@@ -65,11 +65,11 @@ public class GamingWindow {
     JLabel playerCash;
 
 
+
     JPanel test;
 
     int[] facultyPrices;
     String[] facultyNames;
-
 
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
@@ -88,8 +88,8 @@ public class GamingWindow {
         playerTurnPanel = new JPanel();
         mouseHoverInfoPanel = new JPanel();
 
-        counter = 0;
 
+        counter = 0;
 
         facultyPrices = new int[32];
         facultyNames = new String[32];
@@ -194,7 +194,6 @@ public class GamingWindow {
 
                
 
-
                     JPanel imagePanel = new JPanel();
 
                     String imagePath1 = "assets\\grey.png";
@@ -242,6 +241,7 @@ public class GamingWindow {
 
                 case 0, 1, 4, 5, 9, 10, 12, 13: {
                     if (help == 0) {
+
                         JPanel uponPanel = new JPanel(new GridBagLayout());
                         JPanel namePanel = new JPanel(new GridBagLayout());
 
@@ -358,6 +358,7 @@ public class GamingWindow {
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), "CTI");
 
                             break;
+
 //                            case 10:
 //                                JPanel imagePanel3 = new JPanel();
 //                                String imagePath10 = "assets\\grey.png";
@@ -410,6 +411,7 @@ public class GamingWindow {
             squareFieldsArray[i] = new JPanel();
             switch (i) {
 
+
                 case 0 -> squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
                 case 1 ->
                         squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
@@ -417,7 +419,6 @@ public class GamingWindow {
                         squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
                 case 3 ->
                         squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-
 
             }
 
@@ -449,6 +450,7 @@ public class GamingWindow {
             windowFrame.add(squareFieldsArray[i]);
         }
     }
+
 
 
 
@@ -652,5 +654,46 @@ public class GamingWindow {
         facultyNames[31] = "Inst. Marketingu";
     }
 
+
+    private void initializeFacultyPricesAndNames(){
+        facultyPrices[1] = 60;
+        facultyNames[1] = "Mat";
+        facultyPrices[3] = 60;
+        facultyNames[3] = "Fiz";
+        facultyPrices[4] = 200; //akademik nr1
+        facultyPrices[5] = 100;
+        facultyNames[5] = "Inst. Fizyki Molekularnej";
+        facultyPrices[7] = 120;
+        facultyNames[7] = "Inst. Chemii Organicznej";
+        facultyPrices[9] = 140;
+        facultyNames[9] = "Inst. Materiałoznawstwa";
+        facultyPrices[11] = 160;
+        facultyNames[11] = "Kat. Technologii Dziewiarskich";
+        facultyPrices[12] = 200; //akademik nr2
+        facultyPrices[14] = 180;
+        facultyNames[14] = "Kat. Budownictwa Betonowego";
+        facultyPrices[15] = 200;
+        facultyNames[15] = "Inst. Architektury";
+        facultyPrices[17] = 220;
+        facultyNames[17] = "Inst. Obrabiarek";
+        facultyPrices[19] = 240;
+        facultyNames[19] = "Kat. Wytrzymałości Materiałów";
+        facultyPrices[20] = 200; //akademik nr3
+        facultyPrices[21] = 260;
+        facultyNames[21] = "DMCS";
+        facultyPrices[22] = 260;
+        facultyNames[22] = "CTI";
+        facultyPrices[23] = 280;
+        facultyNames[23] = "IMSI";
+        facultyPrices[25] = 300;
+        facultyNames[25] = "Inst. Biotechnologii";
+        facultyPrices[27] = 320;
+        facultyNames[27] = "Inst. Fermentacji";
+        facultyPrices[28] = 200; //akademik nr4
+        facultyPrices[29] = 350;
+        facultyNames[29] = "Inst. Zarządzania";
+        facultyPrices[31] = 400;
+        facultyNames[31] = "Inst. Marketingu";
+    }
 }
 
