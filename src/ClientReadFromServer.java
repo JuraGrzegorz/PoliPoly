@@ -13,6 +13,7 @@ public class ClientReadFromServer extends Thread{
     private int countOfPlayer;
     private final NickNameTakenWindow alertWindow;
     GamingWindow gamingWindow;
+    int[] playersPosition;
     public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
         this.client=client;
         this.player=player;
@@ -20,7 +21,10 @@ public class ClientReadFromServer extends Thread{
         this.listButtons=listButtons;
         countOfPlayer=0;
         this.alertWindow=alertWindow;
-
+        playersPosition=new int[4];
+        for(int i=0;i<4;i++){
+            playersPosition[i]=0;
+        }
     }
 
     public void run() {
@@ -54,7 +58,6 @@ public class ClientReadFromServer extends Thread{
                             countOfPlayer--;
                             break;
                         }
-
                     }
                 }
 
@@ -106,25 +109,107 @@ public class ClientReadFromServer extends Thread{
                 }
 
                 if(message.equals("gameStarted")){
-                    gamingWindow=new GamingWindow();
+                    gamingWindow=new GamingWindow(client.fromClient);
+                    //gamingWindow.diceRollPanel.setVisible(false);
+                    client.fromClient.println("Starting");
+                    for(int i=1;i<32;i++){
+                        for(int j=0;j<4;j++){
+                            showOrHide(gamingWindow.pawnPanel,i,j,0);
+                        }
+                    }
                 }
 
-                if(message.equals("move:")){
-                    System.out.print("dodatrlo");
-//                    for(int i=0;i<32;i++){
-//                        gamingWindow.pawnPanel[i][0].setVisible(false);
-//                        Thread.sleep(1000);
-//                    }
+                if(message.startsWith("move:")){
+                    int playerNumber;
+                    int moveNumber;
+                    message = message.substring(("move:").length());
+                    String[] tmp=message.split(":");
+                    playerNumber=Integer.parseInt(tmp[1]);
+                    moveNumber=Integer.parseInt(tmp[0]);
 
-//                    gamingWindow.pawnPanel[15][0].setVisible(false);
-                    gamingWindow.playerCash.setText(Integer.toString(100));
+                    //System.out.print(playerNumber);
 
-                    System.out.print("koniec");
+                    showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber]+moveNumber,playerNumber,1);
+                    showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
+                    
+                    playersPosition[playerNumber]+=moveNumber;
+
+
                     gamingWindow.windowFrame.setVisible(false);
                     gamingWindow.windowFrame.setVisible(true);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+        }
+    }
+
+    void showOrHide(JPanel[][] tab,int val,int element,int how){
+        int tmpVal;
+        if(val>=1 && val<8){
+            tmpVal=28;
+            if(how==0){
+                tab[tmpVal-val*2][element].setVisible(false);
+            }else{
+                tab[tmpVal-val*2][element].setVisible(true);
+            }
+
+        }
+        if(val>=9 && val<16){
+            tmpVal=val-9;
+            tmpVal*=2;
+            if(how==0){
+                tab[tmpVal][element].setVisible(false);
+            }else{
+                tab[tmpVal][element].setVisible(true);
+            }
+        }
+        if(val>=17 && val<24){
+            tmpVal=(val-17);
+            if(how==0){
+                tab[val-2+tmpVal][element].setVisible(false);
+            }else{
+                tab[val-2+tmpVal][element].setVisible(true);
+            }
+        }
+        if(val>=25 && val<32){
+            tmpVal=13-(val-25)*2;
+
+            if(how==0){
+                tab[tmpVal][element].setVisible(false);
+            }else{
+                tab[tmpVal][element].setVisible(true);
+            }
+        }
+
+        if(val==0 || val==8 || val==16 || val==24){
+            if(val==0){
+                if(how==0){
+                    tab[29][element].setVisible(false);
+                }else{
+                    tab[29][element].setVisible(true);
+                }
+            }
+            if(val==8){
+                if(how==0){
+                    tab[28][element].setVisible(false);
+                }else{
+                    tab[28][element].setVisible(true);
+                }
+            }
+            if(val==16){
+                if(how==0){
+                    tab[30][element].setVisible(false);
+                }else{
+                    tab[30][element].setVisible(true);
+                }
+            }
+            if(val==24){
+                if(how==0){
+                    tab[31][element].setVisible(false);
+                }else{
+                    tab[31][element].setVisible(true);
+                }
             }
         }
     }

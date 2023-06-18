@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class GamingWindow {
@@ -49,8 +50,9 @@ public class GamingWindow {
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
     int counter;
-
-    GamingWindow() throws IOException {
+    PrintWriter fromClient;
+    GamingWindow(PrintWriter fromClient) throws IOException {
+        this.fromClient=fromClient;
         windowFrame = new JFrame();
         gameContents = new JPanel();
         cardsPanel = new JPanel();
@@ -87,7 +89,7 @@ public class GamingWindow {
 
         paintCornerFields(windowFrame, squareFieldsArray);
         paintRectangularFields();
-        paintPlayerSection(windowFrame, cardsPanel, cashPanel, playerTurnPanel, mouseHoverInfoPanel);
+        paintPlayerSection(windowFrame, cardsPanel, cashPanel, playerTurnPanel, mouseHoverInfoPanel,this.fromClient);
         windowFrame.add(gameContents);
 
         windowFrame.invalidate();
@@ -394,60 +396,12 @@ public class GamingWindow {
     }
 
 
-//    void test(JFrame windowFrame, JPanel[] squareFieldsArray) {
-//        for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
-//            squareFieldsArray[i] = new JPanel();
-//            switch (i) {
-//                case 0 -> squareFieldsArray[i].setBounds(0, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-//                case 1 -> squareFieldsArray[i].setBounds(0, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-//                case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, 0, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-//                case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-//
-//            }
-//
-//            squareFieldsArray[i].setVisible(true);
-//            squareFieldsArray[i].setBorder(blackline);
-//
-//            squareFieldsArray[i].setLayout(null);
-//            JPanel[] pawnPanel = new JPanel[4];
-//            for (int j = 0; j < 4; j++) {
-//                pawnPanel[j] = new JPanel();
-//            }
-//            JPanel imagePanel = new JPanel();
-//
-//            String imagePath1 = "assets\\grey.png";
-//            String imagePath2 = "assets\\white.png";
-//            CornerCard.makeImagePanel(imagePanel, imagePath1);
-//
-//            CornerCard.makePawnPanel(pawnPanel, imagePath2);
-//
-//
-//
-//
-//            imagePanel.setLayout(new OverlayLayout(imagePanel));
-//
-//            for (int j = 0; j < 4; j++) {
-//                squareFieldsArray[i].add(pawnPanel[j]);
-//            }
-//            squareFieldsArray[i].add(imagePanel);
-//
-//            squareFieldsArray[i].setBorder(blackline);
-//
-////            squareFieldsArray[i].setBackground(Color.green);
-//
-//            windowFrame.add(squareFieldsArray[i]);
-//        }
-//    }
-
-    public void paintPlayerSection(JFrame gameWindow, JPanel cardsPanel, JPanel cashPanel, JPanel playerTurnPanel, JPanel mouseHoverInfoPanel) throws IOException {
+    public void paintPlayerSection(JFrame gameWindow, JPanel cardsPanel, JPanel cashPanel, JPanel playerTurnPanel, JPanel mouseHoverInfoPanel,PrintWriter fromClient) throws IOException {
         generateCardsPanel(cardsPanel);
         generateCashPanel(cashPanel);
         generatePlayerTurnPanel(playerTurnPanel);
         generateMouseHoverInfoPanel(mouseHoverInfoPanel);
         generateinGameButtonPanel(inGameButtonPanel);
-
-
-
 
         gameWindow.add(cardsPanel);
         gameWindow.add(cashPanel);
@@ -455,7 +409,7 @@ public class GamingWindow {
         gameWindow.add(mouseHoverInfoPanel);
         gameWindow.add(inGameButtonPanel);
 
-        diceRollPanel = new DiceRoll();
+        diceRollPanel = new DiceRoll(fromClient);
         Rectangle diceRollPanelRectangle = new Rectangle(400, 400-PLAYER_SECTION_OFFSET_Y, 230, 230);
         diceRollPanel.setBounds(diceRollPanelRectangle);
         gameWindow.add(diceRollPanel);

@@ -114,7 +114,7 @@ public class MainWindow {
                         tmp_clientSock = server.serverSocketChannel.accept();
                         server.addSemaphore();
                         Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
-                        ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers,gameStarted);
+                        ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
                         serverWriteThread.start();

@@ -50,24 +50,23 @@ public class ServerMainThread extends Thread{
                 }
 
             }else{
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
 
+                int index=0;
+                String message;
                 for(Communication val : server.listOfCommunication){
-                    System.out.print("poszlo");
-
-                    val.message="move:";
-                    val.syncServerWriteToClient.release();
-                    return;
-                    /*try {
+                    try {
                         val.syncReadFromClient.acquire();
-
+                        message="move:";
+                        message+=val.message+":";
+                        message+=index;
+                        for(int i=0;i<server.listOfCommunication.size();i++){
+                            server.listOfCommunication.get(i).message=message;
+                            server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                        }
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
-                    }*/
+                    }
+                    index++;
                 }
             }
         }

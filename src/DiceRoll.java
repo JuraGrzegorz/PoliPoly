@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.PrintWriter;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -20,16 +21,14 @@ public class DiceRoll extends JPanel {
 
     private final Image[] diceImages;
     private int currentDiceValue;
-
-    public int result;
-
-    public DiceRoll() {
+    PrintWriter fromClient;
+    public DiceRoll(PrintWriter fromClient) {
+        this.fromClient=fromClient;
         diceImages = new Image[6];
         for (int i = 0; i < 6; i++) {
             diceImages[i] = new ImageIcon("assets/dice/" + (i + 1) + ".png").getImage();
         }
         currentDiceValue = 1; // Początkowa wartość kostki
-
         setPreferredSize(new Dimension(DICE_SIZE, DICE_SIZE));
         setOpaque(false);
         addMouseListener(new MouseAdapter() {
@@ -58,10 +57,7 @@ public class DiceRoll extends JPanel {
                 publish(random_number);
                 Thread.sleep(ANIMATION_DELAY);
             }
-
-
-            result = random_number;
-            System.out.println(result);
+            fromClient.println(random_number);
             return random_number; // Final dice value
         }
 
