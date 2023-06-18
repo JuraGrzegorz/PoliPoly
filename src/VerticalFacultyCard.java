@@ -20,8 +20,8 @@ public class VerticalFacultyCard extends JPanel {
             uponPanelRectangle = new Rectangle(0, 137, 100, 28);
         }
         uponPanel.setBounds(uponPanelRectangle);
-        JLabel uponPanelLabel = new JLabel(price+"$");
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        JLabel uponPanelLabel = new JLabel(price+"P$");
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
         //
 

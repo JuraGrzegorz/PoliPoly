@@ -84,7 +84,7 @@ public class HorizontalFacultyCard {
                 g2d.dispose();
             }
         };
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
         uponPanelLabel.setVerticalAlignment(JLabel.CENTER);
         uponPanelLabel.setHorizontalAlignment(JLabel.CENTER);
