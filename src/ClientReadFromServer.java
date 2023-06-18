@@ -13,6 +13,7 @@ public class ClientReadFromServer extends Thread{
     private int countOfPlayer;
     private final NickNameTakenWindow alertWindow;
     GamingWindow gamingWindow;
+    int playerCash;
     int[] playersPosition;
     public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
         this.client=client;
@@ -25,6 +26,7 @@ public class ClientReadFromServer extends Thread{
         for(int i=0;i<4;i++){
             playersPosition[i]=0;
         }
+        playerCash=800;
     }
 
     public void run() {
@@ -111,6 +113,7 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("gameStarted")){
                     gamingWindow=new GamingWindow(client.fromClient);
                     gamingWindow.diceRollPanel.setVisible(false);
+                    gamingWindow.playerCash.setText("800");
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
                         for(int j=0;j<4;j++){
@@ -129,14 +132,18 @@ public class ClientReadFromServer extends Thread{
                     moveNumber=Integer.parseInt(tmp[0]);
 
 
-                    showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber]+moveNumber,playerNumber,1);
+                    showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
-                    
-                    playersPosition[playerNumber]+=moveNumber;
+                    playersPosition[playerNumber]=moveNumber;
+
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
                 }
 
+                if(message.startsWith("cash:")){
+                    message=message.substring(("cash:").length());
+                    gamingWindow.playerCash.setText(message);
+                }
                 if(message.equals("yourTurn")){
                     gamingWindow.diceRollPanel.setVisible(true);
 

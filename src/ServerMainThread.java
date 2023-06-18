@@ -7,9 +7,17 @@ import java.util.List;
 
 public class ServerMainThread extends Thread{
     private final Server server;
+    int[] playersPosition;
+    int [] playerCash;
 
     ServerMainThread(Server server){
         this.server=server;
+        playersPosition=new int[4];
+        playerCash=new int[4];
+        for(int i=0;i<4;i++){
+            playersPosition[i]=0;
+            playerCash[i]=800;
+        }
     }
     public void run() {
 
@@ -44,7 +52,6 @@ public class ServerMainThread extends Thread{
                             Collections.shuffle(server.listOfCommunication);
                             Thread.sleep(100);
                             break;
-
                         }
                     }
                 } catch (InterruptedException e) {
@@ -63,8 +70,23 @@ public class ServerMainThread extends Thread{
                         val.syncReadFromClient.acquire();
 
                         if(val.message.startsWith("move:")){
-                            message=val.message+":";
-                            message+=index;
+                            int moveNumber;
+                            val.message=val.message.substring(("move:").length());
+                            String[] tmp=val.message.split(":");
+                            moveNumber=Integer.parseInt(tmp[0]);
+                            playersPosition[index]+=moveNumber;
+                            if(playersPosition[index]>=32){
+                                playerCash[index]+=400;
+                                server.listOfCommunication.get(index).message="cash:"+playerCash[index];
+                                server.listOfCommunication.get(index).syncServerWriteToClient.release();
+                            }
+                            Thread.sleep(50);
+                            playersPosition[index]=playersPosition[index]%32;
+
+                            message="move:";
+                            message+=playersPosition[index];
+                            message+=":"+index;
+
                             for(int i=0;i<server.listOfCommunication.size();i++){
                                 server.listOfCommunication.get(i).message=message;
                                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
