@@ -10,15 +10,19 @@ public class ServerMainThread extends Thread{
     int[] playersPosition;
     int [] playerCash;
     int [] playerCards;
+    boolean[] prison;
 
     ServerMainThread(Server server){
         this.server=server;
         playersPosition=new int[4];
         playerCash=new int[4];
         playerCards=new int [32];
+        prison=new boolean[4];
+
         for(int i=0;i<4;i++){
             playersPosition[i]=0;
             playerCash[i]=800;
+            prison[i]=false;
         }
         int tmp_tab[]={0,2,6,8,10,13,16,18,24,26,30};
         for(int i=0;i<32;i++){
@@ -75,6 +79,13 @@ public class ServerMainThread extends Thread{
                 String message;
                 for(Communication val : server.listOfCommunication){
                     try {
+                        if(prison[index]){
+                            System.out.print("WIEZIENIE\n");
+                            prison[index]=false;
+                            index++;
+                            continue;
+                        }
+
                         val.message="yourTurn";
                         val.syncServerWriteToClient.release();
 
@@ -93,13 +104,16 @@ public class ServerMainThread extends Thread{
                             Thread.sleep(50);
                             playersPosition[index]=playersPosition[index]%32;
 
-
-
+                            if(playersPosition[index]==24){
+                                playersPosition[index]=8;
+                                prison[index]=true;
+                            }
 
                             for(int i=0;i<server.listOfCommunication.size();i++){
                                 message="move:";
                                 message+=playersPosition[index];
                                 message+=":"+index+":";
+
                                 if(playerCards[playersPosition[index]]==-1 && i==index){
                                     message+=-1;
                                 }else{
@@ -108,6 +122,7 @@ public class ServerMainThread extends Thread{
                                 server.listOfCommunication.get(i).message=message;
                                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                             }
+
                         }
 
                         val.syncReadFromClient.acquire();

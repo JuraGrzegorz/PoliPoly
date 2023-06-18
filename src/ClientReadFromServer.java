@@ -164,6 +164,7 @@ public class ClientReadFromServer extends Thread{
                 }
                 if(message.equals("next")){
                     gamingWindow.endRound.setVisible(false);
+                    gamingWindow.buyPropertyButton.setVisible(false);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
