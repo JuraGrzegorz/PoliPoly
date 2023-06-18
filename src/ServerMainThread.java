@@ -42,7 +42,9 @@ public class ServerMainThread extends Thread{
                                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                             }
                             Collections.shuffle(server.listOfCommunication);
+                            Thread.sleep(100);
                             break;
+
                         }
                     }
                 } catch (InterruptedException e) {
@@ -55,14 +57,20 @@ public class ServerMainThread extends Thread{
                 String message;
                 for(Communication val : server.listOfCommunication){
                     try {
+                        val.message="yourTurn";
+                        val.syncServerWriteToClient.release();
+
                         val.syncReadFromClient.acquire();
-                        message="move:";
-                        message+=val.message+":";
-                        message+=index;
-                        for(int i=0;i<server.listOfCommunication.size();i++){
-                            server.listOfCommunication.get(i).message=message;
-                            server.listOfCommunication.get(i).syncServerWriteToClient.release();
+
+                        if(val.message.startsWith("move:")){
+                            message=val.message+":";
+                            message+=index;
+                            for(int i=0;i<server.listOfCommunication.size();i++){
+                                server.listOfCommunication.get(i).message=message;
+                                server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                            }
                         }
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

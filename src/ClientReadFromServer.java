@@ -110,7 +110,7 @@ public class ClientReadFromServer extends Thread{
 
                 if(message.equals("gameStarted")){
                     gamingWindow=new GamingWindow(client.fromClient);
-                    //gamingWindow.diceRollPanel.setVisible(false);
+                    gamingWindow.diceRollPanel.setVisible(false);
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
                         for(int j=0;j<4;j++){
@@ -123,22 +123,27 @@ public class ClientReadFromServer extends Thread{
                     int playerNumber;
                     int moveNumber;
                     message = message.substring(("move:").length());
+
                     String[] tmp=message.split(":");
                     playerNumber=Integer.parseInt(tmp[1]);
                     moveNumber=Integer.parseInt(tmp[0]);
 
-                    //System.out.print(playerNumber);
 
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber]+moveNumber,playerNumber,1);
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
                     
                     playersPosition[playerNumber]+=moveNumber;
+                    Thread.sleep(50);
+                    gamingWindow.diceRollPanel.setVisible(false);
+                }
 
+                if(message.equals("yourTurn")){
+                    gamingWindow.diceRollPanel.setVisible(true);
 
-                    gamingWindow.windowFrame.setVisible(false);
-                    gamingWindow.windowFrame.setVisible(true);
                 }
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }

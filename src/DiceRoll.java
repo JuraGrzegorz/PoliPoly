@@ -57,7 +57,7 @@ public class DiceRoll extends JPanel {
                 publish(random_number);
                 Thread.sleep(ANIMATION_DELAY);
             }
-            fromClient.println(random_number);
+            fromClient.println("move:"+random_number);
             return random_number; // Final dice value
         }
 
