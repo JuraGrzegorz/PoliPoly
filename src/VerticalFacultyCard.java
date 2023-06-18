@@ -11,7 +11,6 @@ public class VerticalFacultyCard extends JPanel {
 
     }
 
-
     public static void makeUponPanel(JPanel uponPanel, int x, int price, Color color) {
         Rectangle uponPanelRectangle;
         if (x == 1) {
