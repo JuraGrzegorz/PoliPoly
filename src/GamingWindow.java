@@ -477,7 +477,7 @@ public class GamingWindow {
         buyPropertyButton = MenuWindow.standardButtonGenerate("Zakup");
         leaveFromGameButton = MenuWindow.standardButtonGenerate("Wyjdź");
         buyPropertyButton.addActionListener(back -> {
-            System.out.print("kup");
+            fromClient.println("Buy");
         });
 
         leaveFromGameButton.addActionListener(leaveGame -> System.exit(0));

@@ -113,6 +113,7 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("gameStarted")){
                     gamingWindow=new GamingWindow(client.fromClient);
                     gamingWindow.diceRollPanel.setVisible(false);
+                    gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.playerCash.setText("800");
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
