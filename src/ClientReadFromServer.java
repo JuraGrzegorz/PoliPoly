@@ -1,7 +1,10 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ClientReadFromServer extends Thread{
     private final Client client;
@@ -147,8 +150,10 @@ public class ClientReadFromServer extends Thread{
 
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
+                    playSound("assets\\sounds\\pawnjump.wav");
                 }
                 if(message.equals("Bought:")){
+                    playSound("assets\\sounds\\kaching.wav");
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
                     gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
@@ -166,15 +171,13 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.endRound.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException | UnsupportedAudioFileException | LineUnavailableException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    void showOrHide(JPanel[][] tab,int val,int element,int how){
+    void showOrHide(JPanel[][] tab,int val,int element,int how) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         int tmpVal;
         if(val>=1 && val<8){
             tmpVal=28;
@@ -243,4 +246,16 @@ public class ClientReadFromServer extends Thread{
             }
         }
     }
+
+    static void playSound(String soundPath) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+        if(soundPath.equals("assets\\sounds\\pawnjump.wav")) TimeUnit.SECONDS.sleep(1);
+        File soundFile = new File(soundPath);
+        AudioInputStream sound = AudioSystem.getAudioInputStream(soundFile);
+        Clip clip = AudioSystem.getClip();
+        clip.open(sound);
+        FloatControl volume= (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        volume.setValue(-15.0f);
+        clip.start();
+    }
+
 }
