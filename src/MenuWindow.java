@@ -48,6 +48,17 @@ public class MenuWindow {
         return tmp;
     }
 
+    static JButton grayButtonGenerate(String name) {
+        JButton tmp = new JButton(name);
+        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tmp.setFont(new Font("Calibri", Font.PLAIN, BUTTONFONTSIZE));
+        tmp.setBackground(new Color(0xd3d3d3));
+        tmp.setForeground(Color.white);
+        tmp.setUI(new StyledButtonUI());
+        tmp.setPreferredSize(new Dimension(300, 50));
+        return tmp;
+    }
+
     private JButton smallerButtonGenerate(String name) {
         JButton tmp = new JButton(name);
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,14 +73,14 @@ public class MenuWindow {
     public MenuWindow() {
         joinGameListButtons =new ArrayList<>();
         hostGameListButtons=new ArrayList<>();
-        hostGameListButtons.add(standardButtonGenerate(""));
-        hostGameListButtons.add(standardButtonGenerate(""));
-        hostGameListButtons.add(standardButtonGenerate(""));
-        hostGameListButtons.add(standardButtonGenerate(""));
-        joinGameListButtons.add(standardButtonGenerate(""));
-        joinGameListButtons.add(standardButtonGenerate(""));
-        joinGameListButtons.add(standardButtonGenerate(""));
-        joinGameListButtons.add(standardButtonGenerate(""));
+        hostGameListButtons.add(grayButtonGenerate(""));
+        hostGameListButtons.add(grayButtonGenerate(""));
+        hostGameListButtons.add(grayButtonGenerate(""));
+        hostGameListButtons.add(grayButtonGenerate(""));
+        joinGameListButtons.add(grayButtonGenerate(""));
+        joinGameListButtons.add(grayButtonGenerate(""));
+        joinGameListButtons.add(grayButtonGenerate(""));
+        joinGameListButtons.add(grayButtonGenerate(""));
 
 
         InetAddress localhost;

@@ -38,7 +38,7 @@ public class ClientReadFromServer extends Thread{
 
                     for(String UsersNicks:tmp){
                         listButtons.get(countOfPlayer).setText(UsersNicks);
-                        listButtons.get(countOfPlayer).setBackground(new Color(0xD3D3D3));
+                        listButtons.get(countOfPlayer).setBackground(new Color(0x2dce98));
                         countOfPlayer++;
                     }
                 }
@@ -51,10 +51,10 @@ public class ClientReadFromServer extends Thread{
                             int j;
                             for(j=i;j<countOfPlayer-1;j++){
                                 listButtons.get(j).setText("");
-                                listButtons.get(j).setBackground(new Color(0x2dce98));
+                                listButtons.get(j).setBackground(new Color(0xD6D6D6));
                             }
                             listButtons.get(j).setText("");
-                            listButtons.get(j).setBackground(new Color(0x2dce98));
+                            listButtons.get(j).setBackground(new Color(0xD6D6D6));
                             countOfPlayer--;
                             break;
                         }
@@ -84,7 +84,7 @@ public class ClientReadFromServer extends Thread{
                 if(message.startsWith("ConfirmQuit")){
                     for(int i=0;i<listButtons.size();i++){
                         listButtons.get(i).setText("");
-                        listButtons.get(i).setBackground(new Color(0x2dce98));
+                        listButtons.get(i).setBackground(new Color(0xD6D6D6));
                     }
                     menuWindow.menuPlay.setVisible(true);
                     menuWindow.menuHostGame.setVisible(false);
@@ -96,7 +96,7 @@ public class ClientReadFromServer extends Thread{
                     client.fromClient.println("Quit");
                     for(int i=0;i<listButtons.size();i++){
                         listButtons.get(i).setText("");
-                        listButtons.get(i).setBackground(new Color(0x2dce98));
+                        listButtons.get(i).setBackground(new Color(0xD6D6D6));
                     }
 
                     menuWindow.menuPlay.setVisible(true);
