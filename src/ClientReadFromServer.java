@@ -150,10 +150,10 @@ public class ClientReadFromServer extends Thread{
 
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
-                    playSound("assets\\sounds\\pawnjump.wav");
+                    PlaySoundEffect.playSound("assets\\sounds\\pawnjump.wav");
                 }
                 if(message.equals("Bought:")){
-                    playSound("assets\\sounds\\kaching.wav");
+                    PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
                     gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
@@ -245,17 +245,6 @@ public class ClientReadFromServer extends Thread{
                 }
             }
         }
-    }
-
-    static void playSound(String soundPath) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
-        if(soundPath.equals("assets\\sounds\\pawnjump.wav")) TimeUnit.SECONDS.sleep(1);
-        File soundFile = new File(soundPath);
-        AudioInputStream sound = AudioSystem.getAudioInputStream(soundFile);
-        Clip clip = AudioSystem.getClip();
-        clip.open(sound);
-        FloatControl volume= (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        volume.setValue(-15.0f);
-        clip.start();
     }
 
 }

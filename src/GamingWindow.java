@@ -281,12 +281,12 @@ public class GamingWindow {
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[11]);
                                 break;
                             case 10:
-                                VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[14], Color.BLUE);
+                                VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[14], Color.CYAN);
                                 /* Kat. Budownictwa Betonowego 180 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[14]);
                                 break;
                             case 12:
-                                VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[15], Color.BLUE);
+                                VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[15], Color.CYAN);
                                 /* Inst. Architektury 200 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[15]);
                                 break;
