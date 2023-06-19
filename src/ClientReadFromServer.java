@@ -47,6 +47,14 @@ public class ClientReadFromServer extends Thread{
                     }
                 }
 
+                if(message.equals("serverFull")){
+                    client.intoClient.close();
+                    alertWindow.setMessage("Server pelen!!");
+                    alertWindow.show();
+                    player.PlayerDisconnect();
+                    return;
+                }
+
                 if(message.startsWith("PlayerDisconnect:")){
                     String[] tmp=message.split(":");
                     for(int i=0;i<listButtons.size();i++){
@@ -54,8 +62,7 @@ public class ClientReadFromServer extends Thread{
                         if(listButtons.get(i).getText().equals(tmp[1])){
                             int j;
                             for(j=i;j<countOfPlayer-1;j++){
-                                listButtons.get(j).setText("");
-                                listButtons.get(j).setBackground(new Color(0xD6D6D6));
+                                listButtons.get(j).setText(listButtons.get(j+1).getText());
                             }
                             listButtons.get(j).setText("");
                             listButtons.get(j).setBackground(new Color(0xD6D6D6));
@@ -79,10 +86,12 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("nickNameTakenChanging")){
                     alertWindow.setMessage("Nick jest zajety!!");
                     alertWindow.show();
+
                 }
                 if(message.equals("nickNameTaken")){
                     alertWindow.setMessage("Nick jest zajety!!");
                     alertWindow.show();
+                    player.PlayerDisconnect();
                 }
 
                 if(message.startsWith("ConfirmQuit")){

@@ -4,6 +4,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 
@@ -116,8 +117,16 @@ public class MainWindow {
                     Socket tmp_clientSock = null;
                     try {
                         tmp_clientSock = server.serverSocketChannel.accept();
+
+                        if(server.listOfCommunication.size()>=4){
+                            PrintWriter fromServer=new PrintWriter(tmp_clientSock.getOutputStream(), true);
+                            fromServer.println("serverFull");
+                            continue;
+
+                        }
                         server.addSemaphore();
                         Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
+
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
