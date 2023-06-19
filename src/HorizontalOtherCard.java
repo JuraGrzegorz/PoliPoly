@@ -21,35 +21,22 @@ public class HorizontalOtherCard extends JFrame {
 
 //            imagePanel.setBackground(Color.WHITE);
 
-        imagePanel.setOpaque(false);
+//        imagePanel.setOpaque(false);
+//        imagePanel.setBounds(0,0,100,165);
 
         try {
-            File houseImageFile = new File(ImagePath);
-            Image houseImage = ImageIO.read(houseImageFile);
+            File imageFile = new File(ImagePath);
+            Image image = ImageIO.read(imageFile);
 
-            double rotationAngle = Math.PI / 2;
-            int scaledWidth = 163;
-            int scaledHeight = 98;
-            BufferedImage rotatedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+            JLabel imageLabel = new JLabel(new ImageIcon(ImagePath));
 
-            Graphics2D g2d = (Graphics2D) rotatedImage.getGraphics();
-            g2d.rotate(rotationAngle, scaledWidth / 2, scaledHeight / 2);
-            g2d.drawImage(houseImage, 0, 0, scaledWidth, scaledHeight, null);
-            g2d.dispose();
+            imagePanel.add(imageLabel);
+            imagePanel.setBounds(1,1,163,98);
+            imagePanel.setOpaque(false);
 
-            JPanel houseImagePanel = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    g.drawImage(rotatedImage, 0, 0, null);
-                }
-            };
-            houseImagePanel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
-            houseImagePanel.setOpaque(false);
-
-            imagePanel.add(houseImagePanel);
         } catch (IOException e) {
             e.printStackTrace();
+
         }
 
 
