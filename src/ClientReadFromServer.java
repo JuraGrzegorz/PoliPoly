@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class ClientReadFromServer extends Thread{
     private final Client client;
@@ -158,12 +159,21 @@ public class ClientReadFromServer extends Thread{
                         playerCash-=100;
                         gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     }
+                    Random rand = new Random();
                     if(Integer.parseInt(tmp[2])==0){
-                        playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                        if(moveNumber==2 || moveNumber==13){
+                            playerCash-=rand.nextInt(5)*10;
+                        }else{
+                            playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                        }
                         gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(Integer.parseInt(tmp[2])==1){
-                        playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                        if(moveNumber==2 || moveNumber==13){
+                            playerCash+=rand.nextInt(5)*10;
+                        }else{
+                            playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                        }
                         gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(playerNumber==localPlayerNumber){

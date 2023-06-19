@@ -99,7 +99,7 @@ public class ServerMainThread extends Thread{
                                 server.listOfCommunication.get(index).message="cash:";
                                 server.listOfCommunication.get(index).syncServerWriteToClient.release();
                             }
-
+                            
                             Random rand = new Random();
                             if(playersPosition[index]==10 || playersPosition[index]==30){
                                 switch (rand.nextInt(7)){
