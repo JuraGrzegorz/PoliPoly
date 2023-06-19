@@ -127,7 +127,7 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
-                    gamingWindow.playerCash.setText("800");
+                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     client.fromClient.println("Starting");
 //                    for(int i=1;i<32;i++){
 //                        for(int j=0;j<4;j++){
@@ -152,11 +152,11 @@ public class ClientReadFromServer extends Thread{
                     }
                     if(Integer.parseInt(tmp[2])==0){
                         playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
-                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                        gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(Integer.parseInt(tmp[2])==1){
                         playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
-                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                        gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
@@ -172,7 +172,7 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("Bought:")){
                     PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
-                    gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
 
@@ -184,7 +184,7 @@ public class ClientReadFromServer extends Thread{
                 }
                 if(message.equals("cash:")){
                     playerCash+=400;
-                    gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
                 }
                 if(message.equals("yourTurn")){
                     gamingWindow.diceRollPanel.setVisible(true);

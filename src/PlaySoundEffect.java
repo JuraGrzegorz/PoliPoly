@@ -23,7 +23,7 @@ public class PlaySoundEffect {
         Clip musicTheme = AudioSystem.getClip();
         musicTheme.open(sound);
         FloatControl volume= (FloatControl) musicTheme.getControl(FloatControl.Type.MASTER_GAIN);
-        volume.setValue(-15.0f);
+        volume.setValue(-30.0f);
         musicTheme.loop(Clip.LOOP_CONTINUOUSLY);
         return musicTheme;
     }
