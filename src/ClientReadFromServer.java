@@ -138,8 +138,16 @@ public class ClientReadFromServer extends Thread{
                     moveNumber=Integer.parseInt(tmp[0]);
 
                     if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
-                        localPlayerNumber=playerNumber;
+//                        localPlayerNumber=playerNumber;
                         gamingWindow.buyPropertyButton.setVisible(true);
+                    }
+                    if(Integer.parseInt(tmp[2])==0){
+                        playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                    }
+                    if(Integer.parseInt(tmp[2])==1){
+                        playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
