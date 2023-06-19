@@ -6,8 +6,11 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
@@ -35,6 +38,12 @@ public class DiceRoll extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rollDice();
+                try {
+                    PlaySoundEffect.playRandomDice("diceshaking");
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException |
+                         InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
                 //wysylanie danych do servera
             }
         });
@@ -72,7 +81,7 @@ public class DiceRoll extends JPanel {
             try {
                 currentDiceValue = get();
                 repaint();
-
+                PlaySoundEffect.playRandomDice("diceroll");
                 Thread.sleep(FRAME_DELAY);
             } catch (Exception ex) {
                 ex.printStackTrace();
