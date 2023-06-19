@@ -193,7 +193,7 @@ public class MenuWindow {
         ipAddressGetTextField.setUI(new StyleTextFieldUI());
         ipAddressGetTextField.setMaximumSize(new Dimension(300, 50));
 
-        nickNameTextFieldJoinMenu = new JTextField("Player");
+        nickNameTextFieldJoinMenu = new JTextField("Server.Player");
         nickNameTextFieldJoinMenu.setUI(new StyleTextFieldUI());
         nickNameTextFieldJoinMenu.setPreferredSize(new Dimension(200, 50));
 

@@ -681,11 +681,11 @@ public class GamingWindow {
 
     private void initializeFacultyPricesAndNames() {
         facultyPrices[1] = 60;
-        facultyNames[1] = "Mat";
+        facultyNames[1] = "Instytut Matematyki";
         facultyColor[1] = new Color(0xc6a995);
 
         facultyPrices[3] = 60;
-        facultyNames[3] = "Fiz";
+        facultyNames[3] = "Instytut Fizyki";
         facultyColor[3] = new Color(0xc6a995);
 
         facultyPrices[4] = 200; //akademik nr1

@@ -1,10 +1,8 @@
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ClientReadFromServer extends Thread{
     private final Client client;
@@ -17,7 +15,13 @@ public class ClientReadFromServer extends Thread{
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
-    public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
+    DeckOfCards chanceDeck;
+    DeckOfCards kasaspolDeck;
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, NickNameTakenWindow alertWindow, Player player) {
+        chanceDeck = new DeckOfCards((short)0);
+        kasaspolDeck = new DeckOfCards((short)1);
+        chanceDeck.shuffleDeck();
+        kasaspolDeck.shuffleDeck();
         this.client=client;
         this.player=player;
         this.menuWindow=menuWindow;
@@ -168,6 +172,13 @@ public class ClientReadFromServer extends Thread{
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
                     PlaySoundEffect.playSound("assets\\sounds\\pawnjump.wav");
+                    // 6 - kasa
+                    // 26 - kasa
+                    // 10 - szansa
+                    // 30 - szansa
+
+                    checkForChanceOrKasa(playerNumber);
+
                 }
                 if(message.equals("Bought:")){
                     PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
@@ -266,6 +277,68 @@ public class ClientReadFromServer extends Thread{
                 }else{
                     tab[31][element].setVisible(true);
                 }
+            }
+        }
+    }
+
+    //WYWOLANIE POD KONIEC if(message.startsWith("move:")){}
+    private void checkForChanceOrKasa(int playerNumber) {
+        if(playersPosition[playerNumber] == 10 || playersPosition[playerNumber] == 30){
+            //wejscie na szanse
+            String drawnCard = chanceDeck.drawCard();
+            char drawnCardID = drawnCard.charAt(0);
+            System.out.println("drawnCardID: " + drawnCardID + " zalosowana karta: " + drawnCard.replace(drawnCardID+".",""));
+            switch(drawnCardID){
+                case '1':
+                    //idz do instytutu obrabiarek
+                    break;
+                case '2':
+                    //idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
+                    break;
+                case '3':
+                    ////idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
+                    break;
+                case '4':
+                    //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
+                    break;
+                case '5':
+                    //karta zart, nic sie nie dzieje
+                    break;
+                case '6':
+                    //cofnij sie o 3 pola
+                    break;
+                case '7':
+                    //przejdz do instytutu marketingu (ostatnia ulica przed startem)
+                    break;
+            }
+        }
+        if(playersPosition[playerNumber] == 6 || playersPosition[playerNumber] == 26){
+            //wejscie na kase spoleczna
+            String drawnCard = kasaspolDeck.drawCard();
+            char drawnCardID = drawnCard.charAt(0);
+            System.out.println("drawnCardID: " + drawnCardID + " zalosowana karta: " + drawnCard.replace(drawnCardID+".",""));
+            switch(drawnCardID){
+                case '1':
+                    //plac 25zl za kazdy domek i 100zl za kazdy hotel
+                    break;
+                case '2':
+                    //przejdz na start i pobierz 200zl
+                    break;
+                case '3':
+                    ////dostajesz 150zl
+                    break;
+                case '4':
+                    //placisz kazdemu graczowi po 10zl
+                    break;
+                case '5':
+                    //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
+                    break;
+                case '6':
+                    //dostajesz 50zl
+                    break;
+                case '7':
+                    //tracisz 100zl
+                    break;
             }
         }
     }
