@@ -24,20 +24,15 @@ public class HorizontalOtherCard extends JFrame {
 //        imagePanel.setOpaque(false);
 //        imagePanel.setBounds(0,0,100,165);
 
-        try {
-            File imageFile = new File(ImagePath);
-            Image image = ImageIO.read(imageFile);
 
-            JLabel imageLabel = new JLabel(new ImageIcon(ImagePath));
+        File imageFile = new File(ImagePath);
+        //Image image = ImageIO.read(imageFile);
 
-            imagePanel.add(imageLabel);
-            imagePanel.setBounds(1,1,163,98);
-            imagePanel.setOpaque(false);
+        JLabel imageLabel = new JLabel(new ImageIcon(ImagePath));
 
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
+        imagePanel.add(imageLabel);
+        imagePanel.setBounds(1,1,163,98);
+        imagePanel.setOpaque(false);
 
     }
 

@@ -16,7 +16,7 @@ public class DeckOfCards extends JPanel {
         if(deckID == 1){
             initializeDeck(deckID);
         }
-        else System.out.println("Have a nice game!");
+//        else System.out.println("Have a nice game!");
     }
 
     void initializeDeck(short deckID){
