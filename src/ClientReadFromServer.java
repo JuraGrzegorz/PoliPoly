@@ -129,11 +129,11 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.endRound.setVisible(false);
                     gamingWindow.playerCash.setText("800");
                     client.fromClient.println("Starting");
-                    for(int i=1;i<32;i++){
-                        for(int j=0;j<4;j++){
-                            showOrHide(gamingWindow.pawnPanel,i,j,0);
-                        }
-                    }
+//                    for(int i=1;i<32;i++){
+//                        for(int j=0;j<4;j++){
+//                            showOrHide(gamingWindow.pawnPanel,i,j,0);
+//                        }
+//                    }
 
                 }
 
