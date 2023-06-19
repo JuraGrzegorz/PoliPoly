@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -41,15 +39,15 @@ import javax.imageio.ImageIO;
 
         public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
             for (int i = 0; i < 4; i++) {
-                pawnPanel[i].setBounds(22 + i % 2 * 30, 52 + i / 2 * 33, 22, 22);
+                pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
                 pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
                 try {
                     File pawnImageFile = new File(ImagePath);
                     Image pawnImage = ImageIO.read(pawnImageFile);
 
-                    int scaledWidth = 15;
-                    int scaledHeight = 15;
+                    int scaledWidth = 40;
+                    int scaledHeight = 40;
                     Image scaledPawnImage = pawnImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
                     JPanel pawnImagePanel = new JPanel() {

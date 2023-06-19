@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -72,7 +71,7 @@ public class HorizontalOtherCard extends JFrame {
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
         for (int i = 0; i < 4; i++) {
-            pawnPanel[i].setBounds( 52 + i / 2 * 33, 22 + i % 2 * 30, 22, 22);
+            pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
             pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
             try {
@@ -80,8 +79,8 @@ public class HorizontalOtherCard extends JFrame {
                 Image pawnImage = ImageIO.read(pawnImageFile);
 
                 double rotationAngle = Math.PI / 2;
-                int scaledWidth = 15;
-                int scaledHeight = 15;
+                int scaledWidth = 40;
+                int scaledHeight = 40;
                 BufferedImage rotatedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
 
                 Graphics2D g2d = (Graphics2D) rotatedImage.getGraphics();
