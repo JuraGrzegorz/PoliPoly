@@ -62,6 +62,7 @@ public class HorizontalFacultyCard {
 //        gameFrame.setVisible(true);
 //
 //    }
+
     public static void makeUponPanel(JPanel uponPanel, int x, int price, Color color) {
         Rectangle uponPanelRectangle;
         if(x==1){uponPanelRectangle = new Rectangle(0, 0, 28, 100);}
@@ -82,7 +83,7 @@ public class HorizontalFacultyCard {
                 g2d.dispose();
             }
         };
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
         uponPanelLabel.setVerticalAlignment(JLabel.CENTER);
         uponPanelLabel.setHorizontalAlignment(JLabel.CENTER);

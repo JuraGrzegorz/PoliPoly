@@ -1,3 +1,6 @@
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -15,7 +18,8 @@ public class MainWindow {
 
     private final NickNameTakenWindow alertWindow;
 
-    public MainWindow(){
+    public MainWindow() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        Clip menuTheme = PlaySoundEffect.playMusicOnRepeat("assets\\sounds\\music\\menutheme.wav");
         gameStarted=false;
         stopHostingGame=false;
         MenuWindow menuWindow=new MenuWindow();
@@ -189,6 +193,12 @@ public class MainWindow {
         menuWindow.startGameButton.addActionListener(back -> {
             synchronized (this) {
                 gameStarted=true;
+                PlaySoundEffect.stopMusicOnRepeat(menuTheme);
+                try {
+                    PlaySoundEffect.playMusicOnRepeat("assets\\sounds\\music\\gameplaytheme.wav");
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             client.fromClient.println("startGame");
         });

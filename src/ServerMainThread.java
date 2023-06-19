@@ -33,6 +33,7 @@ public class ServerMainThread extends Thread{
         }
 
     }
+
     public void run() {
 
         while (true){
@@ -80,7 +81,6 @@ public class ServerMainThread extends Thread{
                 for(Communication val : server.listOfCommunication){
                     try {
                         if(prison[index]){
-                            System.out.print("WIEZIENIE\n");
                             prison[index]=false;
                             index++;
                             continue;
@@ -109,17 +109,35 @@ public class ServerMainThread extends Thread{
                                 prison[index]=true;
                             }
 
-                            for(int i=0;i<server.listOfCommunication.size();i++){
-                                message="move:";
-                                message+=playersPosition[index];
-                                message+=":"+index+":";
 
-                                if(playerCards[playersPosition[index]]==-1 && i==index){
-                                    message+=-1;
-                                }else{
-                                    message+=-2;
+                            int playerResult[]=new int[4];
+                            for(int i=0;i<4;i++){
+                                playerResult[i]=-2;
+                            }
+                            for(int i=0;i<4;i++){
+                                if(playerResult[i]!=1){
+                                    if(playerCards[playersPosition[i]]==-1){
+                                        playerResult[i]=-1;
+                                    }else{
+                                        if(playerCards[playersPosition[i]]>=0){
+                                            if(playerCards[playersPosition[i]]!=i){
+                                                playerResult[i]=0;
+                                                playerResult[playerCards[playersPosition[i]]]=1;
+                                            }else{
+                                                //kupowanie domkow
+                                            }
+                                        }
+                                    }
                                 }
-                                server.listOfCommunication.get(i).message=message;
+                            }
+
+
+                            message="move:";
+                            message+=playersPosition[index];
+                            message+=":"+index+":";
+
+                            for(int i=0;i<server.listOfCommunication.size();i++){
+                                server.listOfCommunication.get(i).message=message+playerResult[i];
                                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                             }
 

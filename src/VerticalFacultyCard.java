@@ -13,7 +13,6 @@ public class VerticalFacultyCard extends JPanel {
 
     }
 
-
     public static void makeUponPanel(JPanel uponPanel, int x, int price, Color color) {
         Rectangle uponPanelRectangle;
         if (x == 1) {
@@ -22,8 +21,8 @@ public class VerticalFacultyCard extends JPanel {
             uponPanelRectangle = new Rectangle(0, 137, 100, 28);
         }
         uponPanel.setBounds(uponPanelRectangle);
-        JLabel uponPanelLabel = new JLabel(price+"$");
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        JLabel uponPanelLabel = new JLabel(price+"P$");
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
         //
 

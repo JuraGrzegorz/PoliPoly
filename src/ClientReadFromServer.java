@@ -1,7 +1,10 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ClientReadFromServer extends Thread{
     private final Client client;
@@ -135,8 +138,16 @@ public class ClientReadFromServer extends Thread{
                     moveNumber=Integer.parseInt(tmp[0]);
 
                     if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
-                        localPlayerNumber=playerNumber;
+//                        localPlayerNumber=playerNumber;
                         gamingWindow.buyPropertyButton.setVisible(true);
+                    }
+                    if(Integer.parseInt(tmp[2])==0){
+                        playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
+                    }
+                    if(Integer.parseInt(tmp[2])==1){
+                        playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                        gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
@@ -147,8 +158,10 @@ public class ClientReadFromServer extends Thread{
 
                     Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
+                    PlaySoundEffect.playSound("assets\\sounds\\pawnjump.wav");
                 }
                 if(message.equals("Bought:")){
+                    PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
                     gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
@@ -172,15 +185,13 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.endRound.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException | UnsupportedAudioFileException | LineUnavailableException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    void showOrHide(JPanel[][] tab,int val,int element,int how){
+    void showOrHide(JPanel[][] tab,int val,int element,int how) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         int tmpVal;
         if(val>=1 && val<8){
             tmpVal=28;
@@ -249,4 +260,5 @@ public class ClientReadFromServer extends Thread{
             }
         }
     }
+
 }

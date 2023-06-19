@@ -1,7 +1,10 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.io.IOException;
 
 class StyledButtonUI extends BasicButtonUI {
 
@@ -17,6 +20,13 @@ class StyledButtonUI extends BasicButtonUI {
     public void paint (Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
         paintBackground(g, b, b.getModel().isPressed() ? 2 : 0);
+        if(b.getModel().isPressed()){
+            try {
+                PlaySoundEffect.playSound("assets\\sounds\\buttonpress.wav");
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         super.paint(g, c);
     }
 
