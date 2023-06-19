@@ -123,7 +123,7 @@ public class MainWindow {
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
                         serverWriteThread.start();
 
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
 
             });
@@ -140,7 +140,7 @@ public class MainWindow {
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
                     break;
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
             }
         });
 
@@ -170,9 +170,7 @@ public class MainWindow {
                     Thread.sleep(1000);
                     server.serverSocketChannel.close();
                     client.fromClient.println("Quit");
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
+                } catch (InterruptedException | IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -208,14 +206,19 @@ public class MainWindow {
         window = new JFrame();
         window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         window.setSize(800, 600);
         window.setLocationRelativeTo(null);
         window.add(container);
+
+        ImageIcon icon = new ImageIcon("assets\\icon.png");
+        window.setIconImage(icon.getImage());
 
     }
 
     public void show() {
         window.setVisible(true);
+
 
     }
 

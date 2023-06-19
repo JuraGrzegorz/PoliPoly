@@ -42,7 +42,8 @@ public class GamingWindow {
     JPanel cardsPanel;
     JPanel cashPanel;
     JPanel playerTurnPanel;
-    JPanel mouseHoverInfoPanel;
+    HoverInfoPanel mouseHoverInfoPanel;
+    JPanel InfoPanel;
 
     JPanel[] verticalFieldsArray;
     JPanel[] horizontalFieldsArray;
@@ -83,7 +84,8 @@ public class GamingWindow {
         inGameButtonPanel = new JPanel();
         cashPanel = new JPanel();
         playerTurnPanel = new JPanel();
-        mouseHoverInfoPanel = new JPanel();
+        mouseHoverInfoPanel = new HoverInfoPanel(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y);
+        InfoPanel = new JPanel();
 
 
         counter = 0;
@@ -107,6 +109,9 @@ public class GamingWindow {
         gameContents.setPreferredSize(new Dimension(WINDOW_SIDE_LENGTH, WINDOW_SIDE_HEIGHT));
         windowFrame.getContentPane().add(gameContents);
         windowFrame.pack();
+
+        ImageIcon icon = new ImageIcon("assets\\icon.png");
+        windowFrame.setIconImage(icon.getImage());
 
         windowFrame.setTitle("Polipoly");
         windowFrame.setLayout(null);
@@ -332,47 +337,47 @@ public class GamingWindow {
 
                     switch (i) {
                         case 9:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 150, facultyColor[21]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[21], facultyColor[21]);
                            /* DMCS 260 */
                              HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[21]);
                             break;
                         case 13:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 170, facultyColor[21]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[23], facultyColor[21]);
                                      /* IMSI 280*/
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[23]);
                             break;
                         case 1:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 200, facultyColor[19]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[17], facultyColor[19]);
                                /* Inst. Obrabiarek 220 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[17]);
                             break;
                         case 5:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 220, facultyColor[19]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[19], facultyColor[19]);
                                   /* Kat. Wyrzymałości Materiałów 240 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[19]);
                             break;
                         case 0:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 250, facultyColor[5]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[7], facultyColor[5]);
                                 /* Inst. Chemii Organicznej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[7]);
                             break;
                         case 4:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 280, facultyColor[5]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[5], facultyColor[5]);
                            /* Kat. Fizyki Molekularnej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[5]);
                             break;
                         case 8:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 320, facultyColor[1]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[3], facultyColor[1]);
                               /* Fiz 60 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[3]);;
                             break;
                         case 12:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 350, facultyColor[1]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[1], facultyColor[1]);
                             /* Mat, 60 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[1]);
                             break;
                         case 11:
-                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 350, facultyColor[21]);
+                            HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[22], facultyColor[21]);
                            /* CTI 260 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[22]);
 
@@ -511,7 +516,7 @@ public class GamingWindow {
         generateCardsPanel(cardsPanel);
         generateCashPanel(cashPanel);
         generatePlayerTurnPanel(playerTurnPanel);
-        generateMouseHoverInfoPanel(mouseHoverInfoPanel);
+        generateInfoPanel(InfoPanel);
 
         generateinGameButtonPanel(inGameButtonPanel);
 
@@ -523,7 +528,9 @@ public class GamingWindow {
 
         windowFrame.add(playerTurnPanel);
         windowFrame.add(mouseHoverInfoPanel);
+        windowFrame.add(InfoPanel);
         windowFrame.add(inGameButtonPanel);
+
 
 
         diceRollPanel = new DiceRoll(fromClient);
@@ -602,16 +609,17 @@ public class GamingWindow {
 //        playerTurnPanel.setBackground(Color.CYAN);
     }
 
-    private void generateMouseHoverInfoPanel(JPanel mouseHoverInfoPanel) throws IOException {
-        Rectangle mouseHoverInfoPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y, 725, 220);
-        mouseHoverInfoPanel.setBounds(mouseHoverInfoPanelRectangle);
+    private void generateInfoPanel(JPanel InfoPanel) throws IOException {
+        Rectangle InfoPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y, 725, 220);
+        InfoPanel.setBounds(InfoPanelRectangle);
         BufferedImage myPicture = ImageIO.read(new File("assets\\info.png"));
         JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        mouseHoverInfoPanel.add(picLabel);
-        mouseHoverInfoPanel.setBorder(blackline);
-        mouseHoverInfoPanel.setBackground(Color.black);
-//        mouseHoverInfoPanel.setBackground(Color.CYAN);
+        InfoPanel.add(picLabel);
+        InfoPanel.setBorder(blackline);
+        InfoPanel.setBackground(Color.black);
     }
+
+
 
     private void generateinGameButtonPanel(JPanel inGameButtonPanel) {
         Rectangle inGameButtonPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 950, 725, 50);
@@ -653,6 +661,8 @@ public class GamingWindow {
 
         AmountOfCardsInCardPanel++;
     }
+
+
 
 
     private void initializeFacultyPricesAndNames() {
