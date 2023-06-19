@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
         public static void makeImagePanel(JPanel imagePanel, String ImagePath) {
 //            Rectangle imageRectangle = new Rectangle(0, 0, 80, 140);
 //            imagePanel.setBounds(imageRectangle);
-//            imagePanel.setLayout(null);
+//            imagePanel.setLayout(FlowLayout);
 
 //            imagePanel.setBackground(Color.WHITE);
 
@@ -39,7 +39,7 @@ import javax.imageio.ImageIO;
 
         public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
             for (int i = 0; i < 4; i++) {
-                pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
+                pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
                 pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
                 try {

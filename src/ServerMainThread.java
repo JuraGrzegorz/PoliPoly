@@ -165,7 +165,9 @@ public class ServerMainThread extends Thread{
     }
     void setNickNameCommand(Communication val){
         String nickName = val.message.substring(("setNickname:").length());
+        if(server.listOfCommunication.size()>=4){
 
+        }
         int x;
         for(x=0;x<server.listOfCommunication.size()-1;x++){
             if(server.listOfCommunication.get(x).nickName.equals(nickName)){

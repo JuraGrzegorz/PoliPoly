@@ -61,7 +61,7 @@ public class VerticalFacultyCard extends JPanel {
         for (int i = 0; i < 4; i++) {
 
 
-            pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
+            pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
             pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
             try {
