@@ -494,8 +494,8 @@ public class GamingWindow {
 
     public void paintPlayerSection() throws IOException {
 
-        generateCardsPanel(cardsPanel);
         generateCashPanel(cashPanel);
+        generateCardsPanel(cardsPanel);
         generatePlayerTurnPanel(playerTurnPanel);
         generateMouseHoverInfoPanel(mouseHoverInfoPanel);
 
@@ -505,7 +505,7 @@ public class GamingWindow {
 
         windowFrame.add(cardsPanel);
 
-        windowFrame.add(cashPanel);
+        windowFrame.getContentPane().add(cashPanel);
 
         windowFrame.add(playerTurnPanel);
         windowFrame.add(mouseHoverInfoPanel);
@@ -561,20 +561,20 @@ public class GamingWindow {
     public void generateCashPanel(JPanel cashPanel) throws IOException {
         Rectangle cashPanelRectangle = new Rectangle(450 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y, 300, 50);
         cashPanel.setBounds(cashPanelRectangle);
-        BufferedImage myPicture = ImageIO.read(new File("assets\\manymanymany.png"));
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 
         playerCashValue = 0;
         playerCash = new JLabel();
-        playerCash.setText(Integer.toString(playerCashValue));
-        playerCash.setFont(new Font("Calibri", Font.BOLD, 20));
+        playerCash.setText(String.format("%d P$", playerCashValue*2));
+        playerCash.setFont(new Font("Calibri", Font.BOLD, 40));
         playerCash.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerCash.setVisible(true);
+        playerCash.invalidate();
+        playerCash.validate();
+        playerCash.repaint();
 
-        //   cashPanel.add(picLabel);
+
         cashPanel.add(playerCash);
-        cashPanel.setBorder(blackline);
-        cashPanel.setBackground(Color.black);
-//        cashPanel.setBackground(Color.CYAN);
+        cashPanel.setBackground(Color.yellow);
     }
 
     private void generatePlayerTurnPanel(JPanel playerTurnPanel) throws IOException {
