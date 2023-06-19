@@ -11,6 +11,11 @@ public class CardOnCardPanelPanel extends JPanel {
 
     public void setString(String value) {
         this.text = value;
+        label.setText(text);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setMaximumSize(new Dimension(100, 100));
+        label.setPreferredSize(new Dimension(100, 100));
     }
 
 
@@ -30,7 +35,8 @@ public class CardOnCardPanelPanel extends JPanel {
         midColorLabel.setPreferredSize(new Dimension(100, 5));
 
 
-        label = new JLabel(text);
+        label = new JLabel();
+        label.setText(text);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
         label.setMaximumSize(new Dimension(100, 100));

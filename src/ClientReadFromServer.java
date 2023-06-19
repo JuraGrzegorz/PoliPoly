@@ -153,6 +153,12 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.playerCash.setText(String.valueOf(playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
+
+
+                    gamingWindow.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
+
+
+
                 }
                 if(message.equals("cash:")){
                     playerCash+=400;

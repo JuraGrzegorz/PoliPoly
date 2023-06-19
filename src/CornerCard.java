@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -15,7 +13,7 @@ public class CornerCard extends JFrame {
     public static void makeImagePanel(JPanel imagePanel, String ImagePath) {
 //        Rectangle imageRectangle = new Rectangle(0, 0, 400, 400);
 //        imagePanel.setBounds(imageRectangle);
-//        imagePanel.setBackground(Color.WHITE);
+        imagePanel.setBackground(Color.WHITE);
 
         try {
             File imageFile = new File(ImagePath);
@@ -44,7 +42,7 @@ public class CornerCard extends JFrame {
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
         for (int i = 0; i < 4; i++) {
-            pawnPanel[i].setBounds(52 + i % 2 * 33, 52 + i / 2 * 33, 22, 22);
+            pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
             pawnPanel[i].setOpaque(false); // pionki robia sie przeroczyste
 
             try {
@@ -52,8 +50,8 @@ public class CornerCard extends JFrame {
                 Image pawnImage = ImageIO.read(pawnImageFile);
 
                 // scaluje grafike pionka
-                int scaledWidth = 15;
-                int scaledHeight = 15;
+                int scaledWidth = 40;
+                int scaledHeight = 40;
                 Image scaledPawnImage = pawnImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
                 JPanel pawnImagePanel = new JPanel() {
