@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+
 public class ClientReadFromServer extends Thread{
     private final Client client;
     private final Player player;
     private final MenuWindow menuWindow;
     private final List<JButton> listButtons;
     private int countOfPlayer;
-    private final NickNameTakenWindow alertWindow;
+    private final okConfirmPopUp alertWindow;
     GamingWindow gamingWindow;
     int playerCash;
     int[] playersPosition;
