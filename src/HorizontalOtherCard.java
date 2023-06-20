@@ -6,41 +6,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class HorizontalOtherCard extends JFrame {
-
-//        private JLayeredPane layeredPane;
-//        private JPanel imagePanel;
-//        private JPanel[] pawnPanel;
-
-    public HorizontalOtherCard() {
-    }
-
     public static void makeImagePanel(JPanel imagePanel, String ImagePath) {
-//            Rectangle imageRectangle = new Rectangle(0, 0, 80, 140);
-//            imagePanel.setBounds(imageRectangle);
-//            imagePanel.setLayout(null);
-
-//            imagePanel.setBackground(Color.WHITE);
-
-//        imagePanel.setOpaque(false);
-//        imagePanel.setBounds(0,0,100,165);
-
-
         File imageFile = new File(ImagePath);
-        //Image image = ImageIO.read(imageFile);
-
         JLabel imageLabel = new JLabel(new ImageIcon(ImagePath));
 
         imagePanel.add(imageLabel);
         imagePanel.setBounds(1,1,163,98);
         imagePanel.setOpaque(false);
-
     }
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath, int x) {
         String pawnImagePath = "";
 
         for (int i = 0; i < 4; i++) {
-
             if(i==0) pawnImagePath = "assets\\blu.png";
             else if(i==1) pawnImagePath = "assets\\Mintus.png";
             else if(i==2) pawnImagePath = "assets\\orang.png";

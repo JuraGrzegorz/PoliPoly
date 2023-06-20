@@ -2,13 +2,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class PurchaseWindow extends PopUpWindow {
+public class PurchasePopUp extends PopUpWindow {
 
 
     public JButton purchaseButton;
     public JButton endTourButton;
 
-    public PurchaseWindow() {
+    public PurchasePopUp() {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
 
         purchaseButton = MenuWindow.standardButtonGenerate("Zakup");

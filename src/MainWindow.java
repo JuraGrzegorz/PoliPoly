@@ -164,13 +164,9 @@ public class MainWindow {
 
         });
 
-        menuWindow.changeNickNameHostButton.addActionListener(back -> {
-            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
-        });
+        menuWindow.changeNickNameHostButton.addActionListener(back -> client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText()));
 
-        menuWindow.changeNickNameJoinButton.addActionListener(back -> {
-            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
-        });
+        menuWindow.changeNickNameJoinButton.addActionListener(back -> client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText()));
 
 
 
@@ -215,7 +211,7 @@ public class MainWindow {
                         break;
                     }
                 }
-                Socket tmp_clientSock = null;
+                Socket tmp_clientSock;
                 try {
                     tmp_clientSock = server.serverSocketChannel.accept();
 
