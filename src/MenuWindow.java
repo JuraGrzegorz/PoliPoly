@@ -20,6 +20,8 @@ public class MenuWindow {
     JPanel menuHostGame;
     JButton backFromHostMenuButton;
 
+    JButton backFromCreditsMenuButton;
+
     JButton startGameButton;
     JButton joinGameButton;
     JLabel ip_info;
@@ -27,6 +29,7 @@ public class MenuWindow {
     JButton changeNickNameJoinButton;
 
     JPanel mainMenu;
+    JPanel menuCredits;
     JPanel menuPlay;
     JPanel menuJoinGame;
     JPanel JoinPlayersPanel;
@@ -37,6 +40,7 @@ public class MenuWindow {
     JTextField nickNameTextFieldJoinMenu;
     List<JButton> joinGameListButtons;
     List<JButton> hostGameListButtons;
+
     static JButton standardButtonGenerate(String name) {
         JButton tmp = new JButton(name);
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -71,8 +75,8 @@ public class MenuWindow {
     }
 
     public MenuWindow() {
-        joinGameListButtons =new ArrayList<>();
-        hostGameListButtons=new ArrayList<>();
+        joinGameListButtons = new ArrayList<>();
+        hostGameListButtons = new ArrayList<>();
         hostGameListButtons.add(grayButtonGenerate(""));
         hostGameListButtons.add(grayButtonGenerate(""));
         hostGameListButtons.add(grayButtonGenerate(""));
@@ -108,6 +112,7 @@ public class MenuWindow {
         backToMainMenuButton = standardButtonGenerate("Wróć");
         backFromJoinMenuButton = standardButtonGenerate("Wróć");
         backFromHostMenuButton = standardButtonGenerate("Wróć");
+        backFromCreditsMenuButton = standardButtonGenerate("Wróć");
 
 
         //Panel Główny
@@ -121,6 +126,34 @@ public class MenuWindow {
         mainMenu.add(Box.createVerticalStrut(10));
         mainMenu.add(leaveButton);
         mainMenu.add(Box.createVerticalGlue());
+
+        //Panel Po wciśnięciu Autorzy
+        menuCredits = new JPanel();
+        menuCredits.setOpaque(false);
+        menuCredits.setVisible(false);
+        JLabel Creditslabel1 = new JLabel("Grzegorz Jura");
+        Creditslabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Creditslabel1.setFont(new Font("Calibri", Font.BOLD, 20));
+        JLabel Creditslabel2 = new JLabel("Jan Kozłowski");
+        Creditslabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Creditslabel2.setFont(new Font("Calibri", Font.BOLD, 20));
+        JLabel Creditslabel3 = new JLabel("Artur Trębski");
+        Creditslabel3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Creditslabel3.setFont(new Font("Calibri", Font.BOLD, 20));
+        JLabel Creditslabel4 = new JLabel("Bartosz Łysakowski");
+        Creditslabel4.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Creditslabel4.setFont(new Font("Calibri", Font.BOLD, 20));
+
+        menuCredits.setLayout(new BoxLayout(menuCredits, BoxLayout.Y_AXIS));
+        menuCredits.add(Box.createVerticalGlue());
+        menuCredits.add(Creditslabel1);
+        menuCredits.add(Creditslabel2);
+        menuCredits.add(Creditslabel3);
+        menuCredits.add(Creditslabel4);
+        menuCredits.add(Box.createVerticalStrut(15));
+        menuCredits.add(backFromCreditsMenuButton);
+        menuCredits.add(Box.createVerticalGlue());
+
 
         //Panel Po wciśnięciu graj
         menuPlay = new JPanel();
@@ -140,7 +173,7 @@ public class MenuWindow {
 
 
         ip_info = new JLabel();
-        ip_info.setText("ip : "+localhost.getHostAddress());
+        ip_info.setText("ip : " + localhost.getHostAddress());
         ip_info.setFont(new Font("Calibri", Font.BOLD, 20));
         ip_info.setAlignmentX(Component.CENTER_ALIGNMENT);
 

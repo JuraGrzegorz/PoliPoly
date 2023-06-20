@@ -9,9 +9,7 @@ import java.net.Socket;
 
 
 public class MainWindow {
-    private final JFrame window;
-    private static final int BUTTONFONTSIZE = 16;
-
+    private JFrame window = null;
     private Server server;
     private Client client;
     boolean gameStarted;
@@ -41,6 +39,7 @@ public class MainWindow {
         menuWindow.logoLabel.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
         container.add(menuWindow.logoLabel);
         container.add(menuWindow.mainMenu);
+        container.add(menuWindow.menuCredits);
         container.add(menuWindow.menuHostGame, BorderLayout.NORTH);
         container.add(menuWindow.menuJoinGame);
         menuWindow.menuPlay.setVisible(false);
@@ -51,10 +50,17 @@ public class MainWindow {
 
 
 
+
         //akcje przycisków
         menuWindow.playButton.addActionListener(back -> {
+
             menuWindow.mainMenu.setVisible(false);
             menuWindow.menuPlay.setVisible(true);
+        });
+
+        menuWindow.creditsButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(false);
+            menuWindow.menuCredits.setVisible(true);
         });
 
         menuWindow.enterJoinMenuButton.addActionListener(back -> {
@@ -70,12 +76,12 @@ public class MainWindow {
                     client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
                     client.SetCommunicationParameters(client.clientSocket);
                     player.PlayerConnect();
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
 
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
 
-                } catch (IOException e) {
+                } catch (IOException ignored) {
 
                 }
             }else{
@@ -144,7 +150,7 @@ public class MainWindow {
                     client.ClientConnect("localhost",8080);
                     client.SetCommunicationParameters(client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
@@ -156,6 +162,11 @@ public class MainWindow {
         menuWindow.backToMainMenuButton.addActionListener(back -> {
             menuWindow.mainMenu.setVisible(true);
             menuWindow.menuPlay.setVisible(false);
+        });
+
+        menuWindow.backFromCreditsMenuButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(true);
+            menuWindow.menuCredits.setVisible(false);
         });
 
         menuWindow.backFromJoinMenuButton.addActionListener(back -> {

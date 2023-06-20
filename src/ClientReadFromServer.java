@@ -17,10 +17,11 @@ public class ClientReadFromServer extends Thread{
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
-
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
-    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
+    int[] houseCount;
+    JFrame window;
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player,JFrame window) {
         chanceDeck = new DeckOfCards((short)0);
         kasaspolDeck = new DeckOfCards((short)1);
         chanceDeck.shuffleDeck();
@@ -32,10 +33,15 @@ public class ClientReadFromServer extends Thread{
         countOfPlayer=0;
         this.alertWindow=alertWindow;
         playersPosition=new int[4];
+        houseCount=new int[32];
+        for(int i=0;i<32;i++){
+            houseCount[i]=0;
+        }
         for(int i=0;i<4;i++){
             playersPosition[i]=0;
         }
         playerCash=800;
+        this.window=window;
     }
 
     public void run() {
@@ -50,6 +56,7 @@ public class ClientReadFromServer extends Thread{
                     for(String UsersNicks:tmp){
                         listButtons.get(countOfPlayer).setText(UsersNicks);
                         listButtons.get(countOfPlayer).setBackground(new Color(0x2dce98));
+
                         countOfPlayer++;
                     }
                 }
@@ -129,19 +136,29 @@ public class ClientReadFromServer extends Thread{
                 }
 
                 if(message.startsWith("gameStarted:")){
-                    localPlayerNumber= Integer.parseInt(message.substring(("gameStarted:").length()));
+                    message=message.substring(("gameStarted:").length());
+                    String[] tmp=message.split(":");
+                    localPlayerNumber= Integer.parseInt(tmp[0]);
                     gamingWindow=new GamingWindow(client.fromClient);
+                    window.setVisible(false);
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
                     CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    gamingWindow.playerTurnPanel.setPlayername(tmp[1]);
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
                         for(int j=0;j<4;j++){
                             showOrHide(gamingWindow.pawnPanel,i,j,0);
                         }
                     }
-
+                    for(int i=0;i<17;i++){
+                        for(int j=0;j<3;j++){
+                            gamingWindow.housePanel[i][j].setVisible(false);
+                        }
+                    }
+                    alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
+                    alertWindow.show();
                 }
 
                 if(message.startsWith("move:")){
@@ -154,7 +171,6 @@ public class ClientReadFromServer extends Thread{
                     moveNumber=Integer.parseInt(tmp[0]);
 
                     if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
-//                        localPlayerNumber=playerNumber;
                         gamingWindow.buyPropertyButton.setVisible(true);
                     }
                     if(moveNumber==18){
@@ -166,119 +182,142 @@ public class ClientReadFromServer extends Thread{
                         if(moveNumber==2 || moveNumber==13){
                             playerCash-=rand.nextInt(5)*10;
                         }else{
-                            playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                            if(houseCount[moveNumber]>0){
+                                System.out.print(houseCount[moveNumber]+" \n");
+                                playerCash-=(gamingWindow.facultyPrices[moveNumber]/2)*houseCount[moveNumber];
+                            }else{
+                                playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                            }
                         }
                         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                        gamingWindow.buyPropertyButton.setVisible(false);
                     }
                     if(Integer.parseInt(tmp[2])==1){
                         if(moveNumber==2 || moveNumber==13){
                             playerCash+=rand.nextInt(5)*10;
                         }else{
-                            playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                            if(houseCount[moveNumber]>0){
+                                System.out.print(houseCount[moveNumber]+" \n");
+                                playerCash+=(gamingWindow.facultyPrices[moveNumber]/2)*houseCount[moveNumber];
+                            }else{
+                                playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                            }
                         }
                         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    }
+                    if(Integer.parseInt(tmp[2])==2){
+                        if(playerCash>=gamingWindow.facultyPrices[moveNumber]/2 && houseCount[moveNumber]<3){
+                            gamingWindow.buyPropertyButton.setVisible(true);
+                            System.out.print("KUPUJ DOMKI");
+                        }
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
                     }
-                    showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
+                    showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
+
                     playersPosition[playerNumber]=moveNumber;
 
 //                    Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
                     PlaySoundEffect.playSound("assets\\sounds\\pawnjump.wav");
 
-
-                    // 6 - kasa
-                    // 26 - kasa
-                    // 10 - szansa
-                    // 30 - szansa
-
                 }
                 if(message.startsWith("message:")){
                     int val= Integer.parseInt(message.substring(("message:").length()));
                     switch (val){
                         case 0:
-                            alertWindow.setMessage("idz do instytutu obrabiarek");
+                            alertWindow.setMessage("Idź do Instytutu Obrabiarek. Jeśli przejdziesz przez start, pobierz 200P$.");
                             //idz do instytutu obrabiarek
                             break;
                         case 1:
-                            alertWindow.setMessage("idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza");
+                            alertWindow.setMessage("Idź do najbliższego Akademika. Jeśli nie posiada on jeszcze Namiestnika" +
+                                    "Rady Akademickiej, możesz się nim stać za 200 P$. Jeśli to stanowisko jest już zajęte, zapłać Namiestnikowi odpowiednią kwotę.");
                             //idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
                             break;
                         case 2:
-                            alertWindow.setMessage("idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza");
+                            alertWindow.setMessage("Idź do Centrum Językowego. Jeśli nie posiada ono jeszcze Dorywczego Korepetytora, możesz się nim stać za 50P$. Jeśli to" +
+                                    "stanowisko jest już zajęte, zapłać Korepetytorowi 25P$.");
                             //idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
                             break;
                         case 3:
-                            alertWindow.setMessage("idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl");
+                            alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
                             //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                             break;
                         case 4:
-                            alertWindow.setMessage("karta zart, nic sie nie dzieje");
+                            alertWindow.setMessage("Za swoje zasługi dla uczelni otrzymujesz uścisk dłoni Rektora (jest bezcenny).");
                             //karta zart, nic sie nie dzieje
                             break;
                         case 5:
-                            alertWindow.setMessage("cofnij sie o 3 pola");
+                            alertWindow.setMessage("Cofnij się o trzy pola.");
                             //cofnij sie o 3 pola
                             break;
                         case 6:
-                            alertWindow.setMessage("przejdz do instytutu marketingu");
+                            alertWindow.setMessage("Przejdź na Instytut Marketingu.");
                             //przejdz do instytutu marketingu (ostatnia ulica przed startem)
                             break;
                         case 7:
-                            alertWindow.setMessage("plac 25zl za kazdy domek i 100zl za kazdy hotel");
+                            alertWindow.setMessage("Doktoranci i Profesorowie rządają wypłacenia premii. Zapłać 25P$ na Doktoranta " +
+                                    "i 100P$ na Profesora na każdym Wydziale, na którym jesteś Asystentem Dziekana.");
                             //plac 25zl za kazdy domek i 100zl za kazdy hotel
                             break;
                         case 8:
-                            alertWindow.setMessage("przejdz na start i pobierz 200zl");
+                            alertWindow.setMessage("Tym razem nie zgubiłeś się w drodze powrotnej do domu po imprezie. Przejdź na START i pobierz 200P$.");
                             playerCash+=200;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //przejdz na start i pobierz 200zl
                             break;
                         case 9:
-                            alertWindow.setMessage("dostajesz 150zl");
+                            alertWindow.setMessage("Otrzymujesz prestiżową Nagrodę Dziekana. Pobierz 150P$.");
                             playerCash+=150;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             ////dostajesz 150zl
                             break;
                         case 10:
-                            alertWindow.setMessage("wracasz do Instytut Matematyki");
+                            alertWindow.setMessage("Przejdź do Instytutu Marketingu");
                             //wracasz do Instytut Matematyki
                             break;
                         case 11:
-                            alertWindow.setMessage("idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl");
+                            alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
                             //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                             break;
                         case 12:
-                            alertWindow.setMessage("dostajesz 50zl");
+                            alertWindow.setMessage("Pomogłeś koledze pozbyć się Segmentation Faulta. Pobierz 50P$.");
                             playerCash+=50;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //dostajesz 50zl
                             break;
                         case 13:
-                            alertWindow.setMessage("tracisz 100zl");
+                            alertWindow.setMessage("Zgubiłeś portfel na torowisku tramwajowym wracając z imprezy. Tracisz 100P$.");
                             playerCash-=100;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
-
                             //tracisz 100zl
                             break;
                     }
+//                    TimeUnit.SECONDS.sleep(1);
                     alertWindow.show();
                 }
                 if(message.equals("Bought:")){
                     PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
+
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
                     CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
-
-
                     CardsPanel.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
-
-
-
+                }
+                if(message.startsWith("setHouse:")){
+                    gamingWindow.buyPropertyButton.setVisible(false);
+                    gamingWindow.endRound.setVisible(false);
+                    PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
+                    int position= Integer.parseInt(message.substring(("setHouse:").length()));
+                    if(playersPosition[localPlayerNumber]==position){
+                        playerCash-=gamingWindow.facultyPrices[position]/2;
+                    }
+                    CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    setHouse(position,houseCount[position]);
+                    houseCount[position]++;
                 }
                 if(message.equals("cash:")){
                     playerCash+=200;
@@ -365,6 +404,59 @@ public class ClientReadFromServer extends Thread{
                     tab[31][element].setVisible(true);
                 }
             }
+        }
+    }
+    void setHouse(int position,int count){
+        if(position==1){
+            gamingWindow.housePanel[14][count].setVisible(true);
+        }
+        if(position==3){
+            gamingWindow.housePanel[8][count].setVisible(true);
+        }
+        if(position==5){
+            gamingWindow.housePanel[5][count].setVisible(true);
+        }
+        if(position==7){
+            gamingWindow.housePanel[1][count].setVisible(true);
+        }
+        if(position==9){
+            gamingWindow.housePanel[0][count].setVisible(true);
+        }
+        if(position==11){
+            gamingWindow.housePanel[4][count].setVisible(true);
+        }
+        if(position==14){
+            gamingWindow.housePanel[11][count].setVisible(true);
+        }
+        if(position==15){
+            gamingWindow.housePanel[13][count].setVisible(true);
+        }
+        if(position==17){
+            gamingWindow.housePanel[3][count].setVisible(true);
+        }
+        if(position==19){
+            gamingWindow.housePanel[7][count].setVisible(true);
+        }
+        if(position==21){
+            gamingWindow.housePanel[10][count].setVisible(true);
+        }
+        if(position==22){
+            gamingWindow.housePanel[12][count].setVisible(true);
+        }
+        if(position==23){
+            gamingWindow.housePanel[16][count].setVisible(true);
+        }
+        if(position==25){
+            gamingWindow.housePanel[15][count].setVisible(true);
+        }
+        if(position==27){
+            gamingWindow.housePanel[9][count].setVisible(true);
+        }
+        if(position==29){
+            gamingWindow.housePanel[6][count].setVisible(true);
+        }
+        if(position==31){
+            gamingWindow.housePanel[2][count].setVisible(true);
         }
     }
 }
