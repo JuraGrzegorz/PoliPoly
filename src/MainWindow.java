@@ -1,25 +1,28 @@
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 
 public class MainWindow {
-    private final JFrame window;
-    private static final int BUTTONFONTSIZE = 16;
-
+    private JFrame window = null;
     private Server server;
     private Client client;
     boolean gameStarted;
     boolean stopHostingGame;
 
-    private final NickNameTakenWindow alertWindow;
+    private final OkConfirmPopUp alertWindow;
 
-    public MainWindow(){
+    public MainWindow() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        Clip menuTheme = PlaySoundEffect.playMusicOnRepeat("assets\\sounds\\music\\menutheme.wav");
         gameStarted=false;
         stopHostingGame=false;
         MenuWindow menuWindow=new MenuWindow();
-        alertWindow=new NickNameTakenWindow();
+        alertWindow=new OkConfirmPopUp();
         Player player=new Player();
 
         JPanel container;
@@ -36,6 +39,7 @@ public class MainWindow {
         menuWindow.logoLabel.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
         container.add(menuWindow.logoLabel);
         container.add(menuWindow.mainMenu);
+        container.add(menuWindow.menuCredits);
         container.add(menuWindow.menuHostGame, BorderLayout.NORTH);
         container.add(menuWindow.menuJoinGame);
         menuWindow.menuPlay.setVisible(false);
@@ -46,10 +50,17 @@ public class MainWindow {
 
 
 
+
         //akcje przycisków
         menuWindow.playButton.addActionListener(back -> {
+
             menuWindow.mainMenu.setVisible(false);
             menuWindow.menuPlay.setVisible(true);
+        });
+
+        menuWindow.creditsButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(false);
+            menuWindow.menuCredits.setVisible(true);
         });
 
         menuWindow.enterJoinMenuButton.addActionListener(back -> {
@@ -65,12 +76,12 @@ public class MainWindow {
                     client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
                     client.SetCommunicationParameters(client.clientSocket);
                     player.PlayerConnect();
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
 
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
 
-                } catch (IOException e) {
+                } catch (IOException ignored) {
 
                 }
             }else{
@@ -112,14 +123,22 @@ public class MainWindow {
                     Socket tmp_clientSock = null;
                     try {
                         tmp_clientSock = server.serverSocketChannel.accept();
+
+                        if(server.listOfCommunication.size()>=4){
+                            PrintWriter fromServer=new PrintWriter(tmp_clientSock.getOutputStream(), true);
+                            fromServer.println("serverFull");
+                            continue;
+
+                        }
                         server.addSemaphore();
                         Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
+
                         ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
                         serverReadThread.start();
                         ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
                         serverWriteThread.start();
 
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
 
             });
@@ -131,12 +150,12 @@ public class MainWindow {
                     client.ClientConnect("localhost",8080);
                     client.SetCommunicationParameters(client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
                     break;
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
             }
         });
 
@@ -145,13 +164,18 @@ public class MainWindow {
             menuWindow.menuPlay.setVisible(false);
         });
 
+        menuWindow.backFromCreditsMenuButton.addActionListener(back -> {
+            menuWindow.mainMenu.setVisible(true);
+            menuWindow.menuCredits.setVisible(false);
+        });
+
         menuWindow.backFromJoinMenuButton.addActionListener(back -> {
-            if(client!=null){
+            if(player.playerConnected){
                 try{
                     client.fromClient.println("Quit");
                     player.PlayerDisconnect();
                 }catch (NullPointerException error) {
-
+                    System.err.println(error.getMessage());
                 }
             }else{
                 menuWindow.menuPlay.setVisible(true);
@@ -166,9 +190,7 @@ public class MainWindow {
                     Thread.sleep(1000);
                     server.serverSocketChannel.close();
                     client.fromClient.println("Quit");
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
+                } catch (InterruptedException | IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -187,10 +209,16 @@ public class MainWindow {
 
 
         menuWindow.startGameButton.addActionListener(back -> {
-            GamingWindow a=new GamingWindow();
-            /*synchronized (this) {
+            synchronized (this) {
                 gameStarted=true;
-            }*/
+                PlaySoundEffect.stopMusicOnRepeat(menuTheme);
+                try {
+                    PlaySoundEffect.playMusicOnRepeat("assets\\sounds\\music\\gameplaytheme.wav");
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            client.fromClient.println("startGame");
         });
 
         menuWindow.leaveButton.addActionListener(leaveGame -> System.exit(0));
@@ -198,14 +226,19 @@ public class MainWindow {
         window = new JFrame();
         window.setTitle("PoliPoly");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         window.setSize(800, 600);
         window.setLocationRelativeTo(null);
         window.add(container);
+
+        ImageIcon icon = new ImageIcon("assets\\icon.png");
+        window.setIconImage(icon.getImage());
 
     }
 
     public void show() {
         window.setVisible(true);
+
 
     }
 

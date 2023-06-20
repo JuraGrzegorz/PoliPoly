@@ -6,12 +6,14 @@ import java.util.concurrent.Semaphore;
 
 class Communication{
     Semaphore syncServerMainThread;
+    Semaphore syncReadFromClient;
     Semaphore syncServerWriteToClient;
     String message;
     String nickName;
     public Communication() {
         syncServerMainThread =new Semaphore(0);
         syncServerWriteToClient=new Semaphore(0);
+        syncReadFromClient=new Semaphore(0);
         message="";
     }
 
