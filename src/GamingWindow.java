@@ -559,6 +559,11 @@ public class GamingWindow {
         facultyNames[1] = "Instytut Matematyki";
         facultyColor[1] = new Color(0xc6a995);
 
+        facultyPrices[2] = 150;
+        facultyNames[2] = "Cenrum Sportu";
+        facultyColor[2] = Color.WHITE;
+
+
         facultyPrices[3] = 60;
         facultyNames[3] = "Instytut Fizyki";
         facultyColor[3] = new Color(0xc6a995);
@@ -588,6 +593,10 @@ public class GamingWindow {
         facultyPrices[12] = 200; //akademik nr2
         facultyNames[12] = "DS4";
         facultyColor[12] = Color.WHITE;
+
+        facultyPrices[13] = 150;
+        facultyNames[13] = "Cenrum Sportu";
+        facultyColor[13] = Color.WHITE;
 
         facultyPrices[14] = 180;
         facultyNames[14] = "Kat. Budownictwa Betonowego";
