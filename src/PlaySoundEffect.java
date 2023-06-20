@@ -14,7 +14,7 @@ public class PlaySoundEffect {
         Clip soundEffect = AudioSystem.getClip();
         soundEffect.open(sound);
         FloatControl volume= (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);
-        volume.setValue(-15.0f);
+        volume.setValue(-22.0f);
         soundEffect.start();
     }
     static Clip playMusicOnRepeat(String musicPath) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
