@@ -525,7 +525,7 @@ public class GamingWindow {
         facultyColor[1] = new Color(0xc6a995);
 
         facultyPrices[2] = 150;
-        facultyNames[2] = "Cenrum Sportu";
+        facultyNames[2] = "Centrum Językowe";
         facultyColor[2] = Color.WHITE;
 
 
@@ -560,7 +560,7 @@ public class GamingWindow {
         facultyColor[12] = Color.WHITE;
 
         facultyPrices[13] = 150;
-        facultyNames[13] = "Cenrum Sportu";
+        facultyNames[13] = "Zatoka Sportu";
         facultyColor[13] = Color.WHITE;
 
         facultyPrices[14] = 180;
