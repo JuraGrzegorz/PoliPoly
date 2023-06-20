@@ -114,7 +114,12 @@ public class GamingWindow {
         windowFrame.setResizable(false);
 
 
-        gameContents.setBackground(new Color(0xe3dec4));
+
+        ImageIcon backgroundImage = new ImageIcon("assets\\Background.png");
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+        gameContents.add(backgroundLabel);
+
         gameContents.setVisible(true);
         gameContents.setLayout(null);
 
