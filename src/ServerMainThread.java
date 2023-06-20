@@ -25,7 +25,7 @@ public class ServerMainThread extends Thread{
             playersPosition[i]=0;
             prison[i]=false;
         }
-        int tmp_tab[]={0,2,6,8,10,13,16,18,24,26,30};
+        int tmp_tab[]={0,6,8,10,16,18,24,26,30};
         for(int i=0;i<32;i++){
             playerCards[i]=-1;
         }
@@ -120,7 +120,7 @@ public class ServerMainThread extends Thread{
         String[] tmp=val.message.split(":");
         moveNumber=Integer.parseInt(tmp[0]);
         playersPosition[index]+=moveNumber;
-
+        playersPosition[index]=2;
         if(playersPosition[index]>=32){
             playersPosition[index]=playersPosition[index]%32;
             server.listOfCommunication.get(index).message="cash:";

@@ -236,7 +236,7 @@ public class ClientReadFromServer extends Thread{
         Random rand = new Random();
         if(Integer.parseInt(tmp[2])==0){
             if(moveNumber==2 || moveNumber==13){
-                playerCash-=rand.nextInt(5)*10;
+                playerCash-=rand.nextInt(10)*10;
             }else{
                 if(houseCount[moveNumber]>0){
                     System.out.print(houseCount[moveNumber]+" \n");
@@ -250,7 +250,7 @@ public class ClientReadFromServer extends Thread{
         }
         if(Integer.parseInt(tmp[2])==1){
             if(moveNumber==2 || moveNumber==13){
-                playerCash+=rand.nextInt(5)*10;
+                playerCash+=rand.nextInt(10)*10;
             }else{
                 if(houseCount[moveNumber]>0){
                     System.out.print(houseCount[moveNumber]+" \n");
