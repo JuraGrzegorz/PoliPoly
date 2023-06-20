@@ -20,7 +20,8 @@ public class ClientReadFromServer extends Thread{
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
     int[] houseCount;
-    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
+    JFrame window;
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player,JFrame window) {
         chanceDeck = new DeckOfCards((short)0);
         kasaspolDeck = new DeckOfCards((short)1);
         chanceDeck.shuffleDeck();
@@ -40,6 +41,7 @@ public class ClientReadFromServer extends Thread{
             playersPosition[i]=0;
         }
         playerCash=800;
+        this.window=window;
     }
 
     public void run() {
@@ -137,7 +139,7 @@ public class ClientReadFromServer extends Thread{
                     String[] tmp=message.split(":");
                     localPlayerNumber= Integer.parseInt(tmp[0]);
                     gamingWindow=new GamingWindow(client.fromClient);
-
+                    window.setVisible(false);
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);

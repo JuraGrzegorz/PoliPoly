@@ -9,7 +9,7 @@ import java.net.Socket;
 
 
 public class MainWindow {
-    private final JFrame window;
+    private JFrame window = null;
     private Server server;
     private Client client;
     boolean gameStarted;
@@ -53,6 +53,7 @@ public class MainWindow {
 
         //akcje przycisków
         menuWindow.playButton.addActionListener(back -> {
+
             menuWindow.mainMenu.setVisible(false);
             menuWindow.menuPlay.setVisible(true);
         });
@@ -75,7 +76,7 @@ public class MainWindow {
                     client.ClientConnect(menuWindow.ipAddressGetTextField.getText(),8080);
                     client.SetCommunicationParameters(client.clientSocket);
                     player.PlayerConnect();
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.joinGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
 
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
@@ -149,7 +150,7 @@ public class MainWindow {
                     client.ClientConnect("localhost",8080);
                     client.SetCommunicationParameters(client.clientSocket);
 
-                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player);
+                    ClientReadFromServer clientReadFromServer=new ClientReadFromServer(client,menuWindow,menuWindow.hostGameListButtons,alertWindow,player,window);
                     clientReadFromServer.start();
                     client.fromClient.println("setNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
 
