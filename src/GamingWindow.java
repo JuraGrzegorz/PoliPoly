@@ -545,6 +545,8 @@ public class GamingWindow {
         windowFrame.add(InfoPanel);
         windowFrame.add(inGameButtonPanel);
 
+        addCardToPanel(facultyColor[5],facultyNames[19]);
+
 
 
         diceRollPanel = new DiceRoll(fromClient);
@@ -702,7 +704,7 @@ public class GamingWindow {
         facultyColor[7] = new Color(0xd0474c);
 
         facultyPrices[9] = 140;
-        facultyNames[9] = "Inst. Materiałoznawstwa";
+        facultyNames[9] = "Inst. Materiałów";
         facultyColor[9] = new Color(0xf7ee40);
 
 

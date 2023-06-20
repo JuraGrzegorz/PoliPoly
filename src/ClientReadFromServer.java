@@ -1,10 +1,8 @@
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ClientReadFromServer extends Thread{
     private final Client client;
@@ -12,12 +10,12 @@ public class ClientReadFromServer extends Thread{
     private final MenuWindow menuWindow;
     private final List<JButton> listButtons;
     private int countOfPlayer;
-    private final NickNameTakenWindow alertWindow;
+    private final okConfirmPopUp alertWindow;
     GamingWindow gamingWindow;
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
-    public ClientReadFromServer(Client client,MenuWindow menuWindow,List<JButton> listButtons,NickNameTakenWindow alertWindow,Player player) {
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, okConfirmPopUp alertWindow, Player player) {
         this.client=client;
         this.player=player;
         this.menuWindow=menuWindow;
