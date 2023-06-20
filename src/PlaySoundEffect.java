@@ -5,8 +5,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class PlaySoundEffect {
-    public final String gameplayTheme = "assets\\sounds\\music\\gameplaytheme.wav";
-
     static void playSound(String soundPath) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
         if(soundPath.equals("assets\\sounds\\pawnjump.wav")) TimeUnit.SECONDS.sleep(1);
         File soundFile = new File(soundPath);

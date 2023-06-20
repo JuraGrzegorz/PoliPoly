@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class PurchaseHouseWindow extends PurchaseWindow {
+public class PurchaseHousePopUp extends PurchasePopUp {
 
 
-    public PurchaseHouseWindow(int houseAmount) {
+    public PurchaseHousePopUp(int houseAmount) {
 
 
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
