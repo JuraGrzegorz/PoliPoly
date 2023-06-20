@@ -1,3 +1,6 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Collections;
 
 public class ServerMainThread extends Thread{
@@ -102,7 +105,8 @@ public class ServerMainThread extends Thread{
                             server.listOfCommunication.get(index).syncServerWriteToClient.release();
                         }
                         Thread.sleep(50);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | UnsupportedAudioFileException | LineUnavailableException |
+                             IOException e) {
                         throw new RuntimeException(e);
                     }
                     index++;
@@ -110,7 +114,7 @@ public class ServerMainThread extends Thread{
             }
         }
     }
-    void moveCommand(int index, Communication val) throws InterruptedException {
+    void moveCommand(int index, Communication val) throws InterruptedException, UnsupportedAudioFileException, LineUnavailableException, IOException {
         int moveNumber;
         val.message=val.message.substring(("move:").length());
         String[] tmp=val.message.split(":");
@@ -146,6 +150,7 @@ public class ServerMainThread extends Thread{
                     break;
                 case '4':
                     playersPosition[index]=24;
+                    PlaySoundEffect.playSound("assets\\sounds\\jail.wav");
                     server.listOfCommunication.get(index).message="message:3";
                     //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                     break;
@@ -191,6 +196,7 @@ public class ServerMainThread extends Thread{
                     break;
                 case '5':
                     playersPosition[index]=24;
+                    PlaySoundEffect.playSound("assets\\sounds\\jail.wav");
                     server.listOfCommunication.get(index).message="message:11";
                     //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                     break;
@@ -209,6 +215,7 @@ public class ServerMainThread extends Thread{
 
 
         if(playersPosition[index]==24){
+            PlaySoundEffect.playSound("assets\\sounds\\jail.wav");
             playersPosition[index]=8;
             prison[index]=true;
         }
