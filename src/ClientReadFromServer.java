@@ -12,11 +12,12 @@ public class ClientReadFromServer extends Thread{
     private final MenuWindow menuWindow;
     private final List<JButton> listButtons;
     private int countOfPlayer;
-    private final okConfirmPopUp alertWindow;
+    private final OkConfirmPopUp alertWindow;
     GamingWindow gamingWindow;
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
+
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
     public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, okConfirmPopUp alertWindow, Player player) {
@@ -258,8 +259,9 @@ public class ClientReadFromServer extends Thread{
                             break;
                         case 13:
                             alertWindow.setMessage("tracisz 100zl");
-                            playerCash-=200;
-                            CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                            playerCash-=100;
+                            gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+
                             //tracisz 100zl
                             break;
                     }
@@ -365,67 +367,4 @@ public class ClientReadFromServer extends Thread{
             }
         }
     }
-
-    //WYWOLANIE POD KONIEC if(message.startsWith("move:")){}
-    private void checkForChanceOrMoney(int playerNumber) {
-        if(playersPosition[playerNumber] == 10 || playersPosition[playerNumber] == 30){
-            //wejscie na szanse
-            String drawnCard = chanceDeck.drawCard();
-            char drawnCardID = drawnCard.charAt(0);
-            System.out.println("drawnCardID: " + drawnCardID + " zalosowana karta: " + drawnCard.replace(drawnCardID+".",""));
-            switch(drawnCardID){
-                case '1':
-                    //idz do instytutu obrabiarek
-                    break;
-                case '2':
-                    //idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
-                    break;
-                case '3':
-                    ////idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
-                    break;
-                case '4':
-                    //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
-                    break;
-                case '5':
-                    //karta zart, nic sie nie dzieje
-                    break;
-                case '6':
-                    //cofnij sie o 3 pola
-                    break;
-                case '7':
-                    //przejdz do instytutu marketingu (ostatnia ulica przed startem)
-                    break;
-            }
-        }
-        if(playersPosition[playerNumber] == 6 || playersPosition[playerNumber] == 26){
-            //wejscie na kase spoleczna
-            String drawnCard = kasaspolDeck.drawCard();
-            char drawnCardID = drawnCard.charAt(0);
-            System.out.println("drawnCardID: " + drawnCardID + " zalosowana karta: " + drawnCard.replace(drawnCardID+".",""));
-            switch(drawnCardID){
-                case '1':
-                    //plac 25zl za kazdy domek i 100zl za kazdy hotel
-                    break;
-                case '2':
-                    //przejdz na start i pobierz 200zl
-                    break;
-                case '3':
-                    ////dostajesz 150zl
-                    break;
-                case '4':
-                    //placisz kazdemu graczowi po 10zl
-                    break;
-                case '5':
-                    //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
-                    break;
-                case '6':
-                    //dostajesz 50zl
-                    break;
-                case '7':
-                    //tracisz 100zl
-                    break;
-            }
-        }
-    }
-
 }
