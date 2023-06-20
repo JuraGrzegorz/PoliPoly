@@ -199,8 +199,9 @@ public class HorizontalFacultyCard {
             try {
                 File houseImageFile = new File(ImagePath);
                 Image houseImage = ImageIO.read(houseImageFile);
-
-                double rotationAngle = Math.PI / 2;
+                double rotationAngle;
+                if(x==1) rotationAngle = Math.PI/2*3;
+                else rotationAngle = Math.PI / 2;
                 int scaledWidth = 20;
                 int scaledHeight = 20;
                 BufferedImage rotatedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);

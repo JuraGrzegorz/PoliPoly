@@ -44,6 +44,7 @@ public class GamingWindow {
     JButton buyPropertyButton;
     JPanel inGameButtonPanel;
     JPanel[][] pawnPanel;
+    JPanel[][] housePanel;
     DiceRoll diceRollPanel;
 
 
@@ -57,6 +58,7 @@ public class GamingWindow {
     Border blackline = BorderFactory.createLineBorder(Color.black);
 
     int counter;
+    int counter_house;
     PrintWriter fromClient;
 
     GamingWindow(PrintWriter fromClient) throws IOException {
@@ -73,6 +75,7 @@ public class GamingWindow {
 
 
         counter = 0;
+        counter_house=0;
 
         facultyPrices = new int[32];
         facultyNames = new String[32];
@@ -85,6 +88,13 @@ public class GamingWindow {
         for (int i = 0; i < 32; i++) {
             for (int j = 0; j < 4; j++) {
                 pawnPanel[i][j] = new JPanel();
+            }
+        }
+
+        housePanel = new JPanel[17][3];
+        for (int i = 0; i < 17; i++) {
+            for (int j = 0; j < 3; j++) {
+                housePanel[i][j] = new JPanel();
             }
         }
 
@@ -170,12 +180,11 @@ public class GamingWindow {
 
 
             int help = 0;
-            int help_10 = 0;
+            String houseImagePath = "assets\\house.png";
 
             switch (i) {
 
                 case 2, 3, 6, 7, 8, 10, 11:
-                    int help_image = 0;
                     JPanel imagePanel = new JPanel();
 
                     String imagePath1 = "assets\\CS.png";
@@ -247,10 +256,6 @@ public class GamingWindow {
                         JPanel uponPanel = new JPanel(new GridBagLayout());
                         JPanel namePanel = new JPanel(new GridBagLayout());
 
-                        JPanel[] housePanel = new JPanel[3];
-                        for (int j = 0; j < 3; j++) {
-                            housePanel[j] = new JPanel();
-                        }
                         String imagePath = "assets\\mintus.png";
 
                         switch (i) {
@@ -304,16 +309,17 @@ public class GamingWindow {
 //                        VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2));
 //                        VerticalFacultyCard.makeNamePanel(namePanel, (i % 2));
                         VerticalFacultyCard.makePawnPanel(pawnPanel[counter], imagePath);
-                        //VerticalFacultyCard.makeHousePanel(housePanel, imagePath, (i % 2));
+                        VerticalFacultyCard.makeHousePanel(housePanel[counter_house], houseImagePath, (i % 2));
                         horizontalFieldsArray[i].add(uponPanel);
                         horizontalFieldsArray[i].add(namePanel);
                         for (int j = 0; j < 4; j++) {
                             horizontalFieldsArray[i].add(pawnPanel[counter][j]);
                         }
                         for (int j = 0; j < 3; j++) {
-                            horizontalFieldsArray[i].add(housePanel[j]);
+                            horizontalFieldsArray[i].add(housePanel[counter_house][j]);
                         }
 
+                        counter_house++;
                         if (i == 10) break;
                     }
 
@@ -322,10 +328,7 @@ public class GamingWindow {
                     verticalFieldsArray[i].setBackground(Color.white);
                     JPanel uponPanel2 = new JPanel(new GridBagLayout());
                     JPanel namePanel2 = new JPanel(new GridBagLayout());
-                    JPanel[] housePanel2 = new JPanel[3];
-                    for (int j = 0; j < 3; j++) {
-                        housePanel2[j] = new JPanel();
-                    }
+
                     String imagePath2 = "assets\\mintus.png";
 
                     switch (i) {
@@ -392,21 +395,18 @@ public class GamingWindow {
 
                     HorizontalFacultyCard.makePawnPanel(pawnPanel[counter + 14], imagePath2, i % 2);
 
-
-                    //HorizontalFacultyCard.makeHousePanel(housePanel2, imagePath2, (i % 2));
+                    HorizontalFacultyCard.makeHousePanel(housePanel[counter_house], houseImagePath, (i % 2));
                     verticalFieldsArray[i].add(uponPanel2);
                     verticalFieldsArray[i].add(namePanel2);
                     verticalFieldsArray[i].setBackground(Color.white);
                     for (int j = 0; j < 4; j++) {
-
                         verticalFieldsArray[i].add(pawnPanel[counter + 14][j]);
-
-
                     }
                     for (int j = 0; j < 3; j++) {
-                        verticalFieldsArray[i].add(housePanel2[j]);
+                        verticalFieldsArray[i].add(housePanel[counter_house][j]);
                     }
                 }
+                counter_house++;
                 break;
             }
 
