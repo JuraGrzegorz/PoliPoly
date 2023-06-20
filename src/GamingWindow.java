@@ -1,9 +1,7 @@
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -32,34 +30,21 @@ public class GamingWindow {
 
     final private int CARD_PANEL_Y = 340 - PLAYER_SECTION_OFFSET_Y;
 
-    public int playerCashValue;
-
-    public int AmountOfCardsInCardPanel = 0;
-
-
     JFrame windowFrame;
     JPanel gameContents;
-    JPanel cardsPanel;
-    JPanel cashPanel;
-    JPanel playerTurnPanel;
+    CardsPanel cardsPanel;
+    CashPanel cashPanel;
+    PlayerTurnPanel playerTurnPanel;
     HoverInfoPanel mouseHoverInfoPanel;
-    JPanel InfoPanel;
-
+    InfoPanel infoPanel;
     JPanel[] verticalFieldsArray;
     JPanel[] horizontalFieldsArray;
     JPanel[] squareFieldsArray;
-
     JButton endRound;
     JButton buyPropertyButton;
-
     JPanel inGameButtonPanel;
-
     JPanel[][] pawnPanel;
-
-    CardOnCardPanelPanel[] cardsOnCardPanelPanel;
-
     DiceRoll diceRollPanel;
-    JLabel playerCash;
 
 
 
@@ -78,14 +63,13 @@ public class GamingWindow {
         this.fromClient = fromClient;
         windowFrame = new JFrame();
         gameContents = new JPanel();
-        cardsPanel = new JPanel();
+        cardsPanel = new CardsPanel(windowFrame, CARD_PANEL_X, 340 - PLAYER_SECTION_OFFSET_Y);
         test = new JPanel();
-        cardsOnCardPanelPanel = new CardOnCardPanelPanel[15];
         inGameButtonPanel = new JPanel();
-        cashPanel = new JPanel();
-        playerTurnPanel = new JPanel();
+        cashPanel = new CashPanel(450 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y);
+        playerTurnPanel = new PlayerTurnPanel(25 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y);
         mouseHoverInfoPanel = new HoverInfoPanel(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y);
-        InfoPanel = new JPanel();
+        infoPanel = new InfoPanel(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y);
 
 
         counter = 0;
@@ -176,9 +160,6 @@ public class GamingWindow {
                 );
             }
 
-
-//            verticalFieldsArray[i].setBackground(Color.cyan);
-
             horizontalFieldsArray[i].setVisible(true);
             verticalFieldsArray[i].setVisible(true);
             horizontalFieldsArray[i].setBorder(blackline);
@@ -189,7 +170,7 @@ public class GamingWindow {
 
 
             int help = 0;
-            int help_10=0;
+            int help_10 = 0;
 
             switch (i) {
 
@@ -203,7 +184,7 @@ public class GamingWindow {
                     if (i == 6 || i == 7) imagePath1 = "assets\\dorm_down.png";
                     if (i == 11) imagePath1 = "assets\\blue_chance.png";
 
-                    if(i!=10) {
+                    if (i != 10) {
 
                         VerticalOtherCard.makeImagePanel(imagePanel, imagePath1);
                         VerticalOtherCard.makePawnPanel(pawnPanel[counter], imagePath21);
@@ -226,25 +207,25 @@ public class GamingWindow {
                     String imagePath12 = "";
                     String imagePath22 = "assets\\mintus.png";
 
-                    if(i==2){
+                    if (i == 2) {
                         imagePath12 = "assets\\Blue_chance_rotated.png";
                     }
-                    if(i==3){
+                    if (i == 3) {
                         imagePath12 = "assets\\tax.png";
                     }
-                    if(i==6){
+                    if (i == 6) {
                         imagePath12 = "assets\\dorm_left.png";
                     }
-                    if(i==7){
+                    if (i == 7) {
                         imagePath12 = "assets\\dorm_right.png";
                     }
-                    if(i==10){
+                    if (i == 10) {
                         imagePath12 = "assets\\CJ.png";
                     }
 
 
                     HorizontalOtherCard.makeImagePanel(imagePanel2, imagePath12);
-                    HorizontalOtherCard.makePawnPanel(pawnPanel[counter + 14], imagePath21, i%2);
+                    HorizontalOtherCard.makePawnPanel(pawnPanel[counter + 14], imagePath21, i % 2);
 
                     imagePanel2.setLayout(new OverlayLayout(imagePanel2));
 
@@ -254,8 +235,8 @@ public class GamingWindow {
                     verticalFieldsArray[i].add(imagePanel2);
 
                     verticalFieldsArray[i].setBorder(blackline);
-                    if (i == 8 || i == 11  || i==10) {
-                        if(i!=10) help=1;
+                    if (i == 8 || i == 11 || i == 10) {
+                        if (i != 10) help = 1;
                     } else {
                         break;
                     }
@@ -320,8 +301,6 @@ public class GamingWindow {
                         }
 
 
-
-
 //                        VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2));
 //                        VerticalFacultyCard.makeNamePanel(namePanel, (i % 2));
                         VerticalFacultyCard.makePawnPanel(pawnPanel[counter], imagePath);
@@ -335,7 +314,7 @@ public class GamingWindow {
                             horizontalFieldsArray[i].add(housePanel[j]);
                         }
 
-                        if(i==10) break;
+                        if (i == 10) break;
                     }
 
 
@@ -352,38 +331,39 @@ public class GamingWindow {
                     switch (i) {
                         case 9:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[21], facultyColor[21]);
-                           /* DMCS 260 */
-                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[21]);
+                            /* DMCS 260 */
+                            HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[21]);
                             break;
                         case 13:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[23], facultyColor[21]);
-                                     /* IMSI 280*/
+                            /* IMSI 280*/
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[23]);
                             break;
                         case 1:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[17], facultyColor[19]);
-                               /* Inst. Obrabiarek 220 */
+                            /* Inst. Obrabiarek 220 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[17]);
                             break;
                         case 5:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[19], facultyColor[19]);
-                                  /* Kat. Wyrzymałości Materiałów 240 */
+                            /* Kat. Wyrzymałości Materiałów 240 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[19]);
                             break;
                         case 0:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[7], facultyColor[5]);
-                                /* Inst. Chemii Organicznej 100 */
+                            /* Inst. Chemii Organicznej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[7]);
                             break;
                         case 4:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[5], facultyColor[5]);
-                           /* Kat. Fizyki Molekularnej 100 */
+                            /* Kat. Fizyki Molekularnej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[5]);
                             break;
                         case 8:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[3], facultyColor[1]);
-                              /* Fiz 60 */
-                            HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[3]);;
+                            /* Fiz 60 */
+                            HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[3]);
+                            ;
                             break;
                         case 12:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[1], facultyColor[1]);
@@ -392,26 +372,25 @@ public class GamingWindow {
                             break;
                         case 11:
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[22], facultyColor[21]);
-                           /* CTI 260 */
+                            /* CTI 260 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[22]);
 
                             break;
-                      case 10:
-                                JPanel imagePanel3 = new JPanel();
-                                String imagePath10 = "assets\\CJ.png";
-                                HorizontalOtherCard.makeImagePanel(imagePanel3,imagePath10);
-                                verticalFieldsArray[i].add(imagePanel3);
+                        case 10:
+                            JPanel imagePanel3 = new JPanel();
+                            String imagePath10 = "assets\\CJ.png";
+                            HorizontalOtherCard.makeImagePanel(imagePanel3, imagePath10);
+                            verticalFieldsArray[i].add(imagePanel3);
 //                                for(int j=0; j<4; j++){
 //                                    verticalFieldsArray[i].add(pawnPanel[counter+14][j]);
 //                                    break;
                     }
 
 
-
 //                        HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 500, Color.green);
 //                        HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), "TEST");
 
-                    HorizontalFacultyCard.makePawnPanel(pawnPanel[counter + 14], imagePath2, i%2);
+                    HorizontalFacultyCard.makePawnPanel(pawnPanel[counter + 14], imagePath2, i % 2);
 
 
                     //HorizontalFacultyCard.makeHousePanel(housePanel2, imagePath2, (i % 2));
@@ -458,10 +437,14 @@ public class GamingWindow {
                 squareFieldsArray[i].add(pawnPanel[28 + i][j]);
 
                 switch (i) {
-                    case 0 -> squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 1 -> squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 2 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
-                    case 3 -> squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                    case 0 ->
+                            squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                    case 1 ->
+                            squareFieldsArray[i].setBounds(FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                    case 2 ->
+                            squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, FULL_SCREEN_OFFSET, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
+                    case 3 ->
+                            squareFieldsArray[i].setBounds(SQUARE_PLACEMENT_OFFSET_X + FULL_SCREEN_OFFSET, SQUARE_PLACEMENT_OFFSET_Y, SQUARE_FIELDS_SIDE_LENGTH, SQUARE_FIELDS_SIDE_LENGTH);
                 }
 
             }
@@ -516,7 +499,7 @@ public class GamingWindow {
             }
 
             squareFieldsArray[i].setVisible(true);
-            //squareFieldsArray[i].setBackground(Color.white);
+            squareFieldsArray[i].setBackground(Color.white);
             squareFieldsArray[i].setBorder(blackline);
 
             squareFieldsArray[i].setLayout(null);
@@ -526,28 +509,14 @@ public class GamingWindow {
     }
 
     public void paintPlayerSection() throws IOException {
-
-        generateCashPanel(cashPanel);
-        generateCardsPanel(cardsPanel);
-        generatePlayerTurnPanel(playerTurnPanel);
-        generateInfoPanel(InfoPanel);
-
         generateinGameButtonPanel(inGameButtonPanel);
 
-        fillCardsPanel(cardsOnCardPanelPanel);
-
         windowFrame.add(cardsPanel);
-
         windowFrame.getContentPane().add(cashPanel);
-
         windowFrame.add(playerTurnPanel);
         windowFrame.add(mouseHoverInfoPanel);
-        windowFrame.add(InfoPanel);
+        windowFrame.add(infoPanel);
         windowFrame.add(inGameButtonPanel);
-
-        addCardToPanel(facultyColor[5],facultyNames[19]);
-
-
 
         diceRollPanel = new DiceRoll(fromClient);
         Rectangle diceRollPanelRectangle = new Rectangle(470, 430 - PLAYER_SECTION_OFFSET_Y, DiceRoll.DICE_SIZE, DiceRoll.DICE_SIZE);
@@ -556,86 +525,6 @@ public class GamingWindow {
 
 
     }
-
-    public void fillCardsPanel(CardOnCardPanelPanel[] cardsOnCardPanelPanel) {
-
-        int cardX = CARD_PANEL_X + 18;
-        int cardY = CARD_PANEL_Y + 22;
-        int xOffset = 0; //45
-        int yOffset = 0; //36
-
-        for (int i = 0; i <= 14; i++) {
-
-            if (i == 5 || i == 10) {
-                xOffset = 0;
-                yOffset += (36 + 165);
-            }
-
-            Rectangle cardsOnCardPanelPanelRectangle = new Rectangle(cardX + xOffset, cardY + yOffset, 100, 165);
-            cardsOnCardPanelPanel[i] = new CardOnCardPanelPanel();
-            cardsOnCardPanelPanel[i].setVisible(true);
-            cardsOnCardPanelPanel[i].setBounds(cardsOnCardPanelPanelRectangle);
-            cardsOnCardPanelPanel[i].setBackground(Color.white);
-            cardsOnCardPanelPanel[i].setOpaque(true);
-            cardsOnCardPanelPanel[i].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-
-            cardsOnCardPanelPanel[i].setVisible(false);
-            windowFrame.add(cardsOnCardPanelPanel[i]);
-            xOffset += (45 + 100);
-        }
-    }
-
-    public void generateCardsPanel(JPanel cardsPanel) throws IOException {
-        Rectangle cardsPanelRectangle = new Rectangle(CARD_PANEL_X, 340 - PLAYER_SECTION_OFFSET_Y, 725, 614);
-        cardsPanel.setBounds(cardsPanelRectangle);
-        BufferedImage backgroundImage = ImageIO.read(new File("assets\\karciochy.png"));
-        Image scaledImage = backgroundImage.getScaledInstance(cardsPanel.getWidth(), cardsPanel.getHeight(), Image.SCALE_SMOOTH);
-        JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage));
-        cardsPanel.add(backgroundLabel);
-        cardsPanel.setOpaque(false); // Ustawienie przezroczystości tła panelu
-    }
-
-    public void generateCashPanel(JPanel cashPanel) throws IOException {
-        Rectangle cashPanelRectangle = new Rectangle(450 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y, 300, 50);
-        cashPanel.setBounds(cashPanelRectangle);
-
-        playerCashValue = 0;
-        playerCash = new JLabel();
-        playerCash.setText(String.format("%d P$", playerCashValue*2));
-        playerCash.setFont(new Font("Calibri", Font.BOLD, 40));
-        playerCash.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playerCash.setVisible(true);
-        playerCash.invalidate();
-        playerCash.validate();
-        playerCash.repaint();
-
-
-        cashPanel.add(playerCash);
-        cashPanel.setBackground(Color.yellow);
-    }
-
-    private void generatePlayerTurnPanel(JPanel playerTurnPanel) throws IOException {
-        Rectangle playerTurnPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y, 400, 50);
-        playerTurnPanel.setBounds(playerTurnPanelRectangle);
-        BufferedImage myPicture = ImageIO.read(new File("assets\\turagracz.png"));
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        playerTurnPanel.add(picLabel);
-        playerTurnPanel.setBorder(blackline);
-        playerTurnPanel.setBackground(Color.black);
-//        playerTurnPanel.setBackground(Color.CYAN);
-    }
-
-    private void generateInfoPanel(JPanel InfoPanel) throws IOException {
-        Rectangle InfoPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 100 - PLAYER_SECTION_OFFSET_Y, 725, 220);
-        InfoPanel.setBounds(InfoPanelRectangle);
-        BufferedImage myPicture = ImageIO.read(new File("assets\\info.png"));
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        InfoPanel.add(picLabel);
-        InfoPanel.setBorder(blackline);
-        InfoPanel.setBackground(Color.black);
-    }
-
-
 
     private void generateinGameButtonPanel(JPanel inGameButtonPanel) {
         Rectangle inGameButtonPanelRectangle = new Rectangle(25 + PLAYER_SECTION_OFFSET_X, 950, 725, 50);
@@ -659,27 +548,6 @@ public class GamingWindow {
         inGameButtonPanel.add(buyPropertyButton);
         inGameButtonPanel.add(endRound);
     }
-
-
-    public void addCardToPanel(Color colour, String text) {
-
-
-        cardsOnCardPanelPanel[AmountOfCardsInCardPanel].setString(text);
-        cardsOnCardPanelPanel[AmountOfCardsInCardPanel].topColorLabel.setBackground(colour);
-        if (colour.equals(Color.white)) {
-            cardsOnCardPanelPanel[AmountOfCardsInCardPanel].midColorLabel.setBackground(colour);
-        } else {
-            cardsOnCardPanelPanel[AmountOfCardsInCardPanel].midColorLabel.setBackground(colour.darker());
-        }
-
-        cardsOnCardPanelPanel[AmountOfCardsInCardPanel].setVisible(true);
-
-
-        AmountOfCardsInCardPanel++;
-    }
-
-
-
 
     private void initializeFacultyPricesAndNames() {
         facultyPrices[1] = 60;
