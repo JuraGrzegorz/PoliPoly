@@ -56,6 +56,7 @@ public class ClientReadFromServer extends Thread{
                     for(String UsersNicks:tmp){
                         listButtons.get(countOfPlayer).setText(UsersNicks);
                         listButtons.get(countOfPlayer).setBackground(new Color(0x2dce98));
+
                         countOfPlayer++;
                     }
                 }
