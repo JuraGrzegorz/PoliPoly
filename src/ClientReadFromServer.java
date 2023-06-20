@@ -17,9 +17,9 @@ public class ClientReadFromServer extends Thread{
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
-
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
+    int[] houseCount;
     public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
         chanceDeck = new DeckOfCards((short)0);
         kasaspolDeck = new DeckOfCards((short)1);
@@ -32,6 +32,10 @@ public class ClientReadFromServer extends Thread{
         countOfPlayer=0;
         this.alertWindow=alertWindow;
         playersPosition=new int[4];
+        houseCount=new int[32];
+        for(int i=0;i<32;i++){
+            houseCount[i]=0;
+        }
         for(int i=0;i<4;i++){
             playersPosition[i]=0;
         }
@@ -131,6 +135,7 @@ public class ClientReadFromServer extends Thread{
                 if(message.startsWith("gameStarted:")){
                     localPlayerNumber= Integer.parseInt(message.substring(("gameStarted:").length()));
                     gamingWindow=new GamingWindow(client.fromClient);
+
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
@@ -141,7 +146,11 @@ public class ClientReadFromServer extends Thread{
                             showOrHide(gamingWindow.pawnPanel,i,j,0);
                         }
                     }
-
+                    for(int i=0;i<17;i++){
+                        for(int j=0;j<3;j++){
+                            gamingWindow.housePanel[i][j].setVisible(false);
+                        }
+                    }
                 }
 
                 if(message.startsWith("move:")){
@@ -154,7 +163,6 @@ public class ClientReadFromServer extends Thread{
                     moveNumber=Integer.parseInt(tmp[0]);
 
                     if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
-//                        localPlayerNumber=playerNumber;
                         gamingWindow.buyPropertyButton.setVisible(true);
                     }
                     if(moveNumber==18){
@@ -166,34 +174,46 @@ public class ClientReadFromServer extends Thread{
                         if(moveNumber==2 || moveNumber==13){
                             playerCash-=rand.nextInt(5)*10;
                         }else{
-                            playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                            if(houseCount[moveNumber]>0){
+                                System.out.print(houseCount[moveNumber]+" \n");
+                                playerCash-=(gamingWindow.facultyPrices[moveNumber]/2)*houseCount[moveNumber];
+                            }else{
+                                playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
+                            }
                         }
                         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                        gamingWindow.buyPropertyButton.setVisible(false);
                     }
                     if(Integer.parseInt(tmp[2])==1){
                         if(moveNumber==2 || moveNumber==13){
                             playerCash+=rand.nextInt(5)*10;
                         }else{
-                            playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                            if(houseCount[moveNumber]>0){
+                                System.out.print(houseCount[moveNumber]+" \n");
+                                playerCash+=(gamingWindow.facultyPrices[moveNumber]/2)*houseCount[moveNumber];
+                            }else{
+                                playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
+                            }
                         }
                         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    }
+                    if(Integer.parseInt(tmp[2])==2){
+                        if(playerCash>=gamingWindow.facultyPrices[moveNumber]/2 && houseCount[moveNumber]<3){
+                            gamingWindow.buyPropertyButton.setVisible(true);
+                            System.out.print("KUPUJ DOMKI");
+                        }
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
                     }
-                    showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
                     showOrHide(gamingWindow.pawnPanel,playersPosition[playerNumber],playerNumber,0);
+                    showOrHide(gamingWindow.pawnPanel,moveNumber,playerNumber,1);
+
                     playersPosition[playerNumber]=moveNumber;
 
 //                    Thread.sleep(50);
                     gamingWindow.diceRollPanel.setVisible(false);
                     PlaySoundEffect.playSound("assets\\sounds\\pawnjump.wav");
-
-
-                    // 6 - kasa
-                    // 26 - kasa
-                    // 10 - szansa
-                    // 30 - szansa
 
                 }
                 if(message.startsWith("message:")){
@@ -272,16 +292,24 @@ public class ClientReadFromServer extends Thread{
                 }
                 if(message.equals("Bought:")){
                     PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
+
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
                     CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
-
-
                     CardsPanel.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
-
-
-
+                }
+                if(message.startsWith("setHouse:")){
+                    gamingWindow.buyPropertyButton.setVisible(false);
+                    gamingWindow.endRound.setVisible(false);
+                    PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
+                    int position= Integer.parseInt(message.substring(("setHouse:").length()));
+                    if(playersPosition[localPlayerNumber]==position){
+                        playerCash-=gamingWindow.facultyPrices[position]/2;
+                    }
+                    CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    setHouse(position,houseCount[position]);
+                    houseCount[position]++;
                 }
                 if(message.equals("cash:")){
                     playerCash+=200;
@@ -368,6 +396,59 @@ public class ClientReadFromServer extends Thread{
                     tab[31][element].setVisible(true);
                 }
             }
+        }
+    }
+    void setHouse(int position,int count){
+        if(position==1){
+            gamingWindow.housePanel[14][count].setVisible(true);
+        }
+        if(position==3){
+            gamingWindow.housePanel[8][count].setVisible(true);
+        }
+        if(position==5){
+            gamingWindow.housePanel[5][count].setVisible(true);
+        }
+        if(position==7){
+            gamingWindow.housePanel[1][count].setVisible(true);
+        }
+        if(position==9){
+            gamingWindow.housePanel[0][count].setVisible(true);
+        }
+        if(position==11){
+            gamingWindow.housePanel[4][count].setVisible(true);
+        }
+        if(position==14){
+            gamingWindow.housePanel[11][count].setVisible(true);
+        }
+        if(position==15){
+            gamingWindow.housePanel[13][count].setVisible(true);
+        }
+        if(position==17){
+            gamingWindow.housePanel[3][count].setVisible(true);
+        }
+        if(position==19){
+            gamingWindow.housePanel[7][count].setVisible(true);
+        }
+        if(position==21){
+            gamingWindow.housePanel[10][count].setVisible(true);
+        }
+        if(position==22){
+            gamingWindow.housePanel[12][count].setVisible(true);
+        }
+        if(position==23){
+            gamingWindow.housePanel[16][count].setVisible(true);
+        }
+        if(position==25){
+            gamingWindow.housePanel[15][count].setVisible(true);
+        }
+        if(position==27){
+            gamingWindow.housePanel[9][count].setVisible(true);
+        }
+        if(position==29){
+            gamingWindow.housePanel[6][count].setVisible(true);
+        }
+        if(position==31){
+            gamingWindow.housePanel[2][count].setVisible(true);
         }
     }
 }

@@ -101,12 +101,12 @@ public class ServerMainThread extends Thread{
                             String[] tmp=val.message.split(":");
                             moveNumber=Integer.parseInt(tmp[0]);
                             playersPosition[index]+=moveNumber;
+
                             if(playersPosition[index]>=32){
                                 playersPosition[index]=playersPosition[index]%32;
                                 server.listOfCommunication.get(index).message="cash:";
                                 server.listOfCommunication.get(index).syncServerWriteToClient.release();
                             }
-
 
                             if(playersPosition[index]==10 || playersPosition[index]==30){
                                 switch (chanceDeck.drawCard().charAt(0)){
@@ -165,10 +165,12 @@ public class ServerMainThread extends Thread{
                                         //przejdz na start i pobierz 200zl
                                         break;
                                     case '3':
+
                                         server.listOfCommunication.get(index).message="message:9";
                                         ////dostajesz 150zl
                                         break;
                                     case '4':
+                                        playersPosition[index]=1;
                                         server.listOfCommunication.get(index).message="message:10";
                                         //wracasz do Instytut Matematyki
                                         break;
@@ -195,25 +197,27 @@ public class ServerMainThread extends Thread{
                                 playersPosition[index]=8;
                                 prison[index]=true;
                             }
-
-
+                            if(playersPosition[index]==16){
+                                prison[index]=true;
+                            }
+                            
                             int playerResult[]=new int[4];
                             for(int i=0;i<4;i++){
                                 playerResult[i]=-2;
+                            }
+
+                            if(playerCards[playersPosition[index]]==index && playersPosition[index] !=4 && playersPosition[index]!=12 && playersPosition[index]!=20 && playersPosition[index]!=28){
+//                                System.out.print("chuj \n");
+                                playerResult[index]=2;
+                            }
+                            if(playerCards[playersPosition[index]]>=0 && playerCards[playersPosition[index]]!=index){
+                                playerResult[index]=0;
+                                playerResult[playerCards[playersPosition[index]]]=1;
                             }
                             for(int i=0;i<4;i++){
                                 if(playerResult[i]!=1){
                                     if(playerCards[playersPosition[i]]==-1){
                                         playerResult[i]=-1;
-                                    }else{
-                                        if(playerCards[playersPosition[i]]>=0){
-                                            if(playerCards[playersPosition[i]]!=i){
-                                                playerResult[i]=0;
-                                                playerResult[playerCards[playersPosition[i]]]=1;
-                                            }else{
-                                                //kupowanie domkow
-                                            }
-                                        }
                                     }
                                 }
                             }
@@ -233,9 +237,18 @@ public class ServerMainThread extends Thread{
                         val.syncReadFromClient.acquire();
 
                         if(val.message.equals("Buy")){
-                            playerCards[playersPosition[index]]=index;
-                            server.listOfCommunication.get(index).message="Bought:";
-                            server.listOfCommunication.get(index).syncServerWriteToClient.release();
+                            if(playerCards[playersPosition[index]]==index){
+                                for(int i=0;i<server.listOfCommunication.size();i++){
+                                    server.listOfCommunication.get(i).message="setHouse:"+playersPosition[index];
+                                    server.listOfCommunication.get(i).syncServerWriteToClient.release();
+                                }
+                                Thread.sleep(50);
+                            }else{
+                                playerCards[playersPosition[index]]=index;
+                                server.listOfCommunication.get(index).message="Bought:";
+                                server.listOfCommunication.get(index).syncServerWriteToClient.release();
+                            }
+
                         }
                         if(val.message.equals("next")){
                             server.listOfCommunication.get(index).message="next";
