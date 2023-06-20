@@ -41,12 +41,20 @@ public class CornerCard extends JFrame {
     }
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
+        String pawnImagePath = "";
+
         for (int i = 0; i < 4; i++) {
+
+            if(i==0) pawnImagePath = "assets\\blu.png";
+            else if(i==1) pawnImagePath = "assets\\Mintus.png";
+            else if(i==2) pawnImagePath = "assets\\orang.png";
+            else if(i==3) pawnImagePath = "assets\\purpul.png";
+
             pawnPanel[i].setBounds(52-18 + i % 2 * (33+18), 52-18 + i / 2 * (33+18), 40, 40);
             pawnPanel[i].setOpaque(false); // pionki robia sie przeroczyste
 
             try {
-                File pawnImageFile = new File(ImagePath);
+                File pawnImageFile = new File(pawnImagePath);
                 Image pawnImage = ImageIO.read(pawnImageFile);
 
                 // scaluje grafike pionka

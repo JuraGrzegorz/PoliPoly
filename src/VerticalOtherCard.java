@@ -38,12 +38,20 @@ import javax.imageio.ImageIO;
         }
 
         public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
+            String pawnImagePath = "";
+
             for (int i = 0; i < 4; i++) {
+
+                if(i==0) pawnImagePath = "assets\\blu.png";
+                else if(i==1) pawnImagePath = "assets\\Mintus.png";
+                else if(i==2) pawnImagePath = "assets\\orang.png";
+                else if(i==3) pawnImagePath = "assets\\purpul.png";
+
                 pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
                 pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
                 try {
-                    File pawnImageFile = new File(ImagePath);
+                    File pawnImageFile = new File(pawnImagePath);
                     Image pawnImage = ImageIO.read(pawnImageFile);
 
                     int scaledWidth = 40;

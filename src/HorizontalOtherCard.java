@@ -37,14 +37,21 @@ public class HorizontalOtherCard extends JFrame {
     }
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath, int x) {
+        String pawnImagePath = "";
+
         for (int i = 0; i < 4; i++) {
+
+            if(i==0) pawnImagePath = "assets\\blu.png";
+            else if(i==1) pawnImagePath = "assets\\Mintus.png";
+            else if(i==2) pawnImagePath = "assets\\orang.png";
+            else if(i==3) pawnImagePath = "assets\\purpul.png";
 
             if(x==1) pawnPanel[i].setBounds(47 + i % 2 * 42, 5 + i / 2 * 42, 40, 40);
             else pawnPanel[i].setBounds(35 + i % 2 * 42, 5 + i / 2 * 42, 40, 40);
             pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
             try {
-                File pawnImageFile = new File(ImagePath);
+                File pawnImageFile = new File(pawnImagePath);
                 Image pawnImage = ImageIO.read(pawnImageFile);
 
                 int scaledWidth = 40;
