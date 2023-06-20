@@ -18,8 +18,13 @@ public class ClientReadFromServer extends Thread{
     int[] playersPosition;
     int localPlayerNumber;
 
-    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
-
+    DeckOfCards chanceDeck;
+    DeckOfCards kasaspolDeck;
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, okConfirmPopUp alertWindow, Player player) {
+        chanceDeck = new DeckOfCards((short)0);
+        kasaspolDeck = new DeckOfCards((short)1);
+        chanceDeck.shuffleDeck();
+        kasaspolDeck.shuffleDeck();
         this.client=client;
         this.player=player;
         this.menuWindow=menuWindow;
@@ -129,7 +134,7 @@ public class ClientReadFromServer extends Thread{
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
-                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                    CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
                         for(int j=0;j<4;j++){
@@ -154,7 +159,7 @@ public class ClientReadFromServer extends Thread{
                     }
                     if(moveNumber==18){
                         playerCash-=100;
-                        gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                        CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     Random rand = new Random();
                     if(Integer.parseInt(tmp[2])==0){
@@ -163,7 +168,7 @@ public class ClientReadFromServer extends Thread{
                         }else{
                             playerCash-=gamingWindow.facultyPrices[moveNumber]/5;
                         }
-                        gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                        CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(Integer.parseInt(tmp[2])==1){
                         if(moveNumber==2 || moveNumber==13){
@@ -171,7 +176,7 @@ public class ClientReadFromServer extends Thread{
                         }else{
                             playerCash+=gamingWindow.facultyPrices[moveNumber]/5;
                         }
-                        gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                        CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     }
                     if(playerNumber==localPlayerNumber){
                         gamingWindow.endRound.setVisible(true);
@@ -229,13 +234,13 @@ public class ClientReadFromServer extends Thread{
                         case 8:
                             alertWindow.setMessage("przejdz na start i pobierz 200zl");
                             playerCash+=200;
-                            gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                            CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //przejdz na start i pobierz 200zl
                             break;
                         case 9:
                             alertWindow.setMessage("dostajesz 150zl");
                             playerCash+=150;
-                            gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                            CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             ////dostajesz 150zl
                             break;
                         case 10:
@@ -249,13 +254,14 @@ public class ClientReadFromServer extends Thread{
                         case 12:
                             alertWindow.setMessage("dostajesz 50zl");
                             playerCash+=50;
-                            gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                            CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //dostajesz 50zl
                             break;
                         case 13:
                             alertWindow.setMessage("tracisz 100zl");
                             playerCash-=100;
                             gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+
                             //tracisz 100zl
                             break;
                     }
@@ -264,19 +270,19 @@ public class ClientReadFromServer extends Thread{
                 if(message.equals("Bought:")){
                     PlaySoundEffect.playSound("assets\\sounds\\kaching.wav");
                     playerCash-=gamingWindow.facultyPrices[playersPosition[localPlayerNumber]];
-                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                    CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
 
 
-                    gamingWindow.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
+                    CardsPanel.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
 
 
 
                 }
                 if(message.equals("cash:")){
                     playerCash+=200;
-                    gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                    CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                 }
                 if(message.equals("yourTurn")){
                     gamingWindow.diceRollPanel.setVisible(true);
