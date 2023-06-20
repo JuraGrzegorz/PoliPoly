@@ -20,7 +20,7 @@ public class ClientReadFromServer extends Thread{
 
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
-    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, okConfirmPopUp alertWindow, Player player) {
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
         chanceDeck = new DeckOfCards((short)0);
         kasaspolDeck = new DeckOfCards((short)1);
         chanceDeck.shuffleDeck();
@@ -260,7 +260,7 @@ public class ClientReadFromServer extends Thread{
                         case 13:
                             alertWindow.setMessage("tracisz 100zl");
                             playerCash-=100;
-                            gamingWindow.playerCash.setText(String.format("%d P$", playerCash));
+                            CashPanel.playerCash.setText(String.format("%d P$", playerCash));
 
                             //tracisz 100zl
                             break;
