@@ -17,14 +17,14 @@ public class MainWindow {
     boolean gameStarted;
     boolean stopHostingGame;
 
-    private final okConfirmPopUp alertWindow;
+    private final OkConfirmPopUp alertWindow;
 
     public MainWindow() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Clip menuTheme = PlaySoundEffect.playMusicOnRepeat("assets\\sounds\\music\\menutheme.wav");
         gameStarted=false;
         stopHostingGame=false;
         MenuWindow menuWindow=new MenuWindow();
-        alertWindow=new okConfirmPopUp();
+        alertWindow=new OkConfirmPopUp();
         Player player=new Player();
 
         JPanel container;

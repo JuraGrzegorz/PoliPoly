@@ -12,14 +12,14 @@ public class ClientReadFromServer extends Thread{
     private final MenuWindow menuWindow;
     private final List<JButton> listButtons;
     private int countOfPlayer;
-    private final okConfirmPopUp alertWindow;
+    private final OkConfirmPopUp alertWindow;
     GamingWindow gamingWindow;
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
     DeckOfCards chanceDeck;
     DeckOfCards kasaspolDeck;
-    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, NickNameTakenWindow alertWindow, Player player) {
+    public ClientReadFromServer(Client client, MenuWindow menuWindow, List<JButton> listButtons, OkConfirmPopUp alertWindow, Player player) {
         chanceDeck = new DeckOfCards((short)0);
         kasaspolDeck = new DeckOfCards((short)1);
         chanceDeck.shuffleDeck();

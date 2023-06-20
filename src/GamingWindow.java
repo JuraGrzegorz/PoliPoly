@@ -545,10 +545,6 @@ public class GamingWindow {
         windowFrame.add(InfoPanel);
         windowFrame.add(inGameButtonPanel);
 
-        addCardToPanel(facultyColor[5],facultyNames[19]);
-
-
-
         diceRollPanel = new DiceRoll(fromClient);
         Rectangle diceRollPanelRectangle = new Rectangle(470, 430 - PLAYER_SECTION_OFFSET_Y, DiceRoll.DICE_SIZE, DiceRoll.DICE_SIZE);
         diceRollPanel.setBounds(diceRollPanelRectangle);

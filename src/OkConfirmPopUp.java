@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class okConfirmPopUp extends  PopUpWindow{
+public class OkConfirmPopUp extends  PopUpWindow{
 
     JButton acceptButton;
 
-    public okConfirmPopUp() {
+    public OkConfirmPopUp() {
         acceptButton = MenuWindow.standardButtonGenerate("OK");
         acceptButton.setPreferredSize(new Dimension(100, 40));
         buttonPanel.add(acceptButton);
