@@ -120,7 +120,7 @@ public class ServerMainThread extends Thread{
         String[] tmp=val.message.split(":");
         moveNumber=Integer.parseInt(tmp[0]);
         playersPosition[index]+=moveNumber;
-        playersPosition[index]=2;
+        
         if(playersPosition[index]>=32){
             playersPosition[index]=playersPosition[index]%32;
             server.listOfCommunication.get(index).message="cash:";
