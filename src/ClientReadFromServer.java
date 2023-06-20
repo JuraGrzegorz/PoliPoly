@@ -200,71 +200,74 @@ public class ClientReadFromServer extends Thread{
                     int val= Integer.parseInt(message.substring(("message:").length()));
                     switch (val){
                         case 0:
-                            alertWindow.setMessage("idz do instytutu obrabiarek");
+                            alertWindow.setMessage("Idź do Instytutu Obrabiarek. Jeśli przejdziesz przez start, pobierz 200P$.");
                             //idz do instytutu obrabiarek
                             break;
                         case 1:
-                            alertWindow.setMessage("idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza");
+                            alertWindow.setMessage("Idź do najbliższego Akademika. Jeśli nie posiada on jeszcze Namiestnika" +
+                                    "Rady Akademickiej, możesz się nim stać za 200 P$. Jeśli to stanowisko jest już zajęte, zapłać Namiestnikowi odpowiednią kwotę.");
                             //idz do najblizszego akademika, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
                             break;
                         case 2:
-                            alertWindow.setMessage("idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza");
+                            alertWindow.setMessage("Idź do Centrum Językowego. Jeśli nie posiada ono jeszcze Dorywczego Korepetytora, możesz się nim stać za 50P$. Jeśli to" +
+                                    "stanowisko jest już zajęte, zapłać Korepetytorowi 25P$.");
                             //idz do CJ, mozesz kupic jesli wolny, zaplac jesli nalezy do gracza
                             break;
                         case 3:
-                            alertWindow.setMessage("idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl");
+                            alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
                             //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                             break;
                         case 4:
-                            alertWindow.setMessage("karta zart, nic sie nie dzieje");
+                            alertWindow.setMessage("Za swoje zasługi dla uczelni otrzymujesz uścisk dłoni Rektora (jest bezcenny).");
                             //karta zart, nic sie nie dzieje
                             break;
                         case 5:
-                            alertWindow.setMessage("cofnij sie o 3 pola");
+                            alertWindow.setMessage("Cofnij się o trzy pola.");
                             //cofnij sie o 3 pola
                             break;
                         case 6:
-                            alertWindow.setMessage("przejdz do instytutu marketingu");
+                            alertWindow.setMessage("Przejdź na Instytut Marketingu.");
                             //przejdz do instytutu marketingu (ostatnia ulica przed startem)
                             break;
                         case 7:
-                            alertWindow.setMessage("plac 25zl za kazdy domek i 100zl za kazdy hotel");
+                            alertWindow.setMessage("Doktoranci i Profesorowie rządają wypłacenia premii. Zapłać 25P$ na Doktoranta " +
+                                    "i 100P$ na Profesora na każdym Wydziale, na którym jesteś Asystentem Dziekana.");
                             //plac 25zl za kazdy domek i 100zl za kazdy hotel
                             break;
                         case 8:
-                            alertWindow.setMessage("przejdz na start i pobierz 200zl");
+                            alertWindow.setMessage("Tym razem nie zgubiłeś się w drodze powrotnej do domu po imprezie. Przejdź na START i pobierz 200P$.");
                             playerCash+=200;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //przejdz na start i pobierz 200zl
                             break;
                         case 9:
-                            alertWindow.setMessage("dostajesz 150zl");
+                            alertWindow.setMessage("Otrzymujesz prestiżową Nagrodę Dziekana. Pobierz 150P$.");
                             playerCash+=150;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             ////dostajesz 150zl
                             break;
                         case 10:
-                            alertWindow.setMessage("wracasz do Instytut Matematyki");
+                            alertWindow.setMessage("Przejdź do Instytutu Marketingu");
                             //wracasz do Instytut Matematyki
                             break;
                         case 11:
-                            alertWindow.setMessage("idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl");
+                            alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
                             //idz do wiezienia, nie przechodz przez start, nie pobieraj 200zl
                             break;
                         case 12:
-                            alertWindow.setMessage("dostajesz 50zl");
+                            alertWindow.setMessage("Pomogłeś koledze pozbyć się Segmentation Faulta. Pobierz 50P$.");
                             playerCash+=50;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
                             //dostajesz 50zl
                             break;
                         case 13:
-                            alertWindow.setMessage("tracisz 100zl");
+                            alertWindow.setMessage("Zgubiłeś portfel na torowisku tramwajowym wracając z imprezy. Tracisz 100P$.");
                             playerCash-=100;
                             CashPanel.playerCash.setText(String.format("%d P$", playerCash));
-
                             //tracisz 100zl
                             break;
                     }
+//                    TimeUnit.SECONDS.sleep(1);
                     alertWindow.show();
                 }
                 if(message.equals("Bought:")){
