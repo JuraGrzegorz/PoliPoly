@@ -6,7 +6,7 @@ public class PopUpWindow extends JFrame {
 
     private final JLabel titleLabel; // Dodany etykietka dla tekstu paska tytułowego
     protected JPanel buttonPanel;
-    private final JLabel promptLabel;
+    protected final JLabel promptLabel;
 
     public PopUpWindow() {
         // Tworzenie panelu dla paska tytułowego

@@ -300,8 +300,20 @@ public class ClientReadFromServer extends Thread{
                 gamingWindow.housePanel[i][j].setVisible(false);
             }
         }
-        alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
-        alertWindow.show();
+        RulesPopup rulesPopup = new RulesPopup();
+        rulesPopup.setMessage("Witaj w fascynującym świecie Polipoly, klonie Monopoly usytuowanym w uniwersum Politechniki Łódzkiej! Mała część zasad różni się nieco od oryginału, ale nie martw się! Przedstawimy te różnice po krótce:<br><br>" +
+                "Odsprzedawanie nieruchomości to zbyt duże udogodnienie. Tutaj Twoje pola są świętością, która nie może być sprzedana ani zastawiona. Musisz być strategiem, planować każdy ruch.<br><br>" +
+                "Ostrożnie! Ograniczamy liczbę posiadanych pól do 15. Musisz dokładnie rozważyć, które nieruchomości są dla ciebie najważniejsze. Podejmuj trudne decyzje i analizuj ryzyko!<br><br>" +
+                "Przedstawimy również różnice, jakie występują w nazewnictwie względem oryginału:<br>" +
+                "Walutą w Polipoly są polidolary (P$).<br>" +
+                "Ulice zastąpione są Wydziałami oraz ich budynkami (instytutami, katedrami etc.) a ich właściciel nazywany jest Asystentem Dziekana.<br>" +
+                "Dworce zastąpione są Akademikami, a ich właściciel nazywany jest Namiestnikiem Rady Akademickiej.<br>" +
+                "Wodociągi i Elektrownia zastąpione są Centrum Językowym i Zatoką Sportu, a ich właściciele nazywają się kolejno Dorywczym Korepetytorem i Dorywczym Trenerem.<br>" +
+                "Więzienie jest zastąpione V Domem Studenckim.<br>" +
+                "Domki i Hotele zastąpione są Doktorantami i Rektorami.<br>" +
+                "Parking jest zastąpiony sklepem Dino.<br>" +
+                "Podatek dochodowy jest zastąpiony płaceniem za niezdany przedmiot (najpewniej PP2).");
+        rulesPopup.show();
     }
 
     private void ForceQuitCommand() {
