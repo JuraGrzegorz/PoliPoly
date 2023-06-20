@@ -133,13 +133,16 @@ public class ClientReadFromServer extends Thread{
                 }
 
                 if(message.startsWith("gameStarted:")){
-                    localPlayerNumber= Integer.parseInt(message.substring(("gameStarted:").length()));
+                    message=message.substring(("gameStarted:").length());
+                    String[] tmp=message.split(":");
+                    localPlayerNumber= Integer.parseInt(tmp[0]);
                     gamingWindow=new GamingWindow(client.fromClient);
 
                     gamingWindow.diceRollPanel.setVisible(false);
                     gamingWindow.buyPropertyButton.setVisible(false);
                     gamingWindow.endRound.setVisible(false);
                     CashPanel.playerCash.setText(String.format("%d P$", playerCash));
+                    gamingWindow.playerTurnPanel.setPlayername(tmp[1]);
                     client.fromClient.println("Starting");
                     for(int i=1;i<32;i++){
                         for(int j=0;j<4;j++){
@@ -151,6 +154,8 @@ public class ClientReadFromServer extends Thread{
                             gamingWindow.housePanel[i][j].setVisible(false);
                         }
                     }
+                    alertWindow.setMessage("Idź do V Domu Studenta. Nie przechodź przez START. Nie pobieraj 200P$.");
+                    alertWindow.show();
                 }
 
                 if(message.startsWith("move:")){

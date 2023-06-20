@@ -67,7 +67,7 @@ public class ServerMainThread extends Thread{
 
                             Collections.shuffle(server.listOfCommunication);
                             for(int i=0;i<server.listOfCommunication.size();i++){
-                                server.listOfCommunication.get(i).message="gameStarted:"+i;
+                                server.listOfCommunication.get(i).message="gameStarted:"+i+":"+server.listOfCommunication.get(i).nickName;
                                 server.listOfCommunication.get(i).syncServerWriteToClient.release();
                             }
                             Thread.sleep(100);
