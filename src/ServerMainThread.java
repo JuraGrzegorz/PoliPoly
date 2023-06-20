@@ -200,7 +200,7 @@ public class ServerMainThread extends Thread{
                             if(playersPosition[index]==16){
                                 prison[index]=true;
                             }
-                            
+
                             int playerResult[]=new int[4];
                             for(int i=0;i<4;i++){
                                 playerResult[i]=-2;
