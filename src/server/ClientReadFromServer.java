@@ -227,7 +227,8 @@ public class ClientReadFromServer extends Thread{
         playerNumber=Integer.parseInt(tmp[1]);
         moveNumber=Integer.parseInt(tmp[0]);
 
-        if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[playersPosition[playerNumber]]){
+        if(Integer.parseInt(tmp[2])==-1 && playerCash>=gamingWindow.facultyPrices[moveNumber]){
+            gamingWindow.buyPropertyButton.setText("kup: "+String.valueOf(gamingWindow.facultyPrices[moveNumber]));
             gamingWindow.buyPropertyButton.setVisible(true);
         }
         if(moveNumber==18){
@@ -264,6 +265,7 @@ public class ClientReadFromServer extends Thread{
         }
         if(Integer.parseInt(tmp[2])==2){
             if(playerCash>=gamingWindow.facultyPrices[moveNumber]/2 && houseCount[moveNumber]<3){
+                gamingWindow.buyPropertyButton.setText("kup: "+String.valueOf(gamingWindow.facultyPrices[moveNumber]/2));
                 gamingWindow.buyPropertyButton.setVisible(true);
             }
         }
