@@ -36,6 +36,8 @@ public class GamingWindow {
     private final InfoPanel infoPanel;
     private final JPanel[] verticalFieldsArray;
     private final JPanel[] horizontalFieldsArray;
+    protected JButton closeGamingWindowButton;
+    protected JButton ruleInfoButton;
     protected JButton endRound;
     protected JButton buyPropertyButton;
     private final JPanel inGameButtonPanel;
@@ -488,12 +490,16 @@ public class GamingWindow {
     public void paintPlayerSection() {
         generateinGameButtonPanel(inGameButtonPanel);
 
+
         windowFrame.add(cardsPanel);
         windowFrame.getContentPane().add(cashPanel);
         windowFrame.add(playerTurnPanel);
         windowFrame.add(mouseHoverInfoPanel);
         windowFrame.add(infoPanel);
         windowFrame.add(inGameButtonPanel);
+        windowFrame.add(closeGamingWindowButton);
+        windowFrame.add(ruleInfoButton);
+
 
         diceRollPanel = new DiceRoll(fromClient);
         Rectangle diceRollPanelRectangle = new Rectangle(470, 430 - PLAYER_SECTION_OFFSET_Y, DiceRoll.DICE_SIZE, DiceRoll.DICE_SIZE);
@@ -512,6 +518,23 @@ public class GamingWindow {
 
         buyPropertyButton = MenuWindow.standardButtonGenerate("Zakup");
         endRound = MenuWindow.standardButtonGenerate("koniec tury");
+
+        closeGamingWindowButton = MenuWindow.standardButtonGenerate("");
+        closeGamingWindowButton.setBackground(new Color(0x8a231c));
+        closeGamingWindowButton.setBounds(1850,30 - PLAYER_SECTION_OFFSET_Y,45,45);
+        ImageIcon leaveIcon = new ImageIcon("assets\\leave.png");
+        closeGamingWindowButton.setIcon(leaveIcon);
+        closeGamingWindowButton.addActionListener(leaveGame -> System.exit(0));
+
+        ruleInfoButton = MenuWindow.standardButtonGenerate("");
+        ruleInfoButton.setBackground(new Color(0x006db0));
+        ruleInfoButton.setBounds(1850,75 + PLAYER_SECTION_OFFSET_Y,45,45);
+        ImageIcon infoIcon = new ImageIcon("assets\\infoicon.png");
+        ruleInfoButton.setIcon(infoIcon);
+        ruleInfoButton.addActionListener(back -> {
+            ClientReadFromServer.rulesPopup.show();
+        });
+
         buyPropertyButton.addActionListener(back -> fromClient.println("Buy"));
         endRound.addActionListener(back -> fromClient.println("next"));
 
