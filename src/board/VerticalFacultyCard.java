@@ -52,7 +52,7 @@ public class VerticalFacultyCard extends JPanel {
         namePanel.add(nameLabel);
     }
 
-    public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
+    public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath, int x) {
 
         String pawnImagePath = "";
 
@@ -63,7 +63,9 @@ public class VerticalFacultyCard extends JPanel {
             else if(i==2) pawnImagePath = "assets\\orang.png";
             else if(i==3) pawnImagePath = "assets\\purpul.png";
 
-            pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
+            if(x==0) pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
+            else pawnPanel[i].setBounds(9 + i % 2 * 42, 52 + i / 2 * 42, 40, 40);
+//            pawnPanel[i].setBounds(9 + i % 2 * 42, 32 + i / 2 * 42, 40, 40);
             pawnPanel[i].setOpaque(false); // Make pawnPanel transparent
 
             try {

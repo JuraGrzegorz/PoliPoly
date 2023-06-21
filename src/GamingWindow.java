@@ -300,7 +300,7 @@ public class GamingWindow {
                             }
                         }
 
-                        VerticalFacultyCard.makePawnPanel(pawnPanel[counter], imagePath);
+                        VerticalFacultyCard.makePawnPanel(pawnPanel[counter], imagePath, i%2);
                         VerticalFacultyCard.makeHousePanel(housePanel[counter_house], houseImagePath, (i % 2));
                         horizontalFieldsArray[i].add(uponPanel);
                         horizontalFieldsArray[i].add(namePanel);

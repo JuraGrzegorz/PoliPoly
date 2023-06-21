@@ -191,6 +191,7 @@ public class MainWindow {
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         window.setSize(800, 600);
+        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.add(container);
 
