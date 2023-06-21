@@ -187,7 +187,8 @@ public class GamingWindow {
                     String imagePath1 = "assets\\CS.png";
                     String imagePath21 = "assets\\mintus.png";
                     if (i == 2 || i == 3) imagePath1 = "assets\\Red_chance.png";
-                    if (i == 6 || i == 7) imagePath1 = "assets\\dorm_down.png";
+                    if (i == 6) imagePath1 = "assets\\dorm_up.png";
+                    if (i == 7) imagePath1 = "assets\\dorm_down.png";
                     if (i == 11) imagePath1 = "assets\\blue_chance.png";
 
                     if (i != 10) {
