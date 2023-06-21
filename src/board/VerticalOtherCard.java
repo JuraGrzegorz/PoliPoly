@@ -6,20 +6,7 @@ import javax.imageio.ImageIO;
 
     public class VerticalOtherCard extends JFrame {
 
-//        private JLayeredPane layeredPane;
-//        private JPanel imagePanel;
-//        private JPanel[] pawnPanel;
-
-        public VerticalOtherCard() {
-//
-        }
-
         public static void makeImagePanel(JPanel imagePanel, String ImagePath) {
-//            Rectangle imageRectangle = new Rectangle(0, 0, 80, 140);
-//            imagePanel.setBounds(imageRectangle);
-//            imagePanel.setLayout(FlowLayout);
-
-//            imagePanel.setBackground(Color.WHITE);
 
             try {
                 File imageFile = new File(ImagePath);

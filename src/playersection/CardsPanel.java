@@ -12,7 +12,6 @@ public class CardsPanel extends JPanel {
 
 
     public CardsPanel(JFrame windowFrame, int x, int y) throws IOException {
-        //  Rectangle cardsPanelRectangle = new Rectangle(CARD_PANEL_X, 340 - PLAYER_SECTION_OFFSET_Y, 725, 614);
         Rectangle cardsPanelRectangle = new Rectangle(x, y, 725, 614);
         setBounds(cardsPanelRectangle);
         BufferedImage backgroundImage = ImageIO.read(new File("assets\\karciochy.png"));

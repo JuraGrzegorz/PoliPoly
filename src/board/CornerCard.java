@@ -11,8 +11,6 @@ public class CornerCard extends JFrame {
 
 
     public static void makeImagePanel(JPanel imagePanel, String ImagePath) {
-//        Rectangle imageRectangle = new Rectangle(0, 0, 400, 400);
-//        imagePanel.setBounds(imageRectangle);
         imagePanel.setBackground(Color.WHITE);
 
         try {
@@ -30,14 +28,6 @@ public class CornerCard extends JFrame {
 
         }
 
-//        try {
-//            File imageFile = new File("C:\\Users\\HP\\Desktop\\dino1.png");
-//            Image image = ImageIO.read(imageFile);
-//            JLabel imageLabel = new JLabel(new ImageIcon(image));
-//            imagePanel.add(imageLabel);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public static void makePawnPanel(JPanel[] pawnPanel, String ImagePath) {
@@ -77,11 +67,6 @@ public class CornerCard extends JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-//            JLabel pawnLabel = new JLabel();
-//            Border border = BorderFactory.createLineBorder(Color.BLACK);
-//            pawnPanel[i].setBorder(border);
-//            pawnPanel[i].add(pawnLabel);
         }
     }
 }
