@@ -16,5 +16,4 @@ public class RulesPopup extends PopUpWindow {
     public void setMessage(String message) {
         promptLabel.setText("<html><div style='text-align: center; width: 600px;'>" + message + "</div></html>");
     }
-
 }
