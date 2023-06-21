@@ -521,7 +521,7 @@ public class GamingWindow {
 
     private void initializeFacultyPricesAndNames() {
         facultyPrices[1] = 60;
-        facultyNames[1] = "Instytut Matematyki";
+        facultyNames[1] = "Inst. Matematyki";
         facultyColor[1] = new Color(0xc6a995);
 
         facultyPrices[2] = 150;
@@ -530,7 +530,7 @@ public class GamingWindow {
 
 
         facultyPrices[3] = 60;
-        facultyNames[3] = "Instytut Fizyki";
+        facultyNames[3] = "Inst. Fizyki";
         facultyColor[3] = new Color(0xc6a995);
 
         facultyPrices[4] = 200; //akademik nr1
@@ -539,11 +539,11 @@ public class GamingWindow {
 
 
         facultyPrices[5] = 100;
-        facultyNames[5] = "Inst. Fizyki Molekularnej";
+        facultyNames[5] = "Inst. Fizyki Mol.";
         facultyColor[5] = new Color(0xd0474c);
 
         facultyPrices[7] = 120;
-        facultyNames[7] = "Inst. Chemii Organicznej";
+        facultyNames[7] = "Inst. Chemii";
         facultyColor[7] = new Color(0xd0474c);
 
         facultyPrices[9] = 140;
@@ -552,7 +552,7 @@ public class GamingWindow {
 
 
         facultyPrices[11] = 160;
-        facultyNames[11] = "Kat. Technologii Dziewiarskich";
+        facultyNames[11] = "Kat. Technologii D.";
         facultyColor[11] = new Color(0xf7ee40);
 
         facultyPrices[12] = 200; //akademik nr2
@@ -564,7 +564,7 @@ public class GamingWindow {
         facultyColor[13] = Color.WHITE;
 
         facultyPrices[14] = 180;
-        facultyNames[14] = "Kat. Budownictwa Betonowego";
+        facultyNames[14] = "Kat. Betonu";
         facultyColor[14] = new Color(0xfb8ced);
 
         facultyPrices[15] = 200;
@@ -576,7 +576,7 @@ public class GamingWindow {
         facultyColor[17] = new Color(0x6abbd6);
 
         facultyPrices[19] = 240;
-        facultyNames[19] = "Kat. Wytrzymałości Materiałów";
+        facultyNames[19] = "Kat. Materiałów";
         facultyColor[19] = new Color(0x6abbd6);
 
         facultyPrices[20] = 200; //akademik nr3

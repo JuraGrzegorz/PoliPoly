@@ -38,7 +38,7 @@ public class VerticalFacultyCard extends JPanel {
         if (x == 1) {
             nameRectangle = new Rectangle(0, 28, 100, 24);
         } else {
-            nameRectangle = new Rectangle(0, 123, 100, 24);
+            nameRectangle = new Rectangle(0, 118, 100, 24);
         }
         namePanel.setBounds(nameRectangle);
         JLabel nameLabel = new JLabel(name);
