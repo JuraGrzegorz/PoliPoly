@@ -24,7 +24,6 @@ public class VerticalFacultyCard extends JPanel {
         JLabel uponPanelLabel = new JLabel(price+"P$");
         uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
-        //
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         uponPanel.setBorder(border);
@@ -33,9 +32,6 @@ public class VerticalFacultyCard extends JPanel {
         uponPanel.add(uponPanelLabel);
     }
 
-//    public static void setColorAndName(String name, Color color){
-//
-//    }
 
     public static void makeNamePanel(JPanel namePanel, int x, String name) {
         Rectangle nameRectangle;
@@ -48,7 +44,6 @@ public class VerticalFacultyCard extends JPanel {
         JLabel nameLabel = new JLabel(name);
         nameLabel.setFont(new Font("Calibri", Font.BOLD, 12));
 
-        //
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         namePanel.setBorder(border);
@@ -94,11 +89,6 @@ public class VerticalFacultyCard extends JPanel {
                 e.printStackTrace();
             }
 
-
-//            JLabel pawnLabel = new JLabel();
-//            Border border = BorderFactory.createLineBorder(Color.BLACK);
-//            pawnPanel[i].setBorder(border);
-//            pawnPanel[i].add(pawnLabel);
         }
     }
 
@@ -136,14 +126,6 @@ public class VerticalFacultyCard extends JPanel {
                 e.printStackTrace();
             }
 
-
-//            Rectangle houseRectangle0 = new Rectangle(3, 124, 25, 25);
-//            housePanel[0].setBounds(houseRectangle0);
-//            housePanel[0].setBackground(Color.lightGray);
-//            JLabel houseLabel0 = new JLabel("D1");
-//            Border border = BorderFactory.createLineBorder(Color.BLACK);
-//            housePanel[0].setBorder(border);
-//            housePanel[0].add(houseLabel0);
         }
     }
 }

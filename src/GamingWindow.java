@@ -319,8 +319,6 @@ public class GamingWindow {
                     JPanel uponPanel2 = new JPanel(new GridBagLayout());
                     JPanel namePanel2 = new JPanel(new GridBagLayout());
 
-                    String imagePath2 = "assets\\mintus.png";
-
                     switch (i) {
                         case 9 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[21], facultyColor[21]);
