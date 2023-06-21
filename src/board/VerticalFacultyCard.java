@@ -22,7 +22,7 @@ public class VerticalFacultyCard extends JPanel {
         }
         uponPanel.setBounds(uponPanelRectangle);
         JLabel uponPanelLabel = new JLabel(price+"P$");
-        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 14));
+        uponPanelLabel.setFont(new Font("Calibri", Font.BOLD, 17));
 
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -42,7 +42,7 @@ public class VerticalFacultyCard extends JPanel {
         }
         namePanel.setBounds(nameRectangle);
         JLabel nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        nameLabel.setFont(new Font("Calibri", Font.BOLD, 13));
 
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);

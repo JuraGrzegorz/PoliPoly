@@ -177,7 +177,7 @@ public class GamingWindow {
 
 
             int help = 0;
-            String houseImagePath = "assets\\house.png";
+            String houseImagePath = "assets\\Doctor.png";
 
             switch (i) {
 
@@ -521,7 +521,7 @@ public class GamingWindow {
 
     private void initializeFacultyPricesAndNames() {
         facultyPrices[1] = 60;
-        facultyNames[1] = "Inst. Matematyki";
+        facultyNames[1] = "Inst.Matematyki";
         facultyColor[1] = new Color(0xc6a995);
 
         facultyPrices[2] = 150;
@@ -552,7 +552,7 @@ public class GamingWindow {
 
 
         facultyPrices[11] = 160;
-        facultyNames[11] = "Kat. Technologii D.";
+        facultyNames[11] = "Kat.Dziewiarstwa";
         facultyColor[11] = new Color(0xf7ee40);
 
         facultyPrices[12] = 200; //akademik nr2
