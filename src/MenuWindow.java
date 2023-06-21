@@ -77,6 +77,10 @@ public class MenuWindow {
     public MenuWindow() {
         joinGameListButtons = new ArrayList<>();
         hostGameListButtons = new ArrayList<>();
+
+
+
+
         hostGameListButtons.add(grayButtonGenerate(""));
         hostGameListButtons.add(grayButtonGenerate(""));
         hostGameListButtons.add(grayButtonGenerate(""));

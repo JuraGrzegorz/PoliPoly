@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class CardsPanel extends JPanel {
 
@@ -70,5 +71,44 @@ public class CardsPanel extends JPanel {
 
 
         AmountOfCardsInCardPanel++;
+    }
+    public static void updatePrice(String facultyName,int price, int houseAmount) {
+
+        CardOnCardPanelPanel foundObject = Arrays.stream(cardsOnCardPanelPanel)
+                .filter(obj -> obj.text.equals(facultyName))
+                .findFirst()
+                .orElse(null);
+
+
+        int divider;
+        int multiplier = 1;
+        if (houseAmount != 0) {
+            multiplier = houseAmount;
+        }
+        if (houseAmount == 0) {
+            divider = 5;
+        } else {
+            divider = 2;
+        }
+
+        int tribute = (price / divider) * multiplier;
+
+
+         if(facultyName.equals(GamingWindow.facultyNames[13]) || facultyName.equals(GamingWindow.facultyNames[2]) ){
+             assert foundObject != null;
+             foundObject.priceLabel.setText("<html><br>Opłata: <i>losowo 0-100 P$</i></html>");
+             foundObject.setVisible(false);
+             foundObject.setVisible(true);
+
+        }
+        else{
+            assert foundObject != null;
+            foundObject.priceLabel.setText("<html><br>Opłata: <i>" + tribute + " P$</i></html>");
+            foundObject.setVisible(false);
+            foundObject.setVisible(true);
+        }
+
+
+
     }
 }

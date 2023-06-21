@@ -4,7 +4,8 @@ import java.awt.*;
 public class CardOnCardPanelPanel extends JPanel {
     public JPanel topColorLabel;
     public JPanel midColorLabel;
-    public JLabel label;
+    public JLabel nameLabel;
+    public JLabel priceLabel;
     public String text = "default";
 
     public void setString(String value) {
@@ -12,9 +13,12 @@ public class CardOnCardPanelPanel extends JPanel {
         wrapText();
     }
 
+
+
     private void wrapText() {
-        label.setText("<html><div style='text-align: center; width: " + label.getWidth() + "px;'>" + text + "</div></html>");
+        nameLabel.setText("<html><div style='text-align: center; width: " + nameLabel.getWidth() + "px;'>" + text + "</div><br><br></html>");
     }
+
 
     CardOnCardPanelPanel() {
         Color defaultColor = new Color(0xcf2929);
@@ -29,19 +33,26 @@ public class CardOnCardPanelPanel extends JPanel {
         midColorLabel.setBackground(defaultColor.darker());
         midColorLabel.setPreferredSize(new Dimension(100, 5));
 
-        label = new JLabel();
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
+        nameLabel = new JLabel();
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        nameLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(label);
+        JScrollPane scrollPane = new JScrollPane(nameLabel);
         scrollPane.getViewport().setBackground(Color.white);
         scrollPane.setBorder(null);
+
+        priceLabel = new JLabel("Opłata: ");
+        priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        priceLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
 
         setLayout(new BorderLayout());
         add(topColorLabel, BorderLayout.NORTH);
         add(midColorLabel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);
+        add(priceLabel, BorderLayout.SOUTH);
+
+
     }
 
 }

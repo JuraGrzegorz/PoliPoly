@@ -46,7 +46,7 @@ public class GamingWindow {
     protected  DiceRoll diceRollPanel;
 
     protected final int[] facultyPrices;
-    protected final String[] facultyNames;
+    public static String[] facultyNames;
     protected final Color[] facultyColor;
 
     private final Border blackline = BorderFactory.createLineBorder(Color.black);
@@ -524,7 +524,12 @@ public class GamingWindow {
         closeGamingWindowButton.setBounds(1850,30 - PLAYER_SECTION_OFFSET_Y,45,45);
         ImageIcon leaveIcon = new ImageIcon("assets\\leave.png");
         closeGamingWindowButton.setIcon(leaveIcon);
-        closeGamingWindowButton.addActionListener(leaveGame -> System.exit(0));
+        closeGamingWindowButton.addActionListener(back -> {
+            ConfirmOrDeclineWindow confirmOrDeclineWindow = new ConfirmOrDeclineWindow();
+            confirmOrDeclineWindow.setMessage("Czy na pewno chcesz teraz uciec i zaprzepaścić szansę na dorobienie się niewyobrażalnej fortuny?");
+            confirmOrDeclineWindow.acceptButton.addActionListener(leaveGame -> System.exit(0));
+            confirmOrDeclineWindow.show();
+        });
 
         ruleInfoButton = MenuWindow.standardButtonGenerate("");
         ruleInfoButton.setBackground(new Color(0x006db0));
@@ -544,7 +549,7 @@ public class GamingWindow {
 
     private void initializeFacultyPricesAndNames() {
         facultyPrices[1] = 60;
-        facultyNames[1] = "Inst.Matematyki";
+        facultyNames[1] = "Inst. Matmy";
         facultyColor[1] = new Color(0xc6a995);
 
         facultyPrices[2] = 150;
@@ -575,11 +580,11 @@ public class GamingWindow {
 
 
         facultyPrices[11] = 160;
-        facultyNames[11] = "Kat.Dziewiarstwa";
+        facultyNames[11] = "Kat. Dziewiarstwa";
         facultyColor[11] = new Color(0xf7ee40);
 
         facultyPrices[12] = 200; //akademik nr2
-        facultyNames[12] = "DS4";
+        facultyNames[12] = "DS3";
         facultyColor[12] = Color.WHITE;
 
         facultyPrices[13] = 150;
@@ -590,7 +595,7 @@ public class GamingWindow {
         facultyNames[14] = "Kat. Betonu";
         facultyColor[14] = new Color(0xfb8ced);
 
-        facultyPrices[15] = 200;
+        facultyPrices[15] = 210;
         facultyNames[15] = "Inst. Architektury";
         facultyColor[15] = new Color(0xfb8ced);
 

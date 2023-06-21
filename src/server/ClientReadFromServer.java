@@ -132,6 +132,10 @@ public class ClientReadFromServer extends Thread{
         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
         setHouse(position,houseCount[position]);
         houseCount[position]++;
+        CardsPanel.updatePrice(GamingWindow.facultyNames[position],gamingWindow.facultyPrices[position],houseCount[position]);
+
+
+
     }
 
     private void BoughtCommand() throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
@@ -141,7 +145,9 @@ public class ClientReadFromServer extends Thread{
         CashPanel.playerCash.setText(String.format("%d P$", playerCash));
         gamingWindow.buyPropertyButton.setVisible(false);
         gamingWindow.endRound.setVisible(false);
-        CardsPanel.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]],gamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
+        CardsPanel.addCardToPanel(gamingWindow.facultyColor[playersPosition[localPlayerNumber]], GamingWindow.facultyNames[playersPosition[localPlayerNumber]]);
+        CardsPanel.updatePrice(GamingWindow.facultyNames[playersPosition[localPlayerNumber]],gamingWindow.facultyPrices[playersPosition[localPlayerNumber]],0);
+
     }
 
     private void messageCommand(String message) {
