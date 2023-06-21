@@ -249,6 +249,7 @@ public class GamingWindow {
 
                 case 0, 1, 4, 5, 9, 12, 13: {
                     if (help == 0) {
+                        horizontalFieldsArray[i].setBackground(Color.white);
                         JPanel uponPanel = new JPanel(new GridBagLayout());
                         JPanel namePanel = new JPanel(new GridBagLayout());
 
