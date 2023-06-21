@@ -8,7 +8,7 @@ import java.awt.Font;
 
 public class PlayerTurnPanel extends JPanel {
 
-    private JLabel textLabel;
+    private final JLabel textLabel;
 
     PlayerTurnPanel(int x, int y) throws IOException {
         Rectangle playerTurnPanelRectangle = new Rectangle(x, y, 400, 50);

@@ -53,7 +53,6 @@ public class MainWindow {
 
         //akcje przycisków
         menuWindow.playButton.addActionListener(back -> {
-
             menuWindow.mainMenu.setVisible(false);
             menuWindow.menuPlay.setVisible(true);
         });
@@ -109,39 +108,7 @@ public class MainWindow {
             menuWindow.menuPlay.setVisible(false);
             menuWindow.menuHostGame.setVisible(true);
 
-            Thread ThreadWaitingForPlayers = new Thread(() -> {
-
-                ServerMainThread serverMainThread=new ServerMainThread(server);
-                serverMainThread.start();
-                while (true){
-
-                    synchronized (this) {
-                        if(gameStarted || stopHostingGame){
-                            break;
-                        }
-                    }
-                    Socket tmp_clientSock = null;
-                    try {
-                        tmp_clientSock = server.serverSocketChannel.accept();
-
-                        if(server.listOfCommunication.size()>=4){
-                            PrintWriter fromServer=new PrintWriter(tmp_clientSock.getOutputStream(), true);
-                            fromServer.println("serverFull");
-                            continue;
-
-                        }
-                        server.addSemaphore();
-                        Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
-
-                        ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
-                        serverReadThread.start();
-                        ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
-                        serverWriteThread.start();
-
-                    } catch (IOException ignored) {}
-                }
-
-            });
+            Thread ThreadWaitingForPlayers = ThreadWaitingForPlayers();
             ThreadWaitingForPlayers.start();
 
             while (true){
@@ -197,13 +164,9 @@ public class MainWindow {
 
         });
 
-        menuWindow.changeNickNameHostButton.addActionListener(back -> {
-            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText());
-        });
+        menuWindow.changeNickNameHostButton.addActionListener(back -> client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldHostMenu.getText()));
 
-        menuWindow.changeNickNameJoinButton.addActionListener(back -> {
-            client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText());
-        });
+        menuWindow.changeNickNameJoinButton.addActionListener(back -> client.fromClient.println("changeNickname:"+menuWindow.nickNameTextFieldJoinMenu.getText()));
 
 
 
@@ -236,10 +199,45 @@ public class MainWindow {
 
     }
 
+    private Thread ThreadWaitingForPlayers() {
+        Thread ThreadWaitingForPlayers = new Thread(() -> {
+
+            ServerMainThread serverMainThread=new ServerMainThread(server);
+            serverMainThread.start();
+            while (true){
+
+                synchronized (this) {
+                    if(gameStarted || stopHostingGame){
+                        break;
+                    }
+                }
+                Socket tmp_clientSock;
+                try {
+                    tmp_clientSock = server.serverSocketChannel.accept();
+
+                    if(server.listOfCommunication.size()>=4){
+                        PrintWriter fromServer=new PrintWriter(tmp_clientSock.getOutputStream(), true);
+                        fromServer.println("serverFull");
+                        continue;
+
+                    }
+                    server.addSemaphore();
+                    Communication tmp_Comm=server.listOfCommunication.get(server.listOfCommunication.size()-1);
+
+                    ServerReadFromClient serverReadThread=new ServerReadFromClient(tmp_clientSock,tmp_Comm,server.syncJoiningPlayers);
+                    serverReadThread.start();
+                    ServerWriteTOClient serverWriteThread=new ServerWriteTOClient(tmp_clientSock,tmp_Comm);
+                    serverWriteThread.start();
+
+                } catch (IOException ignored) {}
+            }
+
+        });
+        return ThreadWaitingForPlayers;
+    }
+
     public void show() {
         window.setVisible(true);
-
-
     }
 
 }

@@ -4,13 +4,11 @@ import java.awt.*;
 
 public class PopUpWindow extends JFrame {
 
-    private final JLabel titleLabel; // Dodany etykietka dla tekstu paska tytułowego
+    private final JLabel titleLabel;
     protected JPanel buttonPanel;
-    private final JLabel promptLabel;
+    protected final JLabel promptLabel;
 
     public PopUpWindow() {
-        // Tworzenie panelu dla paska tytułowego
-        // Dodany panel dla paska tytułowego
         JPanel titleBar = new JPanel();
         titleBar.setBackground(new Color(0x2dce98));
         titleBar.setPreferredSize(new Dimension(300, 20)); // Ustawienie preferowanej wielkości
@@ -72,14 +70,7 @@ public class PopUpWindow extends JFrame {
         setUndecorated(true);
         setLocationRelativeTo(null);
         add(container);
-
-
     }
-
-//    @Override
-//    public void show() {
-//        setVisible(true);
-//    }
 
     public void setMessage(String message) {
         promptLabel.setText("<html><div style='text-align: center; width: 230px;'>" + message + "</div></html>");

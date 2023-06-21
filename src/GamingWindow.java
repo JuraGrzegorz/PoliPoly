@@ -16,8 +16,6 @@ public class GamingWindow {
     final private int RECTANGULAR_FIELDS_LONGER_SIDE_LENGTH = 165;
     final private int WINDOW_SIDE_LENGTH = 1920;
     final private int WINDOW_SIDE_HEIGHT = 1080;
-
-
     final private int SQUARE_PLACEMENT_OFFSET_X = 864;
     final private int SQUARE_PLACEMENT_OFFSET_Y = 884;
 
@@ -30,43 +28,36 @@ public class GamingWindow {
 
     final private int CARD_PANEL_Y = 340 - PLAYER_SECTION_OFFSET_Y;
 
-    JFrame windowFrame;
-    JPanel gameContents;
-    CardsPanel cardsPanel;
-    CashPanel cashPanel;
-    PlayerTurnPanel playerTurnPanel;
-    HoverInfoPanel mouseHoverInfoPanel;
-    InfoPanel infoPanel;
-    JPanel[] verticalFieldsArray;
-    JPanel[] horizontalFieldsArray;
-    JPanel[] squareFieldsArray;
-    JButton endRound;
-    JButton buyPropertyButton;
-    JPanel inGameButtonPanel;
-    JPanel[][] pawnPanel;
-    JPanel[][] housePanel;
-    DiceRoll diceRollPanel;
+    private final JFrame windowFrame;
+    private final CardsPanel cardsPanel;
+    private final CashPanel cashPanel;
+    protected final PlayerTurnPanel playerTurnPanel;
+    private final HoverInfoPanel mouseHoverInfoPanel;
+    private final InfoPanel infoPanel;
+    private final JPanel[] verticalFieldsArray;
+    private final JPanel[] horizontalFieldsArray;
+    protected JButton endRound;
+    protected JButton buyPropertyButton;
+    private final JPanel inGameButtonPanel;
+    protected final JPanel[][] pawnPanel;
+    protected final JPanel[][] housePanel;
+    protected  DiceRoll diceRollPanel;
 
+    protected final int[] facultyPrices;
+    protected final String[] facultyNames;
+    protected final Color[] facultyColor;
 
+    private final Border blackline = BorderFactory.createLineBorder(Color.black);
 
-    JPanel test;
-
-    int[] facultyPrices;
-    String[] facultyNames;
-    Color[] facultyColor;
-
-    Border blackline = BorderFactory.createLineBorder(Color.black);
-
-    int counter;
-    int counter_house;
-    PrintWriter fromClient;
+    private  int counter;
+    private  int counter_house;
+    private final PrintWriter fromClient;
 
     GamingWindow(PrintWriter fromClient) throws IOException {
         this.fromClient = fromClient;
         windowFrame = new JFrame();
-        gameContents = new JPanel();
-        cardsPanel = new CardsPanel(windowFrame, CARD_PANEL_X, 340 - PLAYER_SECTION_OFFSET_Y);
-        test = new JPanel();
+        JPanel gameContents = new JPanel();
+        cardsPanel = new CardsPanel(windowFrame, CARD_PANEL_X, CARD_PANEL_Y);
         inGameButtonPanel = new JPanel();
         cashPanel = new CashPanel(450 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y);
         playerTurnPanel = new PlayerTurnPanel(25 + PLAYER_SECTION_OFFSET_X, 25 - PLAYER_SECTION_OFFSET_Y);
@@ -75,7 +66,7 @@ public class GamingWindow {
 
 
         counter = 0;
-        counter_house=0;
+        counter_house = 0;
 
         facultyPrices = new int[32];
         facultyNames = new String[32];
@@ -102,6 +93,7 @@ public class GamingWindow {
         windowFrame.setUndecorated(true);
         gameContents.setPreferredSize(new Dimension(WINDOW_SIDE_LENGTH, WINDOW_SIDE_HEIGHT));
         windowFrame.getContentPane().add(gameContents);
+
         windowFrame.pack();
 
         ImageIcon icon = new ImageIcon("assets\\icon.png");
@@ -114,18 +106,18 @@ public class GamingWindow {
         windowFrame.setResizable(false);
 
 
-
         ImageIcon backgroundImage = new ImageIcon("assets\\Background.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
         gameContents.add(backgroundLabel);
+
 
         gameContents.setVisible(true);
         gameContents.setLayout(null);
 
         verticalFieldsArray = new JPanel[14];
         horizontalFieldsArray = new JPanel[14];
-        squareFieldsArray = new JPanel[4];
+        JPanel[] squareFieldsArray = new JPanel[4];
 
         paintCornerFields(windowFrame, squareFieldsArray);
         paintRectangularFields();
@@ -195,7 +187,8 @@ public class GamingWindow {
                     String imagePath1 = "assets\\CS.png";
                     String imagePath21 = "assets\\mintus.png";
                     if (i == 2 || i == 3) imagePath1 = "assets\\Red_chance.png";
-                    if (i == 6 || i == 7) imagePath1 = "assets\\dorm_down.png";
+                    if (i == 6) imagePath1 = "assets\\dorm_up.png";
+                    if (i == 7) imagePath1 = "assets\\dorm_down.png";
                     if (i == 11) imagePath1 = "assets\\blue_chance.png";
 
                     if (i != 10) {
@@ -219,7 +212,6 @@ public class GamingWindow {
 
 
                     String imagePath12 = "";
-                    String imagePath22 = "assets\\mintus.png";
 
                     if (i == 2) {
                         imagePath12 = "assets\\Blue_chance_rotated.png";
@@ -258,61 +250,56 @@ public class GamingWindow {
 
                 case 0, 1, 4, 5, 9, 12, 13: {
                     if (help == 0) {
+                        horizontalFieldsArray[i].setBackground(Color.white);
                         JPanel uponPanel = new JPanel(new GridBagLayout());
                         JPanel namePanel = new JPanel(new GridBagLayout());
 
                         String imagePath = "assets\\mintus.png";
 
                         switch (i) {
-                            case 9:
+                            case 9 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[27], facultyColor[27]);
                                 /* Inst. Fermentacji 320 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[27]);
-                                break;
-                            case 13:
+                            }
+                            case 13 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[25], facultyColor[25]);
                                 /* Inst. Biotechnologii 300 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[25]);
-                                break;
-                            case 1:
+                            }
+                            case 1 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[31], facultyColor[31]);
                                 /* Inst. Marketingu 400 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[31]);
-                                break;
-                            case 5:
+                            }
+                            case 5 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[29], facultyColor[29]);
                                 /* Inst. Zarządzania 350 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[29]);
-                                break;
-                            case 0:
+                            }
+                            case 0 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[9], facultyColor[9]);
                                 /* Inst. Materiałoznawstwa 140 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[9]);
-                                break;
-                            case 4:
+                            }
+                            case 4 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[11], facultyColor[11]);
                                 /* Kat. Technologii Dziewiarskich 160 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[11]);
-                                break;
-
-                            case 12:
+                            }
+                            case 12 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[15], facultyColor[15]);
 
                                 /* Inst. Architektury 200 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[15]);
-                                break;
-
-                            case 10:
-
+                            }
+                            case 10 -> {
                                 VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2), facultyPrices[14], facultyColor[14]);
                                 /* Kat. Budownictwa Betonowego 180 */
                                 VerticalFacultyCard.makeNamePanel(namePanel, (i % 2), facultyNames[14]);
-                                break;
+                            }
                         }
 
-
-//                        VerticalFacultyCard.makeUponPanel(uponPanel, (i % 2));
-//                        VerticalFacultyCard.makeNamePanel(namePanel, (i % 2));
                         VerticalFacultyCard.makePawnPanel(pawnPanel[counter], imagePath);
                         VerticalFacultyCard.makeHousePanel(housePanel[counter_house], houseImagePath, (i % 2));
                         horizontalFieldsArray[i].add(uponPanel);
@@ -334,71 +321,56 @@ public class GamingWindow {
                     JPanel uponPanel2 = new JPanel(new GridBagLayout());
                     JPanel namePanel2 = new JPanel(new GridBagLayout());
 
-                    String imagePath2 = "assets\\mintus.png";
-
                     switch (i) {
-                        case 9:
+                        case 9 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[21], facultyColor[21]);
                             /* DMCS 260 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[21]);
-                            break;
-                        case 13:
+                        }
+                        case 13 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[23], facultyColor[21]);
                             /* IMSI 280*/
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[23]);
-                            break;
-                        case 1:
+                        }
+                        case 1 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[17], facultyColor[19]);
                             /* Inst. Obrabiarek 220 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[17]);
-                            break;
-                        case 5:
+                        }
+                        case 5 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[19], facultyColor[19]);
                             /* Kat. Wyrzymałości Materiałów 240 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[19]);
-                            break;
-                        case 0:
+                        }
+                        case 0 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[7], facultyColor[5]);
                             /* Inst. Chemii Organicznej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[7]);
-                            break;
-                        case 4:
+                        }
+                        case 4 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[5], facultyColor[5]);
                             /* Kat. Fizyki Molekularnej 100 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[5]);
-                            break;
-                        case 8:
+                        }
+                        case 8 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[3], facultyColor[1]);
                             /* Fiz 60 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[3]);
-                            ;
-                            break;
-                        case 12:
+
+                        }
+                        case 12 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[1], facultyColor[1]);
                             /* Mat, 60 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[1]);
-                            break;
-                        case 11:
+                        }
+                        case 11 -> {
                             HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), facultyPrices[22], facultyColor[21]);
                             /* CTI 260 */
                             HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), facultyNames[22]);
-
-                            break;
-                        case 10:
-                            JPanel imagePanel3 = new JPanel();
-                            String imagePath10 = "assets\\CJ.png";
-                            HorizontalOtherCard.makeImagePanel(imagePanel3, imagePath10);
-                            verticalFieldsArray[i].add(imagePanel3);
-//                                for(int j=0; j<4; j++){
-//                                    verticalFieldsArray[i].add(pawnPanel[counter+14][j]);
-//                                    break;
+                        }
                     }
 
-
-//                        HorizontalFacultyCard.makeUponPanel(uponPanel2, (i % 2), 500, Color.green);
-//                        HorizontalFacultyCard.makeNamePanel(namePanel2, (i % 2), "TEST");
-
-                    HorizontalFacultyCard.makePawnPanel(pawnPanel[counter + 14], imagePath2, i % 2);
+                    HorizontalFacultyCard.makePawnPanel(pawnPanel[counter + 14], i % 2);
 
                     HorizontalFacultyCard.makeHousePanel(housePanel[counter_house], houseImagePath, (i % 2));
                     verticalFieldsArray[i].add(uponPanel2);
@@ -427,7 +399,7 @@ public class GamingWindow {
     }
 
 
-    void paintCornerFields(JFrame windowFrame, JPanel[] squareFieldsArray) throws IOException {
+    void paintCornerFields(JFrame windowFrame, JPanel[] squareFieldsArray) {
 
 
         for (int i = 0; i < SQUARE_FIELDS_AMOUNT; i++) {
@@ -513,7 +485,7 @@ public class GamingWindow {
         }
     }
 
-    public void paintPlayerSection() throws IOException {
+    public void paintPlayerSection() {
         generateinGameButtonPanel(inGameButtonPanel);
 
         windowFrame.add(cardsPanel);
@@ -540,15 +512,8 @@ public class GamingWindow {
 
         buyPropertyButton = MenuWindow.standardButtonGenerate("Zakup");
         endRound = MenuWindow.standardButtonGenerate("koniec tury");
-        buyPropertyButton.addActionListener(back -> {
-            fromClient.println("Buy");
-        });
-        endRound.addActionListener(back -> {
-            fromClient.println("next");
-        });
-
-        /*leaveFromGameButton.addActionListener(
-                leaveGame -> System.exit(0));*/
+        buyPropertyButton.addActionListener(back -> fromClient.println("Buy"));
+        endRound.addActionListener(back -> fromClient.println("next"));
 
         inGameButtonPanel.add(buyPropertyButton);
         inGameButtonPanel.add(endRound);
@@ -558,6 +523,11 @@ public class GamingWindow {
         facultyPrices[1] = 60;
         facultyNames[1] = "Instytut Matematyki";
         facultyColor[1] = new Color(0xc6a995);
+
+        facultyPrices[2] = 150;
+        facultyNames[2] = "Centrum Językowe";
+        facultyColor[2] = Color.WHITE;
+
 
         facultyPrices[3] = 60;
         facultyNames[3] = "Instytut Fizyki";
@@ -588,6 +558,10 @@ public class GamingWindow {
         facultyPrices[12] = 200; //akademik nr2
         facultyNames[12] = "DS4";
         facultyColor[12] = Color.WHITE;
+
+        facultyPrices[13] = 150;
+        facultyNames[13] = "Zatoka Sportu";
+        facultyColor[13] = Color.WHITE;
 
         facultyPrices[14] = 180;
         facultyNames[14] = "Kat. Budownictwa Betonowego";
