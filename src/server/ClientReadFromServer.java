@@ -14,6 +14,7 @@ public class ClientReadFromServer extends Thread{
     private int countOfPlayer;
     private final OkConfirmPopUp alertWindow;
     GamingWindow gamingWindow;
+    public static RulesPopup rulesPopup;
     int playerCash;
     int[] playersPosition;
     int localPlayerNumber;
@@ -300,7 +301,7 @@ public class ClientReadFromServer extends Thread{
                 gamingWindow.housePanel[i][j].setVisible(false);
             }
         }
-        RulesPopup rulesPopup = new RulesPopup();
+        rulesPopup = new RulesPopup();
         rulesPopup.setMessage("Witaj w fascynującym świecie Polipoly, klonie Monopoly usytuowanym w uniwersum Politechniki Łódzkiej! Mała część zasad różni się nieco od oryginału, ale nie martw się! Przedstawimy te różnice po krótce:<br><br>" +
                 "Odsprzedawanie nieruchomości to zbyt duże udogodnienie. Tutaj Twoje pola są świętością, która nie może być sprzedana ani zastawiona. Musisz być strategiem, planować każdy ruch.<br><br>" +
                 "Ostrożnie! Ograniczamy liczbę posiadanych pól do 15. Musisz dokładnie rozważyć, które nieruchomości są dla ciebie najważniejsze. Podejmuj trudne decyzje i analizuj ryzyko!<br><br>" +
